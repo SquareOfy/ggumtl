@@ -3,7 +3,7 @@ package dream.common.domain;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 public class ResultTemplate<T> {
