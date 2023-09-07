@@ -1,8 +1,10 @@
 package dream.card.service;
 
+import dream.card.domain.DreamCard;
 import dream.card.domain.DreamCardRepository;
-import dream.card.dto.response.RequestDreamCardDto;
+import dream.card.dto.response.ResponseDreamCard;
 import dream.common.domain.ResultTemplate;
+import dream.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,23 +20,13 @@ public class DreamCardService {
 
     public ResultTemplate getNightMain(){
 
+        List<DreamCard> findCards = dreamCardRepository.findFetchTestByAll()
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
-        // 디비에서 값 가져오고
-        List<RequestDreamCardDto> requestDreamCardDtoList = new ArrayList<>();
-
-        //    dreamCardid : 22222,
-        //    dreamCardOwner : 12345,
-        //    dreamCardAuthor : 67891,
-        //    createdAt : "2023/09/06",
-
-
-
-        //    ownerNickname : "yy",
-        //    ownerProfileUrl : "{profileUrl}"
-
-        //    likedNumber : 120,
-        //    isLike : true
-
-        return null;
+        List<ResponseDreamCard> list = new ArrayList<>();
+        for (DreamCard findCard : findCards) {
+            list.add(ResponseDreamCard.from(findCard));
+        }
+        return ResultTemplate.builder().status(HttpStatus.OK).data(findCards).build();
     }
 }

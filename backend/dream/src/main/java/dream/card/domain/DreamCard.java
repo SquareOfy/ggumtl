@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,5 +39,8 @@ public class DreamCard extends BaseTimeEntity {
     private BaseCheckType auctionStatus;
     private BaseCheckType isShow;
     private long hits;
+
+    @OneToMany(mappedBy = "dreamCard", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DreamCardLike> dreamCardLike;
 
 }
