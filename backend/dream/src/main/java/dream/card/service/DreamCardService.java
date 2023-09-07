@@ -17,7 +17,7 @@ public class DreamCardService {
     private final DreamCardRepository dreamCardRepository;
 
     public ResultTemplate getNightMain(){
-        ResultTemplate resultTemplate = new ResultTemplate();
+
 
         // 디비에서 값 가져오고
         List<RequestDreamCardDto> requestDreamCardDtoList = new ArrayList<>();
@@ -35,9 +35,6 @@ public class DreamCardService {
         //    likedNumber : 120,
         //    isLike : true
 
-        resultTemplate.setStatus(HttpStatus.OK);
-        resultTemplate.setData(requestDreamCardDtoList);
-
-        return resultTemplate;
+        return null;
     }
 }

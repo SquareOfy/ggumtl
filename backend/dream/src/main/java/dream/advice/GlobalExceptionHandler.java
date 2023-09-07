@@ -1,9 +1,9 @@
 package dream.advice;
 
-import dream.common.exception.ExceptionResponse;
+import dream.common.domain.ResultTemplate;
 import dream.common.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({NotFoundException.class})
-    public ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception e) {
-        log.error("error", e);
-        return ResponseEntity.badRequest().body(ExceptionResponse.from(e.getMessage()));
+    @ExceptionHandler( {NotFoundException.class} )
+    public ResultTemplate handleBadRequestExceptions(Exception e){
+        
+        return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST).data(e.getMessage()).build();
     }
 
 }

@@ -1,13 +1,11 @@
 package dream.common.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
-@Data
+@Getter
+@Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class ResultTemplate<T> {
     private HttpStatus status;
     private T data;

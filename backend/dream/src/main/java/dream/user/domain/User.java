@@ -23,6 +23,4 @@ public class User extends BaseTimeEntity {
     private String profileImageName;
     private String profileUrl;
     private Double wrigglePoint;
-
-
 }
