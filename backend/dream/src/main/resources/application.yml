@@ -1,3 +1,10 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /api
+    multipart:
+      enabled: true
+
 spring:
   # MySQL
   datasource:
@@ -13,6 +20,7 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 1000 # 최적화 옵션
+
 
 logging.level:
   org.hibernate.SQL: debug

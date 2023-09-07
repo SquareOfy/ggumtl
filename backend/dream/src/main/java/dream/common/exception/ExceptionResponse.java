@@ -23,6 +23,7 @@ public class ExceptionResponse {
         return exceptionResponse;
     }
 
+    // 이건 언제 쓰일까?
     public static ExceptionResponse from(String message, Map<String, String> errors) {
         ExceptionResponse exceptionResponse = new ExceptionResponse();
         exceptionResponse.message = message;
