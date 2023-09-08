@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseLike {
+public class ResponseDreamCardLike {
 
     private Long dreamCardLikeId;
 
-    public static ResponseLike from(DreamCardLike dreamCardLike){
-        ResponseLike response = new ResponseLike();
+    public static ResponseDreamCardLike from(DreamCardLike dreamCardLike){
+        ResponseDreamCardLike response = new ResponseDreamCardLike();
         response.dreamCardLikeId = dreamCardLike.getDreamCardLikeId();
 
         return response;

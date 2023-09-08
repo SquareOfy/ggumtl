@@ -30,13 +30,22 @@ public class DreamCard extends BaseTimeEntity {
 
     private String dreamCardContent;
     private String dreamCardImageUrl;
+    @Enumerated(EnumType.STRING)
     private Grade grade;
 
     private String dreamTelling;
-    private int positivePoint;
-    private int rarePoint;
 
+    private int positivePoint;
+    @Enumerated(EnumType.STRING)
+    private Grade positiveGrade;
+
+    private int rarePoint;
+    @Enumerated(EnumType.STRING)
+    private Grade rareGrade;
+
+    @Enumerated(EnumType.STRING)
     private BaseCheckType auctionStatus;
+    @Enumerated(EnumType.STRING)
     private BaseCheckType isShow;
     private long hits;
 

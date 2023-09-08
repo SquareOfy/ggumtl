@@ -18,16 +18,14 @@ public class Bidding extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long biddingId;
 
-
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @JoinColumn(name = "dream_card_id")
+    @JoinColumn(name = "auction_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private DreamCard dreamCard;
+    private Auction auction;
 
     private int biddingMoney;
-
 
 }

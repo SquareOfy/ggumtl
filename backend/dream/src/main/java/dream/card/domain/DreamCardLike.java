@@ -19,7 +19,6 @@ public class DreamCardLike {
 
     @JoinColumn(name = "dream_card_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private DreamCard dreamCard;
 
     @JoinColumn(name = "user_id")
