@@ -52,4 +52,9 @@ public class DreamCard extends BaseTimeEntity {
     @OneToMany(mappedBy = "dreamCard", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DreamCardLike> dreamCardLike;
 
+    @OneToMany(mappedBy = "cardId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CardKeyword> cardKeyword;
+
+
+
 }

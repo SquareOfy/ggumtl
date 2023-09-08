@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Keyword {
+public class DreamKeyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

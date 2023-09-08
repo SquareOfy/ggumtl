@@ -1,6 +1,6 @@
-package dream.card.domain;
+package dream.challenge.domain;
 
-
+import dream.card.domain.DreamKeyword;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,18 +10,18 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CardKeyword {
+public class ChallengeKeyword {
+
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cardKeywordId;
+    private Long challengeKeywordId;
 
-    @JoinColumn(name = "card_id")
+    @JoinColumn(name = "challenge_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private DreamCard cardId;
+    private Challenge challenge;
 
-    @JoinColumn(name = "keyword_id")
+    @JoinColumn(name = "dream_keyword")
     @ManyToOne(fetch = FetchType.LAZY)
-    private DreamKeyword keyWordId;
-
+    private DreamKeyword keyword;
 
 }
