@@ -2,8 +2,11 @@ package dream.auction.service;
 
 import dream.auction.domain.AuctionRepository;
 import dream.auction.dto.request.RequestBidding;
+import dream.auction.dto.request.RequestCardReview;
+import dream.auction.dto.request.RequestChangeOwner;
 import dream.auction.dto.response.ResponseAuction;
 import dream.auction.dto.response.ResponseAuctionDetail;
+import dream.card.dto.request.RequestDreamCardId;
 import dream.common.domain.ResultTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -50,6 +53,28 @@ public class AuctionService {
 
     // 입찰 등록 함수 - 유저 같이 매개변수로 받아와서 처리부탁드립니다.
     public ResultTemplate postBidding(RequestBidding request) {
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    // 카드 즉시구매 함수 - 유저 같이 매개변수로 받아야해요.
+    // 그리고 이외 처리할 서비스 로직이 넘쳐납니다.
+    // 예외 처리할 것도 넘쳐나네요.
+    public ResultTemplate purchaseDreamCard(RequestDreamCardId request) {
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    // 최종 입찰 성공해서 카드 주인 바꾸기 함수
+    // 유저 같이 넘겨와야해요
+    public ResultTemplate successBiddingAndOwnerChange(RequestChangeOwner request) {
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    // 꿈 산 후 리뷰 등록하는 함수
+    // 할거 짱 많을거에요
+    public ResultTemplate postBuyingCardReview(RequestCardReview request) {
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }

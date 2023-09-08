@@ -1,7 +1,10 @@
 package dream.auction.controller;
 
 import dream.auction.dto.request.RequestBidding;
+import dream.auction.dto.request.RequestCardReview;
+import dream.auction.dto.request.RequestChangeOwner;
 import dream.auction.service.AuctionService;
+import dream.card.dto.request.RequestDreamCardId;
 import dream.common.domain.ResultTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -43,4 +46,26 @@ public class AuctionController {
         // 유저 받아와서 같이 넘겨주세요
         return auctionService.postBidding(request);
     }
+
+    @PutMapping(value = "/purchase")
+    public ResultTemplate purchaseDreamCard(@RequestBody RequestDreamCardId request){
+
+        // 유저 받아와서 같이 넘겨주세요
+        return auctionService.purchaseDreamCard(request);
+    }
+
+    // 매핑 URL 체크 가능성 존재
+    @PutMapping(value = "/")
+    public ResultTemplate successBiddingAndOwnerChange(@RequestBody RequestChangeOwner request) {
+
+        // 유저 받아와서 같이 넘겨주세요
+        return auctionService.successBiddingAndOwnerChange(request);
+    }
+
+    @PostMapping(value = "/review")
+    public ResultTemplate postBuyingCardReview(@RequestBody RequestCardReview request){
+
+        return auctionService.postBuyingCardReview(request);
+    }
+
 }
