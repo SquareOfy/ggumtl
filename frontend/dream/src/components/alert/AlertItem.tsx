@@ -5,3 +5,19 @@
 // 제목
 // 알림메시지
 
+// 리액트
+import React from "react";
+
+// 컴포넌트
+
+// 스타일
+
+const AlertItem = () => {
+
+  return (
+    <>
+    </>
+  )
+}
+
+export default AlertItem

@@ -11,4 +11,19 @@
 // LongButton -> 같은 챌리지 하러가기
 
 
+// 리액트
+import React from "react";
 
+// 컴포넌트
+
+// 스타일
+
+const DayBadgeDetail = () => {
+
+  return (
+    <>
+    </>
+  )
+}
+
+export default DayBadgeDetail

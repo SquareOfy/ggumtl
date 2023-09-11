@@ -5,3 +5,14 @@
 
 // 밤의꿈 꾸러가기
 {/* => <NightHomePage/> */}
+
+import React from "react";
+
+const SunsetMain = () => {
+  return (
+    <>
+    </>
+  )
+}
+
+export default SunsetMain

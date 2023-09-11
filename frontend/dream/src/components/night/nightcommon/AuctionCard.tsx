@@ -4,3 +4,20 @@
 {/* <SmallNightImage></SmallNightImage> */}
 // 키워드들 - <KeywordRegion></KeywordRegion>
 // 등급 - <GradeRegion></GradeRegion> 
+
+// 리액트
+import React from "react";
+
+// 컴포넌트
+
+// 스타일
+
+const AuctionCard = () => {
+
+  return (
+    <>
+    </>
+  )
+}
+
+export default AuctionCard
