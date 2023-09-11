@@ -25,6 +25,7 @@ public class ResponseDreamCardList {
     private LocalDateTime createAt;
     private int likedNumber;
     private boolean isLike;
+    private List<ResponseKeyword> keywords;
 
     public static ResponseDreamCardList from(DreamCard dreamCard, boolean isLike){
 

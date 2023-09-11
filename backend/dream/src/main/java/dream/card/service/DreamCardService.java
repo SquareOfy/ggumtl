@@ -29,7 +29,7 @@ public class DreamCardService {
      */
     public ResultTemplate getNightMain(){
 
-        List<DreamCard> findCards = dreamCardRepository.findFetchTestByAll()
+        List<DreamCard> findCards = dreamCardRepository.findCardInfoByAll()
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_LIST_NOT_FOUND));
 
         List<ResponseDreamCardList> list = new ArrayList<>();
