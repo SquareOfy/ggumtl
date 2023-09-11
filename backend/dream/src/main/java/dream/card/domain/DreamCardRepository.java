@@ -11,7 +11,7 @@ public interface DreamCardRepository extends JpaRepository<DreamCard, Long> {
 
     @Query("select distinct d from DreamCard d join fetch d.dreamCardAuthor join fetch d.dreamCardOwner " +
             "join fetch d.dreamCardLike")
-    Optional<List<DreamCard>> findCardInfoByAll();
+    List<DreamCard> findCardInfoByAll();
 
     @Query("select count(dcl) > 0 from DreamCardLike dcl " +
             "where dcl.dreamCard.dreamCardId = :dreamCardId and dcl.user.userId = :userId")
