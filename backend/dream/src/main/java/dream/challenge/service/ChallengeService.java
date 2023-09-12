@@ -1,11 +1,14 @@
 package dream.challenge.service;
 
 
+import dream.card.domain.DreamKeyword;
+import dream.card.domain.DreamKeywordRepository;
 import dream.challenge.domain.Challenge;
 import dream.challenge.domain.ChallengeQueryRepository;
 import dream.challenge.domain.ChallengeRepository;
 import dream.challenge.dto.response.ResponseChallenge;
 import dream.challenge.dto.response.ResponseChallengeList;
+import dream.challenge.dto.response.ResponseKeyword;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,7 @@ public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
     private final ChallengeQueryRepository challengeQueryRepository;
+    private final DreamKeywordRepository dreamKeywordRepository;
 
     /**
      * 낮 메인 화면 조회 !@!
@@ -47,6 +51,19 @@ public class ChallengeService {
             if (++count == size) break;
         }
         ResponseChallengeList response = ResponseChallengeList.from(responseChallengeList, hasNext);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getAllCategory() {
+
+        List<DreamKeyword> keywords = dreamKeywordRepository.findAll();
+        if(keywords.isEmpty()) throw new NotFoundException(NotFoundException.DREAM_KEYWORD_NOT_FOUND);
+
+        List<ResponseKeyword> response = new ArrayList<>();
+        for(DreamKeyword keyword: keywords){
+            response.add(ResponseKeyword.from(keyword));
+        }
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }

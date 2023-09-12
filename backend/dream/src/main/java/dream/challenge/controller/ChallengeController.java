@@ -20,5 +20,9 @@ public class ChallengeController {
         return challengeService.getDayMain(keywordId, lastItemId, size);
     }
 
+    @GetMapping("/keyword/list")
+    public ResultTemplate getAllCategory(){
+        return challengeService.getAllCategory();
+    }
 
 }
