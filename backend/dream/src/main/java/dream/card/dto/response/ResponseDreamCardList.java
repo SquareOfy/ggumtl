@@ -17,26 +17,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ResponseDreamCardList {
 
-    private Long dreamCardId;
-    private Long dreamCardOwner;
-    private String ownerNickname;
-    private String ownerProfileUrl;
-    private Long dreamCardAuthor;
-    private LocalDateTime createAt;
-    private int likedNumber;
-    private boolean isLike;
+    private List<ResponseDreamCard> list;
+    private boolean hasNext;
 
-    public static ResponseDreamCardList from(DreamCard dreamCard, boolean isLike){
+    public static ResponseDreamCardList from(List<ResponseDreamCard> responseDreamCardList, boolean hasNext){
 
         ResponseDreamCardList response = new ResponseDreamCardList();
-        response.dreamCardId = dreamCard.getDreamCardId();
-        response.dreamCardOwner = dreamCard.getDreamCardOwner().getUserId();
-        response.ownerNickname = dreamCard.getDreamCardOwner().getNickname();
-        response.ownerProfileUrl = dreamCard.getDreamCardOwner().getProfileUrl();
-        response.dreamCardAuthor = dreamCard.getDreamCardAuthor().getUserId();
-        response.createAt = dreamCard.getCreatedAt();
-        response.likedNumber = dreamCard.getDreamCardLike().size();
-        response.isLike = isLike;
+        response.list = responseDreamCardList;
+        response.hasNext = hasNext;
 
         return response;
     }

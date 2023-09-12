@@ -26,7 +26,7 @@ public class ChallengeQueryRepository {
                         .leftJoin(challenge.keywords)
                         .where(
                                 keywordIdEq(keywordId),
-                                challenge.challengeId.lt(lastItemId)
+                                lastItemIdEq(lastItemId)
                         )
                         .orderBy(challenge.challengeId.desc())
                         .limit(size + 1)
@@ -35,6 +35,9 @@ public class ChallengeQueryRepository {
 
     private BooleanExpression keywordIdEq(Long keywordId) {
         return keywordId != null ? challenge.keywords.any().keyword.keywordId.eq(keywordId) : null;
+    }
+    private BooleanExpression lastItemIdEq(Long lastItemId) {
+        return lastItemId != null ? challenge.challengeId.lt(lastItemId) : null;
     }
 
 

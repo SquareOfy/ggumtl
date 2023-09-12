@@ -18,8 +18,9 @@ public class DreamCardController {
     private final DreamCardService dreamCardService;
 
     @GetMapping(value = "/")
-    public ResultTemplate getNightMain(){
-        return dreamCardService.getNightMain();
+    public ResultTemplate getNightMain(@RequestParam(value = "lastItemId", required = false) int lastItemId,
+                                       @RequestParam("size") int size){
+        return dreamCardService.getNightMain(lastItemId, size);
     }
 
     @GetMapping(value = "/dream/detail/{dreamCardId}")

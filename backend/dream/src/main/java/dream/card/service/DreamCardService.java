@@ -10,8 +10,13 @@ import dream.common.domain.ResultTemplate;
 import dream.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +24,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class DreamCardService {
 
     private final DreamCardRepository dreamCardRepository;
@@ -27,14 +33,15 @@ public class DreamCardService {
      *
      * 밤 메인 화면에서 카드 리스트를 조회 하는 함수 !
      */
-    public ResultTemplate getNightMain(){
+    public ResultTemplate getNightMain(int lastItemId, int size){
+        
+        PageRequest pageRequest = PageRequest.of(lastItemId, size, Sort.by(Sort.Direction.DESC, "dreamCardId"));
+        Slice<DreamCard> findCards = dreamCardRepository.findCardInfoByAll(pageRequest);
 
-        List<DreamCard> findCards = dreamCardRepository.findCardInfoByAll();
         if (findCards.isEmpty()) throw new NotFoundException(NotFoundException.CARD_LIST_NOT_FOUND);
 
-        List<ResponseDreamCardList> list = new ArrayList<>();
+        List<ResponseDreamCard> dreamCards = new ArrayList<>();
         for (DreamCard findCard : findCards) {
-//            boolean isLike = dreamCardRepository.existLikeCardByUser(findCard.getDreamCardId(), 1);
             List<DreamCardLike> dreamCardLikes = findCard.getDreamCardLike();
             boolean isLike = false;
             for (DreamCardLike dreamCardLike : dreamCardLikes) {
@@ -44,8 +51,9 @@ public class DreamCardService {
                     break;
                 }
             }
-            list.add(ResponseDreamCardList.from(findCard, isLike));
+            dreamCards.add(ResponseDreamCard.from(findCard, isLike));
         }
+        ResponseDreamCardList list = ResponseDreamCardList.from(dreamCards, findCards.hasNext());
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(list).build();
     }
