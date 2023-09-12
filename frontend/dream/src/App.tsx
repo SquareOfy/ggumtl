@@ -40,7 +40,7 @@ function App() {
   return (
     <>
     {/* <ThemeProvider > */}
-    {/* <GlobalStyle/> */}
+    <GlobalStyle/>
       <Routes>
         {/* 초기 3개 화면 */}
         <Route path="/sunset/main" element={<SunsetMainPage/>} />

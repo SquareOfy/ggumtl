@@ -14,9 +14,6 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
@@ -36,16 +33,13 @@ q:before, q:after {
 	content: '';
 	content: none;
 }
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
 * {
   box-sizing: border-box ;
 }
 html, body {
 	height: 100%;
-	font-size: 62.5%;
+
+	margin: 0 0.5rem;
 }
 body {
 

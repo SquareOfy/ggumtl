@@ -8,9 +8,10 @@ interface InputProps {
     // styles?: string;
     onChange ?: (e :any) => void;
     disabled?: boolean;    
-    type?: 'text';
+    type?: 'text' | 'search' ;
     placeholder ?: string;
     id ?: string;
+    value ?: string | number
 
     // 별개 스타일링
     // 캡슐
@@ -32,6 +33,7 @@ interface InputProps {
     // color
     $nightColor ?: boolean;
     $dayColor ?: boolean;
+    $daySearchColor ?: boolean
 
     // 굵기
     $textInput ?: boolean;
@@ -149,6 +151,15 @@ const StyledInput = styled.input<InputProps>`
         color: #374151;
       `
     }
+
+    // day Search color
+    ${(props) =>
+      props.$daySearchColor &&
+      css`
+        background-color: rgba(117, 168, 199, 0.8);
+        color: #ffffff      
+      `
+    }
     
     
     // searchBar
@@ -159,6 +170,10 @@ const StyledInput = styled.input<InputProps>`
         height: 3rem;
         margin-top: 1rem;
         margin-bottom: 1rem;
+        padding-left: 0.75rem;
+        padding-right: 2rem;
+        overflow: auto;
+        box-sizing: border-box;
       `
     }
 
