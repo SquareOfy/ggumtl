@@ -37,8 +37,12 @@ q:before, q:after {
   box-sizing: border-box ;
 }
 html, body {
-	height: 100%;
-
+  display: flex;
+  flex-direction: column;
+  max-width: 415px;
+  height: 100vh;
+  border: 0;
+  overflow-x: hidden;
 	margin: 0 0.5rem;
 }
 body {
