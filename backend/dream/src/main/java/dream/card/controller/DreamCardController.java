@@ -18,15 +18,20 @@ public class DreamCardController {
     private final DreamCardService dreamCardService;
 
     @GetMapping(value = "/")
-    public ResultTemplate getNightMain(@RequestParam(value = "lastItemId", required = false) int lastItemId,
+    public ResultTemplate getNightMain(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
                                        @RequestParam("size") int size){
         return dreamCardService.getNightMain(lastItemId, size);
     }
 
     @GetMapping(value = "/dream/detail/{dreamCardId}")
-    public ResultTemplate getFlipDreamCardDetail(@PathVariable("dreamCardId") long id){
+    public ResultTemplate getFlipDreamCardDetail(@PathVariable("dreamCardId") Long id){
 
         return dreamCardService.getFlipDreamCardDetail(id);
+    }
+    @GetMapping(value = "/dream/userInfo/{dreamCardId}")
+    public ResultTemplate getDreamCardUserInfo(@PathVariable("dreamCardId") Long id){
+
+        return dreamCardService.getDreamCardUserInfo(id);
     }
 
     @PutMapping(value = "/dream/detail/hit")

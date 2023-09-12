@@ -20,10 +20,10 @@ public class ChallengeController {
         return challengeService.getDayMain(keywordId, lastItemId, size);
     }
 
-    @GetMapping(value = "/keyword/list")
-    public ResultTemplate getAllCategory(){
-        return challengeService.getAllCategory();
-    }
+//    @GetMapping(value = "/keyword/list")
+//    public ResultTemplate getAllCategory(){
+//        return challengeService.getAllCategory();
+//    }
 
 //    @GetMapping(value = "/challenge/story/user-list")
 //    public ResultTemplate getFollowUserStory(@RequestParam(value = "lastItemId") Long lastItemId,

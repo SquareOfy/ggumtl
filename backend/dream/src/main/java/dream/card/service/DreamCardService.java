@@ -2,6 +2,7 @@ package dream.card.service;
 
 import dream.card.domain.DreamCard;
 import dream.card.domain.DreamCardLike;
+import dream.card.domain.DreamCardQueryRepository;
 import dream.card.domain.DreamCardRepository;
 import dream.card.dto.request.RequestDreamCardDetail;
 import dream.card.dto.request.RequestDreamCardIsShow;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -28,19 +30,20 @@ import java.util.List;
 public class DreamCardService {
 
     private final DreamCardRepository dreamCardRepository;
+    private final DreamCardQueryRepository dreamCardQueryRepository;
 
     /**
      *
      * 밤 메인 화면에서 카드 리스트를 조회 하는 함수 !
      */
-    public ResultTemplate getNightMain(int lastItemId, int size){
+    public ResultTemplate getNightMain(Long lastItemId, int size){
         
-        PageRequest pageRequest = PageRequest.of(lastItemId, size, Sort.by(Sort.Direction.DESC, "dreamCardId"));
-        Slice<DreamCard> findCards = dreamCardRepository.findCardInfoByAll(pageRequest);
-
+        List<DreamCard> findCards = dreamCardQueryRepository.findDreamCardPaging(lastItemId, size);
         if (findCards.isEmpty()) throw new NotFoundException(NotFoundException.CARD_LIST_NOT_FOUND);
 
         List<ResponseDreamCard> dreamCards = new ArrayList<>();
+        boolean hasNext = findCards.size() > size;
+        int count = 0;
         for (DreamCard findCard : findCards) {
             List<DreamCardLike> dreamCardLikes = findCard.getDreamCardLike();
             boolean isLike = false;
@@ -52,19 +55,35 @@ public class DreamCardService {
                 }
             }
             dreamCards.add(ResponseDreamCard.from(findCard, isLike));
+            if (++count == size) break;
         }
-        ResponseDreamCardList list = ResponseDreamCardList.from(dreamCards, findCards.hasNext());
+        ResponseDreamCardList list = ResponseDreamCardList.from(dreamCards, hasNext);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(list).build();
     }
 
     // 카드 상세 정보 가져오는 함수
-    public ResultTemplate getFlipDreamCardDetail(long id) {
+    public ResultTemplate getFlipDreamCardDetail(Long id) {
 
-        ResponseFlipDreamCardDetail response = new ResponseFlipDreamCardDetail();
-        
+        DreamCard findCard = dreamCardRepository.findDetailsById(id)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+
+        ResponseFlipDreamCardDetail response = ResponseFlipDreamCardDetail.from(findCard);
+
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
+
+    public ResultTemplate getDreamCardUserInfo(Long id) {
+
+        DreamCard dreamCard = dreamCardRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+        ResponseDreamCardUserInfo response = ResponseDreamCardUserInfo.from(dreamCard);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
 
     // 카드 조회수 업데이트하는 함수
     public ResultTemplate updateDreamCard(long dreamCardId) {
@@ -131,4 +150,6 @@ public class DreamCardService {
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
+
+
 }
