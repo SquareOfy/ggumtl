@@ -158,7 +158,7 @@ const StyledTitle = styled.p<BoxProps>`
 
 
 // 래핑 시키는 박스
-const Wrapping = styled.div<BoxProps>`
+const GradeWrapping = styled.div<BoxProps>`
   // 가운데 간격 줄이기
   display: flex;
   justify-content: space-around;
@@ -187,7 +187,7 @@ const BoxTitle = (props:BoxProps) => {
 }
 
 const WrappingBox = (props:BoxProps) => {
-  return <Wrapping {...props}>{props.children}</Wrapping>
+  return <GradeWrapping {...props}>{props.children}</GradeWrapping>
 }
 
 

@@ -43,7 +43,7 @@ html, body {
   height: 100vh;
   border: 0;
   overflow-x: hidden;
-	margin: 0 0.5rem;
+	/* margin: 0 0.5rem; 마진 nav바에도 영향 미쳐서 다른 방법 물색해야 함 */
 }
 body {
 
