@@ -10,13 +10,26 @@
 import React from "react";
 
 // 컴포넌트
+import { Box } from "style/Box";
+import { DayChallengeObj } from "../home/DayChallengeList";
 
 // 스타일
 
-const ChalContentListItem = () => {
+interface ChalContentListItemProps {
+  key: number
+  chal: DayChallengeObj;
+}
 
+const ChalContentListItem = ({chal}:ChalContentListItemProps) => {
   return (
     <>
+      <Box
+      $challengeContentBox
+      >
+        <img></img>
+        <div><p>{chal.title}</p><p>{chal.title}</p></div>
+        <div><p>Day</p><p>{chal.period}</p></div>
+      </Box>
     </>
   )
 }

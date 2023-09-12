@@ -13,7 +13,6 @@ const ChalManageList = () => {
   return (
     <>
     {/* Arr의 요소 */}
-    <ChalContentListItem />
     </>
   )
 }

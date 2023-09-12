@@ -14,7 +14,7 @@ const DayProfileCompleteTab = () => {
   return (
     <>
     {/* Arr 아이템 */}
-    <ChalContentListItem/>
+    {/* <ChalContentListItem/> */}
     </>
   )
 }

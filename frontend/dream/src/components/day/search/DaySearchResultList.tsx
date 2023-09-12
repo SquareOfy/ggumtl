@@ -20,7 +20,7 @@ const DaySearchResultList = () => {
   return (
     <>
     <DayCategoryList />
-    <ChalContentListItem />
+    {/* <ChalContentListItem /> */}
     </>
   )
 }
