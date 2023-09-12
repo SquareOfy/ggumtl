@@ -39,6 +39,4 @@ public class ChallengeQueryRepository {
     private BooleanExpression lastItemIdLt(Long lastItemId) {
         return lastItemId != null ? challenge.challengeId.lt(lastItemId) : null;
     }
-
-
 }
