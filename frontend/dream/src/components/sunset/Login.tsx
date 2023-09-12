@@ -6,19 +6,27 @@
 // 기존 회원: ->  <SunsetMainPage/>
 
 import React from "react";
+import styled from "styled-components";
 
 // 스타일
 import Button from "components/common/Button";
 
+const LoginContainer = styled.div`
+  width: 80%;
+  margin:auto;
+  margin-top: 40vh;
+`;
+
+
 const Login = () => {
 
   return (
-    <>
-    <Button 
-    $fullWidth 
-    $kakao
-    >Login with Kakao</Button>
-    </>
+    <LoginContainer>
+      <Button 
+      $fullWidth 
+      $kakao
+      >Login with Kakao</Button>
+    </LoginContainer>
   )
 }
 
