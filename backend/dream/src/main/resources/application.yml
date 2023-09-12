@@ -1,8 +1,10 @@
 server:
   port: 9090
   servlet:
+    context-path: /api
     multipart:
       enabled: true
+
 
 spring:
   # MySQL

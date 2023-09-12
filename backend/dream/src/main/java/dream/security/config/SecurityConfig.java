@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/jwt-test/**").hasRole("GUEST")
+//                .antMatchers("/user/jwt-test/**").hasRole("GUEST")
                 .anyRequest().permitAll()
 
                 .and()
@@ -73,9 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint().userService(socialLoginService); // customUserService 설정
 
 
-                http.addFilterBefore(new JwtAuthentificationProcessingFilter(jwtService, userRepository),  UsernamePasswordAuthenticationFilter.class);
-
-
+//                http.addFilterBefore(new JwtAuthentificationProcessingFilter(jwtService, userRepository),  UsernamePasswordAuthenticationFilter.class);
     }
 
 
