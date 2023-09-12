@@ -1,7 +1,6 @@
 package dream.challenge.domain;
 
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static dream.challenge.domain.QChallenge.challenge;
 
@@ -24,8 +22,8 @@ public class ChallengeQueryRepository {
 
         QChallenge challenge = QChallenge.challenge;
 
-        return queryFactory.selectFrom(challenge)
-                        .join(challenge.keywords).fetchJoin()
+        return queryFactory.selectFrom(challenge).distinct()
+                        .leftJoin(challenge.keywords)
                         .where(
                                 keywordIdEq(keywordId),
                                 challenge.challengeId.lt(lastItemId)
