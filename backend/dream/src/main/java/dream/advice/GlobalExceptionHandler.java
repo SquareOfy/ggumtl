@@ -1,6 +1,8 @@
 package dream.advice;
 
 import dream.common.domain.ResultTemplate;
+import dream.common.exception.InvalidAccessTokenException;
+import dream.common.exception.InvalidRefreshTokenException;
 import dream.common.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,5 +18,18 @@ public class GlobalExceptionHandler {
         
         return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
     }
+
+    @ExceptionHandler( {InvalidAccessTokenException.class} )
+    public ResultTemplate invalidAccessTokenException(Exception e){
+
+        return ResultTemplate.builder().status(HttpStatus.FORBIDDEN.value()).data(e.getMessage()).build();
+    }
+
+    @ExceptionHandler( {InvalidRefreshTokenException.class} )
+    public ResultTemplate invalidRefreshTokenException(Exception e){
+
+        return ResultTemplate.builder().status(HttpStatus.FORBIDDEN.value()).data(e.getMessage()).build();
+    }
+
 
 }
