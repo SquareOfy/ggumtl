@@ -6,6 +6,7 @@ import dream.card.domain.DreamKeywordRepository;
 import dream.challenge.domain.*;
 import dream.challenge.dto.response.*;
 import dream.common.domain.ResultTemplate;
+import dream.common.exception.NoSuchElementException;
 import dream.common.exception.NotFoundException;
 import dream.user.domain.FollowRepository;
 import dream.user.domain.User;
@@ -34,7 +35,7 @@ public class ChallengeService {
     public ResultTemplate getDayMain(Long keywordId, Long lastItemId, int size) {
 
         List<Challenge> challenges = challengeQueryRepository.findChallengeListByPage(keywordId, lastItemId, size);
-        if (challenges.isEmpty()) throw new NotFoundException(NotFoundException.CHALLENGE_LIST_NOT_FOUND);
+        if (challenges.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_CHALLENGE_LIST);
 
         List<ResponseChallenge> responseChallengeList = new ArrayList<>();
         boolean hasNext = challenges.size() > size;
@@ -63,28 +64,52 @@ public class ChallengeService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
-    public ResultTemplate getFollowUserStory(User user, Long lastItemId, int size) {
+    public ResultTemplate getFollowUsers(User user, Long lastItemId, int size) {
 
-        // 내가 팔로우한 사람들의 게시글 다 가져옴 size 만큼
         List<ChallengeDetail> list = challengeDetailQueryRepository.findChallengeListByPage(user.getUserId(), lastItemId, size);
-        if(list.isEmpty()) throw new NotFoundException(NotFoundException.FOLLOWING_USER_NOT_FOUND);
+        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_FOLLOWING_USER_STORY);
 
         List<ResponseChallengeDetailIdWithNameAndNickName> userList = new ArrayList<>();
         int count = 0;
         for (ChallengeDetail challengeDetail : list) {
-            ResponseChallengeDetailIdWithNameAndNickName nickAndId = new ResponseChallengeDetailIdWithNameAndNickName();
-            nickAndId.setChallengeDetailId(challengeDetail.getChallengeDetailId());
-            nickAndId.setUserId(challengeDetail.getUser().getUserId());
-            nickAndId.setNickname(challengeDetail.getUser().getNickname());
+            ResponseChallengeDetailIdWithNameAndNickName nickAndId = ResponseChallengeDetailIdWithNameAndNickName.from(challengeDetail);
             userList.add(nickAndId);
             if(++count == size) break;
         }
 
-        ResponseFollowingUsers response = new ResponseFollowingUsers();
-        response.setResultList(userList);
-        response.setHasUserWithStory(true);
         boolean hasNext = (list.size() > size);
-        response.setHasNext(hasNext);
+        ResponseFollowingUsers response = ResponseFollowingUsers.from(true, userList, hasNext);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getFollowUserStory(long userId) {
+        List<ChallengeDetail> list = challengeDetailQueryRepository.getStoryByUserId(userId);
+        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_FOLLOWING_USER_STORY);
+
+        List<ResponseFollowingUserStory> response = new ArrayList<>();
+        for (ChallengeDetail challengeDetail : list) {
+            response.add(ResponseFollowingUserStory.from(challengeDetail));
+        }
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getSearchedChallenge(String searchKeyword, Long keywordId, Long lastItemId, int size) {
+
+        List<Challenge> list = challengeQueryRepository.getChallengeByKeyword(searchKeyword, keywordId, lastItemId, size);
+        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_CHALLENGE_LIST);
+
+        List<ResponseSearchedChallenge> challengeList = new ArrayList<>();
+        int count = 0;
+        for (Challenge challenge : list) {
+            ResponseSearchedChallenge tmp = ResponseSearchedChallenge.from(challenge);
+            challengeList.add(tmp);
+            if(++count == size) break;
+        }
+
+        boolean hasNext = (list.size() > size);
+        ResponseSearchedChallengeList response = ResponseSearchedChallengeList.from(challengeList, hasNext);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }

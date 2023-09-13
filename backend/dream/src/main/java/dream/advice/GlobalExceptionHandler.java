@@ -3,6 +3,7 @@ package dream.advice;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.InvalidAccessTokenException;
 import dream.common.exception.InvalidRefreshTokenException;
+import dream.common.exception.NoSuchElementException;
 import dream.common.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler( {NotFoundException.class} )
+    @ExceptionHandler( {NotFoundException.class, NoSuchElementException.class} )
     public ResultTemplate handleBadRequestExceptions(Exception e){
         
         return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();

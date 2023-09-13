@@ -33,4 +33,7 @@ public class Challenge extends BaseUpdateTimeEntity {
 
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChallengeKeyword> keywords;
+
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChallengeParticipation> challengeParticipations;
 }

@@ -33,6 +33,29 @@ public class ChallengeQueryRepository {
                         .fetch();
     }
 
+    public List<Challenge> getChallengeByKeyword(String searchKeyword, Long keywordId, Long lastItemId, int size) {
+        QChallenge challenge = QChallenge.challenge;
+
+        return queryFactory.selectFrom(challenge).distinct()
+                .leftJoin(challenge.challengeParticipations)
+                .where(
+                        searchKeywordLike(searchKeyword),
+                        keywordIdEq(keywordId),
+                        lastItemIdLt(lastItemId)
+                )
+                .orderBy(challenge.challengeId.desc())
+                .limit(size + 1)
+                .fetch();
+    }
+    private BooleanExpression searchKeywordLike(String searchKeyword){
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            String likeKeyword = "%" + searchKeyword + "%";
+            return challenge.challengeTitle.like(likeKeyword);
+        } else {
+            return null;
+        }
+    }
+
     private BooleanExpression keywordIdEq(Long keywordId) {
         return keywordId != null ? challenge.keywords.any().keyword.keywordId.eq(keywordId) : null;
     }

@@ -35,9 +35,6 @@ public class ChallengeDetailQueryRepository {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
 
-        log.info("{}", startOfDay.toString());
-        log.info("{}", endOfDay.toString());
-
         JPAQuery<Long> subQuery = queryFactory.select(follow.toUser.userId)
                 .from(follow)
                 .where(
@@ -55,6 +52,20 @@ public class ChallengeDetailQueryRepository {
                 .limit(size + 1)
                 .fetch();
     }
+
+    public List<ChallengeDetail> getStoryByUserId(long userId) {
+        QChallengeDetail challengeDetail = QChallengeDetail.challengeDetail;
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+        return queryFactory.selectFrom(challengeDetail)
+                .where(
+                        challengeDetail.user.userId.eq(userId),
+                        challengeDetail.createdAt.between(startOfDay, endOfDay)
+                )
+                .fetch();
+    }
+
 
     private BooleanExpression lastItemIdLt(Long lastItemId) {
         return lastItemId != null ? challengeDetail.challengeDetailId.lt(lastItemId) : null;

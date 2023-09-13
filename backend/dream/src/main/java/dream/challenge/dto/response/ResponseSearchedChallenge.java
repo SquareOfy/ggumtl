@@ -8,23 +8,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseChallenge {
+public class ResponseSearchedChallenge {
 
-    private Long challengeId;
     private String title;
     private String period;
-    private int participateCount;
+    private long challengeId;
+    private int participantCount;
 
-    public static ResponseChallenge from(Challenge challenge){
-
-        ResponseChallenge response = new ResponseChallenge();
-
-        response.challengeId = challenge.getChallengeId();
+    public static ResponseSearchedChallenge from(Challenge challenge){
+        ResponseSearchedChallenge response = new ResponseSearchedChallenge();
         response.title = challenge.getChallengeTitle();
         response.period = challenge.getPeriod();
-        response.participateCount = challenge.getChallengeParticipations().size();
-
+        response.challengeId = challenge.getChallengeId();
+        response.participantCount = challenge.getChallengeParticipations().size();
         return response;
     }
-
 }
