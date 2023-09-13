@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import GlobalStyle from './style/GlobalStyles';
 import {ThemeProvider} from "styled-components"
-import { nightTheme, dayTheme } from './style/theme';
+import { sunsetTheme,nightTheme, dayTheme } from './style/theme';
 
 // 라우터
 import { Route, Routes, useLocation } from "react-router-dom";
@@ -32,14 +32,30 @@ import ChalManageDetailPage from 'pages/day/challenge/ChalManageDetailPage';
 import ChalCreateCertPage from 'pages/day/challenge/ChalCreateCertPage';
 import ChalCapsuleListPage from 'pages/day/capsule/ChalCapsuleListPage';
 import DayAlertPage from 'pages/alert/DayAlertPage';
+import BackgroundImage from 'style/backgroundImage';
+
 
 function App() {
   const location = useLocation();
   const hideComponent :boolean = location.pathname.startsWith("/sunset") || location.pathname.includes("comments");
+  
+  const [theme,setTheme] = useState(sunsetTheme);
+  
+  // 라우터 이동 시에 url pathname 확인
+  useEffect(()=>{
+    if (location.pathname.includes('sunset')){
+      setTheme(sunsetTheme)
+    } else if (location.pathname.includes('day')){
+      setTheme(dayTheme)
+    } else if (location.pathname.includes('night')){
+      setTheme(nightTheme)
+    }
+  })
 
   return (
     <>
-    {/* <ThemeProvider > */}
+    {/* <ThemeProvider theme={theme}> */}
+    <BackgroundImage backgroundImage={theme.backgroundImageUrl}/>
     <GlobalStyle/>
       <Routes>
         {/* 초기 3개 화면 */}

@@ -14,7 +14,8 @@ import Button from "components/common/Button";
 const LoginContainer = styled.div`
   width: 80%;
   margin:auto;
-  margin-top: 40vh;
+  margin-top: 45vh;
+  position: fixed;
 `;
 
 
