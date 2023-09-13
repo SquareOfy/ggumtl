@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestDreamCardId {
+public class RequestDreamCardUserLike {
+
     private Long dreamCardId;
+    private Long userId;
+
 }

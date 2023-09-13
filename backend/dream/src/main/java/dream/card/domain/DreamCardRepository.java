@@ -11,15 +11,6 @@ import java.util.Optional;
 
 public interface DreamCardRepository extends JpaRepository<DreamCard, Long> {
 
-    @Query("select distinct d from DreamCard d left join fetch d.dreamCardAuthor " +
-            "left join fetch d.dreamCardOwner " +
-            "left join fetch d.dreamCardLike")
-    List<DreamCard> findCardInfoByAll(PageRequest pageRequest);
-
-    @Query("select count(dcl) > 0 from DreamCardLike dcl " +
-            "where dcl.dreamCard.dreamCardId = :dreamCardId and dcl.user.userId = :userId")
-    boolean existLikeCardByUser(@Param("dreamCardId") long dreamCardId, @Param("userId") long userId);
-
     @Query("select distinct d from DreamCard d " +
             "left join fetch d.dreamCardOwner " +
             "left join d.dreamCardAuthor " +
@@ -27,4 +18,12 @@ public interface DreamCardRepository extends JpaRepository<DreamCard, Long> {
             "left join fetch dc.keyWordId  " +
             "where d.dreamCardId = :id")
     Optional<DreamCard> findDetailsById(@Param("id") Long id);
+
+    @Query("select d from DreamCard d left join fetch d.dreamCardOwner " +
+            "where d.dreamCardId = :id")
+    Optional<DreamCard> findOwnerById(@Param("id") Long id);
+
+    @Query("select d from DreamCard d left join fetch d.dreamCardLikes " +
+            "where d.dreamCardId = :dreamCardId")
+    Optional<DreamCard> findLikeById(@Param("dreamCardId") Long id);
 }

@@ -1,7 +1,6 @@
 package dream.card.service;
 
 import dream.card.domain.DreamCard;
-import dream.card.domain.DreamCardLike;
 import dream.card.domain.DreamCardQueryRepository;
 import dream.card.domain.DreamCardRepository;
 import dream.card.dto.request.RequestDreamCardDetail;
@@ -9,19 +8,17 @@ import dream.card.dto.request.RequestDreamCardIsShow;
 import dream.card.dto.response.*;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.NotFoundException;
+import dream.user.domain.User;
+import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,6 +28,7 @@ public class DreamCardService {
 
     private final DreamCardRepository dreamCardRepository;
     private final DreamCardQueryRepository dreamCardQueryRepository;
+    private final UserRepository userRepository;
 
     /**
      *
@@ -41,22 +39,18 @@ public class DreamCardService {
         List<DreamCard> findCards = dreamCardQueryRepository.findDreamCardPaging(lastItemId, size);
         if (findCards.isEmpty()) throw new NotFoundException(NotFoundException.CARD_LIST_NOT_FOUND);
 
-        List<ResponseDreamCard> dreamCards = new ArrayList<>();
+        List<ResponseDreamCard> dreamCards = findCards.stream()
+                .limit(size)
+                .map(findCard -> {
+                    boolean isLike = findCard.getDreamCardLikes().stream()
+                            .anyMatch(dreamCardLike ->
+                                    dreamCardLike.getDreamCard().getDreamCardId().equals(findCard.getDreamCardId()) &&
+                                            dreamCardLike.getUser().getUserId().equals(1L));
+                    return ResponseDreamCard.from(findCard, isLike);
+                })
+                .collect(Collectors.toList());
+
         boolean hasNext = findCards.size() > size;
-        int count = 0;
-        for (DreamCard findCard : findCards) {
-            List<DreamCardLike> dreamCardLikes = findCard.getDreamCardLike();
-            boolean isLike = false;
-            for (DreamCardLike dreamCardLike : dreamCardLikes) {
-                if (dreamCardLike.getDreamCard().getDreamCardId().equals(findCard.getDreamCardId()) &&
-                    dreamCardLike.getUser().getUserId().equals(1L)) {
-                    isLike = true;
-                    break;
-                }
-            }
-            dreamCards.add(ResponseDreamCard.from(findCard, isLike));
-            if (++count == size) break;
-        }
         ResponseDreamCardList list = ResponseDreamCardList.from(dreamCards, hasNext);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(list).build();
@@ -86,20 +80,45 @@ public class DreamCardService {
 
 
     // 카드 조회수 업데이트하는 함수
-    public ResultTemplate updateDreamCard(long dreamCardId) {
+    @Transactional
+    public ResultTemplate updateDreamCard(Long dreamCardId) {
+
+        DreamCard findCard = dreamCardRepository.findOwnerById(dreamCardId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+        log.info("{}", findCard.getDreamCardOwner().getUserId());
+        if (!Objects.equals(findCard.getDreamCardOwner().getUserId(), 1L)) findCard.updateHits();
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
     // 카드 좋아요 홤수
-    public ResultTemplate updateCardLike(long dreamCardId){
-        // 매개변수에 userId 추가
+    @Transactional
+    public ResultTemplate updateCardLike(Long userId, Long dreamCardId){
+
+        DreamCard dreamCard = dreamCardRepository.findLikeById(dreamCardId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        dreamCard.addDreamCardLike(user);
+
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
     // 카드 좋아요 취소 함수
-    public ResultTemplate updateCardUnlike(long dreamCardId){
-        // 매개변수에 userId 추가
+    @Transactional
+    public ResultTemplate updateCardUnlike(Long userId, Long dreamCardId){
+
+        DreamCard dreamCard = dreamCardRepository.findLikeById(dreamCardId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        dreamCard.deleteDreamCardLike(user);
+
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 

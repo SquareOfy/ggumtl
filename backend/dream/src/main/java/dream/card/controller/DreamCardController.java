@@ -43,17 +43,13 @@ public class DreamCardController {
     @PostMapping(value = "/dream/like")
     public ResultTemplate updateCardLike(@RequestBody RequestDreamCardId request) {
 
-        // 매개변수에 login 정보 받아오기 추가
-
-//        return dreamCardService.updateCardLike(로그인한, 유저, 정보, request.getDreamCardId());
-        return null;
+        return dreamCardService.updateCardLike(1L, request.getDreamCardId());
     }
 
     @DeleteMapping(value = "/dream/{dreamCardId}/unlike")
-    public ResultTemplate updateCardUnlike(@RequestBody RequestDreamCardId request){
-        // 매개변수에 login 정보 받아오기 추가
-//        return dreamCardService.updateCardUnlike(로그인한, 유저, 정보, request.getDreamCardId());
-        return null;
+    public ResultTemplate updateCardUnlike(@PathVariable("dreamCardId") Long dreamCardId){
+
+        return dreamCardService.updateCardUnlike(1L, dreamCardId);
     }
 
     @PostMapping(value = "/dream/keyword")

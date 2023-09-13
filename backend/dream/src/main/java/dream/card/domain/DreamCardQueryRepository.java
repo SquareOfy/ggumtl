@@ -27,7 +27,7 @@ public class DreamCardQueryRepository {
                 .distinct()
                 .leftJoin(dreamCard.dreamCardAuthor).fetchJoin()
                 .leftJoin(dreamCard.dreamCardOwner).fetchJoin()
-                .leftJoin(dreamCard.dreamCardLike)
+                .leftJoin(dreamCard.dreamCardLikes)
                 .where(
                         lastItemIdLt(lastItemId)
                 )

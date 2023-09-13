@@ -30,7 +30,7 @@ public class ResponseDreamCard {
         response.ownerProfileUrl = dreamCard.getDreamCardOwner().getProfileUrl();
         response.dreamCardAuthor = dreamCard.getDreamCardAuthor().getUserId();
         response.createAt = dreamCard.getCreatedAt();
-        response.likedNumber = dreamCard.getDreamCardLike().size();
+        response.likedNumber = dreamCard.getDreamCardLikes().size();
         response.isLike = isLike;
 
         return response;
