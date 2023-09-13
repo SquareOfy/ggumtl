@@ -11,13 +11,13 @@ import React from "react";
 
 // 컴포넌트
 import { Box } from "style/Box";
-import { DayChallengeObj } from "../home/DayChallengeList";
+import { DayChallengeObjType } from "../home/DayChallengeList";
 
 // 스타일
 
 interface ChalContentListItemProps {
   key: number
-  chal: DayChallengeObj;
+  chal: DayChallengeObjType;
 }
 
 const ChalContentListItem = ({chal}:ChalContentListItemProps) => {

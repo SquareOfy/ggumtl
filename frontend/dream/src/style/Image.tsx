@@ -12,7 +12,7 @@ interface ImageProps {
 
     // 별개 스타일링
     // 프로필
-    $circleImage ?: boolean;
+    // $circleImage ?: boolean;
     $smallProfileImage ?: boolean;
     $badge ?: boolean;
     $largeBadge ?: boolean;
@@ -39,7 +39,6 @@ const StyledImage = styled.div<ImageProps>`
     cursor: pointer;
     background-color: gray;
     border-radius: 50%;
-    object-fit: cover;
     
     // disabled가 아닐때(활성화), hover
     &:not(:disabled):hover {
@@ -59,6 +58,13 @@ const StyledImage = styled.div<ImageProps>`
         width: 4rem;
         height: 4rem;
         margin: 1rem;
+        & > img {
+          width: 100%;
+          object-fit: cover;
+          aspect-ratio: 1/1;
+          object-position: center;
+          border-radius: 50%;
+        }
       `
     }
 

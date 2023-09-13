@@ -20,7 +20,7 @@ export interface InfiniteScrollProps {
 } 
 
 
-const InfiniteScroll = ({
+const InfiniteScrollHorizon = ({
   setArriveEnd, 
   // lastItemId,
   component
@@ -31,20 +31,21 @@ const InfiniteScroll = ({
 
   // 스크롤을 하면서 실행할 내용
   const handleScroll = useCallback((): void => {
-    const { innerHeight } = window;
+    const innerWidth :number = window.innerWidth;
     // 브라우저창 내용의 크기 (스크롤을 포함하지 않음)
-    
-    const { scrollHeight } = document.body;
+    const { scrollWidth } = document.body;
     // 브라우저 총 내용의 크기 (스크롤을 포함한다)
     
-    const scrollTop :any = document.documentElement.children[1].scrollTop;
+    const {scrollLeft} = document.documentElement;
     // 현재 스크롤바의 위치
+    console.log((window.innerHeight + window.scrollY) + " >= " + document.body.offsetHeight )
+    console.log(window.innerHeight, document.body.offsetWidth, document.body.offsetHeight )
 
     
-    if (Math.round(scrollTop + innerHeight) >= scrollHeight*0.9 ) {
-      // scrollTop과 innerHeight를 더한 값이 scrollHeight*0.95 보다 크다면, 가장 아래에 도달했다는 의미
+    if (Math.round(scrollLeft - innerWidth) >= scrollWidth*0.9 ) {
+      // scrollTop과 innerWidth를 더한 값이 scrollWidth*0.95 보다 크다면, 가장 아래에 도달했다는 의미
       setArriveEnd(true);
-      console.log('가장 아래에 도달')
+      console.log('가장 오른쪽에 도달')
     }
   }, []); // 성능 저하 시 lastItemId 넣어보기
   
@@ -67,4 +68,4 @@ const InfiniteScroll = ({
   )
 }
 
-export default InfiniteScroll
+export default InfiniteScrollHorizon

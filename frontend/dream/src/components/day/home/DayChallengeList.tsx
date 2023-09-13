@@ -10,30 +10,30 @@ import ChalContentListItem from "../daycommon/ChalContentListItem";
 import InfiniteScroll from "components/common/InfiniteScroll";
 
 // 스타일
-export interface DayChallengeObj {
+export interface DayChallengeObjType {
   title :string,
   period :string,
   challengeId :number
 }
 
-export interface DayChallengeList extends Array<DayChallengeObj> {}
+export interface DayChallengeListType extends Array<DayChallengeObjType> {}
 
 
 const DayChallengeList = () => {
   // 처음에 받아온 리스트 (이후 여기에 새 항목을 추가하게 됨)
-  const [allChalList, setAllChalList] = useState<DayChallengeList>([]);
+  const [allChalList, setAllChalList] = useState<DayChallengeListType>([]);
   // 스크롤 내리면서 받아올 새 리스트 
-  const [newChalList, setNewChalList] = useState<DayChallengeList>([]);
+  const [newChalList, setNewChalList] = useState<DayChallengeListType>([]);
   const [lastItemId, setLastItemId] = useState<number>(0); // 마지막 아이템 번호
   // let size :number = 6; // 받아올 리스트 사이즈 - axios 연결 후 주석 해제하기
   
   // .axios 연결 전 임의의 값을 allChalList에 넣어두기
-  let newObj :DayChallengeObj = {
+  let newObj :DayChallengeObjType = {
     title : "111",
     period : "1일",
     challengeId : 111,
   }
-  let newObj2 :DayChallengeObj = {
+  let newObj2 :DayChallengeObjType = {
     title : "222",
     period : "2일",
     challengeId : 222,
@@ -71,7 +71,7 @@ const DayChallengeList = () => {
     setArriveEnd={setArriveEnd} 
     // lastItemId={lastItemId}
     component={
-      allChalList?.map((chal :DayChallengeObj) => (
+      allChalList?.map((chal :DayChallengeObjType) => (
       <ChalContentListItem key={chal.challengeId} chal={chal} />))
     }
     >
