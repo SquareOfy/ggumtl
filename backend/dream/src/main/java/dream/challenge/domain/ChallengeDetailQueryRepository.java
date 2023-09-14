@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import dream.user.domain.Follow;
 import dream.user.domain.QFollow;
+import dream.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -63,6 +64,31 @@ public class ChallengeDetailQueryRepository {
                         challengeDetail.user.userId.eq(userId),
                         challengeDetail.createdAt.between(startOfDay, endOfDay)
                 )
+                .fetch();
+    }
+
+    public List<ChallengeDetail> getIsUserParticipateChallenge(long userId, long challengeId){
+        QChallengeDetail challengeDetail = QChallengeDetail.challengeDetail;
+
+        return queryFactory.selectFrom(challengeDetail)
+                .where(
+                        challengeDetail.user.userId.eq(userId),
+                        challengeDetail.challenge.challengeId.eq(challengeId)
+                )
+                .fetch();
+    }
+
+    public List<User> getRank(long challengeId){
+        QChallengeDetail challengeDetail = QChallengeDetail.challengeDetail;
+
+        return queryFactory.select(challengeDetail.user)
+                .from(challengeDetail)
+                .where(
+                        challengeDetail.challenge.challengeId.eq(challengeId)
+                )
+                .groupBy(challengeDetail.user.userId, challengeDetail.challenge.challengeId)
+                .orderBy(challengeDetail.count().desc())
+                .limit(3)
                 .fetch();
     }
 

@@ -8,6 +8,7 @@ import dream.challenge.dto.response.*;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.NoSuchElementException;
 import dream.common.exception.NotFoundException;
+import dream.s3.dto.response.ResponseBadgeImage;
 import dream.user.domain.FollowRepository;
 import dream.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -110,6 +112,35 @@ public class ChallengeService {
 
         boolean hasNext = (list.size() > size);
         ResponseSearchedChallengeList response = ResponseSearchedChallengeList.from(challengeList, hasNext);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getChallengeInfo(User user, Long challengeId) {
+
+        List<ChallengeDetail> sizeOfUserParticipateInChallenge = challengeDetailQueryRepository.
+                getIsUserParticipateChallenge(user.getUserId(), challengeId);
+
+        Challenge challengeWithKeyword = challengeRepository.findChallengeKeyword(challengeId)
+                .orElseThrow( () ->  new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        Challenge challengeWithParticipates = challengeRepository.findChallengeParticipates(challengeId)
+                .orElseThrow( () ->  new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        List<User> getRank = challengeDetailQueryRepository.getRank(challengeId);
+
+        ResponseChallengeInfo response = ResponseChallengeInfo
+                .from(sizeOfUserParticipateInChallenge, challengeWithKeyword, challengeWithParticipates, getRank);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getChallengeImage(Long challengeId) {
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow( () ->  new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        ResponseBadgeImage response = ResponseBadgeImage.from(challenge);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }

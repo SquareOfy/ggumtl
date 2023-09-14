@@ -52,4 +52,13 @@ public class ChallengeController {
 
         return challengeService.getSearchedChallenge(searchKeyword, keywordId, lastItemId, size);
     }
+
+    @GetMapping(value = "/challenge/item/{challangeId}")
+    public ResultTemplate getChallengeInfo(@PathVariable(value = "challangeId") Long challangeId){
+
+        User user = userRepository.findByUserId(2L).
+                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        return challengeService.getChallengeInfo(user, challangeId);
+    }
 }

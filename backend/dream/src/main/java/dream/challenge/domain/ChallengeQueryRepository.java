@@ -47,6 +47,7 @@ public class ChallengeQueryRepository {
                 .limit(size + 1)
                 .fetch();
     }
+
     private BooleanExpression searchKeywordLike(String searchKeyword){
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
             String likeKeyword = "%" + searchKeyword + "%";
