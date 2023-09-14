@@ -50,11 +50,13 @@ const StyledBox = styled.div<BoxProps>`
   // 밤 키워드 박스
   ${(props) => props.$keywordBoxNight &&
     css`
-      font-size: 1rem;
-      padding : 0.5rem;
-      margin : 1rem;
+      width: 3rem;
+      display: inline;
+      font-size: 0.5rem;
+      padding : 1vw;
+      /* margin : 1rem; */
       border-radius: 1rem;
-      width: 5rem;
+      /* width: 5rem; */
       text-align: center;
       background-color: rgba(190, 169, 215, 0.5);
       color: black;

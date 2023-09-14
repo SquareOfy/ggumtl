@@ -23,12 +23,14 @@ export interface colorProps {
   id ?: string;
 }
 
-// const NarrowWrap = styled.div`
-//   margin: 0 0.5rem
-// `
+const NarrowWrap = styled.div`
+  margin: 0 0.5rem
+`
 const SearchBarContainer = styled.div`
   position: relative;
   width: 100%;
+  /* margin: 0 0.5rem;
+  padding: 0 0.5rem; */
 `
 const IconSearch = styled(IoIosSearch)`
   position: absolute;
@@ -52,16 +54,18 @@ const SearchBar = (props: colorProps) => {
   }, [])
   return (
     <>
+    <NarrowWrap>
     <SearchBarContainer >
-    <Input $searchBar
-    $nightColor={false}
-    $dayColor={true}
-    onChange={props.onChange}
-    placeholder="검색"
-    type="text"
-    />
+      <Input $searchBar
+      $nightColor={false}
+      $dayColor={true}
+      onChange={props.onChange}
+      placeholder="검색"
+      type="text"
+      />
     <IconSearch/>
     </SearchBarContainer>
+    </NarrowWrap>
     </>
   )
 }

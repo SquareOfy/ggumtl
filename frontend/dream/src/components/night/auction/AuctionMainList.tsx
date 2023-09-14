@@ -22,7 +22,7 @@ export interface AuctionMainType {
   size: number
 }
 
-export interface AuctionAxiosItemType {
+export interface AuctionItemAxiosType {
   dreamCardId: number;
   dreamCardImageUrl: string;
   keywords: string[];
@@ -34,7 +34,7 @@ export interface AuctionAxiosItemType {
 }
 
 export interface AuctionListType {
-  aucionList : AuctionAxiosItemType[]
+  aucionList : AuctionItemAxiosType[]
 }
 
 const AuctionMainList = () => {
@@ -47,7 +47,6 @@ const AuctionMainList = () => {
     // .then((res)=> {
     //   setAuctionList(res.data.auctionList)
     // })
-
   }, [])
   // 무한 스크롤 부분
 

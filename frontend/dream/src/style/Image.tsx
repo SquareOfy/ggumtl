@@ -148,7 +148,7 @@ const StyledImage = styled.div<ImageProps>`
     ${(props) =>
       props.$nightImageBorder &&
       css`
-        border-radius: 10px;  
+        border-radius: 1rem;  
       `
     }
 
@@ -166,9 +166,24 @@ const StyledImage = styled.div<ImageProps>`
     ${(props) =>
       props.$auctionCard &&
       css`
-        width: 10rem;
-        height: 10rem;
-        margin: 1rem;
+        /* width: 10rem;
+        height: 10rem; */
+        width: 100%;
+        height: 100%;
+        /* margin: 0.5rem 1rem 1rem; */
+        margin: 0;
+        padding: 0 1rem;
+        background-color: inherit;
+        border-radius: 0;
+        & > img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          content: "";
+          aspect-ratio: 1/1;
+          object-position: center;
+          border-radius: 1rem;
+        }
       `
     }
 
