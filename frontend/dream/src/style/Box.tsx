@@ -80,18 +80,19 @@ const StyledBox = styled.div<BoxProps>`
   // 챌린지 컨텐츠 박스
   ${(props) => props.$challengeContentBox &&
     css`
-      height: 3rem;
-      display:flex;
-      justify-content:center;
-      align-items:center;
+      /* height: 3rem; */
+      display: grid;
+      grid-template-columns: 30% 40% 30%;
+      justify-items: center;
+      align-items: center;
       background-color: rgba(249, 249, 249, 0.5);
       margin: 1rem;
-      padding: 1rem;
+      /* padding: 2.5rem; */
       border-radius : 1.5rem;
       
       & > img {
-        width:3rem;
-        height:3rem;
+        width: 3rem;
+        height: 3rem;
         border-radius: 50%;
         background-color: red;
         // object fit 적용 -> css 적용
@@ -101,10 +102,14 @@ const StyledBox = styled.div<BoxProps>`
       & > div {
         /* margin: 0 1rem; */
         padding: 1rem;
+        /* justify-items: center; */
+        display: inherit;
+        align-items: center;
       }
-
+      
       & > div > p {
         margin: 0.5rem 0;
+        justify-items: center;
       }
        
       & :nth-child(2) :first-child {

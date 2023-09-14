@@ -29,13 +29,13 @@ const DayChallengeList = () => {
   
   // .axios 연결 전 임의의 값을 allChalList에 넣어두기
   let newObj :DayChallengeObjType = {
-    title : "111",
+    title : "무지출 챌린지",
     period : "1일",
     challengeId : 111,
   }
   let newObj2 :DayChallengeObjType = {
-    title : "222",
-    period : "2일",
+    title : "1일 1커밋 남기기",
+    period : "365일",
     challengeId : 222,
   }
 
