@@ -112,6 +112,9 @@ function App() {
         {/* 알림 */}
         <Route path="/night/alert" element={<NightAlertPage/>}/>
         <Route path="/day/alert" element={<DayAlertPage/>}/>
+
+        {/* 임시로 보낸 404 페이지 */}
+        <Route path="*" element={<SunsetMainPage/>}/>
       </Routes>
       {!hideComponent && <FooterBar/> }
     {/* </ThemeProvider> */}

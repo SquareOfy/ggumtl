@@ -16,6 +16,8 @@ interface ButtonProps {
     $fullWidth ?: boolean;
     $halfWidth ?: boolean
 
+    $biddingBtn ?: boolean;
+
     // 폰트 굵게
     $isBold ?: boolean
 
@@ -24,10 +26,12 @@ interface ButtonProps {
     $nightVoice ?:boolean;
     $icon ?: boolean;
     $follow ?:boolean
+    $halfWidthImeBuy ?:boolean;
 
     // 색상 지정
     $nightPurple ?:boolean
     $nightPalePurple ?:boolean
+    $nightMiddlePurple ?:boolean
     $dayBlue ?: boolean
     $dayYellow ?: boolean
     $transparent ?: boolean
@@ -64,8 +68,20 @@ const StyledButton = styled.button<ButtonProps>`
     ${(props) =>
         props.$halfWidth && 
         css`
-            padding: 1.5rem;
-            width:45%;
+            padding: 0.5rem;
+            width:49%;
+            height: 15vw;
+        `
+    }
+    // 절반만 차지 & 즉시구매
+    ${(props) =>
+        props.$halfWidthImeBuy && 
+        css`
+            background-color: rgba(190, 169, 215, 0.5);
+            color: black;
+            padding: 0.5rem;
+            width:49%;
+            height: 15vw;
         `
     }
 
@@ -74,6 +90,13 @@ const StyledButton = styled.button<ButtonProps>`
     props.$isBold &&
     css`
         font-weight: bold;
+    `}
+
+    // 경매 - 참여 버튼 전용
+    ${(props) =>
+    props.$biddingBtn &&
+    css`
+        border-radius: 1rem;
     `}
 
     //icon 전용(X, 종, 각종 아이콘)
@@ -138,6 +161,21 @@ const StyledButton = styled.button<ButtonProps>`
             }
         `   
     }
+
+    // 중간 보라색버튼
+    ${(props) =>
+        props.$nightMiddlePurple &&
+        css`
+            background: rgba(102, 89, 165, 0.5);
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(102, 89, 165, 0.5);
+            color: #FFFFFF;
+            &:not(:disabled):hover {
+                opacity: 0.8;
+            }
+        `   
+    }
+    
     // 연한 보라색버튼
     ${(props) =>
         props.$nightPalePurple &&

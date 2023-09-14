@@ -7,8 +7,9 @@ interface InputProps {
     children?: React.ReactNode;
     // styles?: string;
     onChange ?: (e :any) => void;
+    onBlur ?: (e: any) => void
     disabled?: boolean;    
-    type?: 'text' | 'search' ;
+    type?: 'text' | 'search' | 'number';
     placeholder ?: string;
     id ?: string;
     value ?: string | number
@@ -16,6 +17,9 @@ interface InputProps {
     // 별개 스타일링
     // 캡슐
     $capsuleValue ?: boolean;
+    
+    // 경매 Input
+    $biddingValue ?: boolean;
 
     // 일반
     // 챌린지
@@ -44,6 +48,7 @@ const StyledInput = styled.input<InputProps>`
    outline: none;
    border: none;
    border-radius: 0.75rem;    
+   padding-left: 0.75rem;
    // value (입력값이 지정되는 것) => box로 옮기기
 
     // disabled가 아닐때(활성화), hover
@@ -88,6 +93,15 @@ const StyledInput = styled.input<InputProps>`
       `
     }
 
+    // biddingValue
+    ${(props) =>
+      props.$biddingValue && 
+      css`
+        border-radius: 1rem;
+        text-align: right;
+        padding-right: 1rem;
+      `
+    }
     // chalTitleValue
     ${(props) =>
       props.$chalTitleValue &&

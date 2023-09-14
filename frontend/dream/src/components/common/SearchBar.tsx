@@ -10,6 +10,7 @@ import Input from "style/Input";
 import styled from "styled-components";
 import {IoIosSearch} from "react-icons/io"
 import {CiCircleRemove} from "react-icons/ci"
+import Wrap from "style/Wrap";
 import { boolean } from "yargs";
 
 // 외부 라이브러리
@@ -38,12 +39,6 @@ const IconSearch = styled(IoIosSearch)`
   right: 0.75rem;
   transform: translateY(-50%);
 `
-const IconRemove = styled(CiCircleRemove)`
-  position: absolute;
-  top: 50%;
-  right: 0.5rem;
-  transform: translateY(-50%);
-`
 export interface SearchBar {
   isSearch: boolean
 }
@@ -54,7 +49,7 @@ const SearchBar = (props: colorProps) => {
   }, [])
   return (
     <>
-    <NarrowWrap>
+    <Wrap $baseWrap>
     <SearchBarContainer >
       <Input $searchBar
       $nightColor={false}
@@ -65,7 +60,7 @@ const SearchBar = (props: colorProps) => {
       />
     <IconSearch/>
     </SearchBarContainer>
-    </NarrowWrap>
+    </Wrap>
     </>
   )
 }

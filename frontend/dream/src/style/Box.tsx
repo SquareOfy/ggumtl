@@ -7,6 +7,8 @@ interface BoxProps {
   children ?: React.ReactNode;
 
   // 사이즈 관련
+  $fullWidth ?: boolean
+
   $wideTextBox ?: boolean;
   $keywordBoxNight ?: boolean;
   $keywordBoxDay ?: boolean;
@@ -22,6 +24,14 @@ interface BoxProps {
 }
 
 const StyledBox = styled.div<BoxProps>`
+
+  /* 최대 너비 */
+  ${(props) => props.$fullWidth &&
+    css`
+      width: 100%;
+    `
+  }
+
 
   // 큰 텍스트 박스
   ${(props) => props.$wideTextBox &&
@@ -193,9 +203,9 @@ const BoxTitle = (props:BoxProps) => {
   return <StyledTitle {...props}>{props.children}</StyledTitle>
 }
 
-const WrappingBox = (props:BoxProps) => {
+const GradeWrappingBox = (props:BoxProps) => {
   return <GradeWrapping {...props}>{props.children}</GradeWrapping>
 }
 
 
-export {Box, BoxTitle, WrappingBox};
+export {Box, BoxTitle, GradeWrappingBox};
