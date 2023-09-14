@@ -38,7 +38,7 @@ const InfiniteScroll = ({
     // 브라우저 총 내용의 크기 (스크롤을 포함한다)
     
     const scrollTop :any = document.documentElement.children[1].scrollTop;
-    // 현재 스크롤바의 위치
+    // 현재 스크롤바의 위치 (스크롤에 따라 변함)
 
     
     if (Math.round(scrollTop + innerHeight) >= scrollHeight*0.9 ) {

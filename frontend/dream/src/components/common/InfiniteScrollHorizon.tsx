@@ -30,22 +30,16 @@ const InfiniteScrollHorizon = ({
   // 무한 스크롤
 
   // 스크롤을 하면서 실행할 내용
-  const handleScroll = useCallback((): void => {
-    const innerWidth :number = window.innerWidth;
-    // 브라우저창 내용의 크기 (스크롤을 포함하지 않음)
-    const { scrollWidth } = document.body;
-    // 브라우저 총 내용의 크기 (스크롤을 포함한다)
+  const handleScroll = useCallback((event :any): void => {
+    const scrollLeft = event.target.scrollLeft; // 스크롤 바의 위치 가져오기
+    const clientWidth = document.documentElement.clientWidth // 화면 너비
+    let wid = document.getElementById("component")?.clientWidth // component의 총너비
     
-    const {scrollLeft} = document.documentElement;
-    // 현재 스크롤바의 위치
-    console.log((window.innerHeight + window.scrollY) + " >= " + document.body.offsetHeight )
-    console.log(window.innerHeight, document.body.offsetWidth, document.body.offsetHeight )
-
-    
-    if (Math.round(scrollLeft - innerWidth) >= scrollWidth*0.9 ) {
-      // scrollTop과 innerWidth를 더한 값이 scrollWidth*0.95 보다 크다면, 가장 아래에 도달했다는 의미
-      setArriveEnd(true);
-      console.log('가장 오른쪽에 도달')
+    if (wid) {
+      if (Math.round(scrollLeft + clientWidth) >= wid * 0.9) {
+        setArriveEnd(true);
+        console.log('오른쪽 도달')
+      }
     }
   }, []); // 성능 저하 시 lastItemId 넣어보기
   
@@ -62,9 +56,12 @@ const InfiniteScrollHorizon = ({
 
 
   return (
-    <>
+    <div
+    style={{display: "flex"}}
+    id="component"
+    >
       {component}
-    </>
+    </div>
   )
 }
 
