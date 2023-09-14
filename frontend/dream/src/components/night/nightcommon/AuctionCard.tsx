@@ -33,17 +33,16 @@ const AuctionCard = () => {
 
     {/* <AuctionCardFrame>
     </AuctionCardFrame> */}
-    <div className="wrapper">
-    <div className="auction-card barbarian">
+    <div className="auction-card">
       <div className="auction-end-time">마감 2시간 전</div>
       <div className="auction-card-image">
         <Image $nightImageBorder $auctionCard><img src={`${process.env.PUBLIC_URL}/image/iu.png`}/></Image>
         {/* <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/barbarian.png" alt="barbarian" /> */}
       </div>
       <div className="keyword-region">
-        <Box $keywordBoxNight>다섯임임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
+        <Box $keywordBoxNight>손틈새로</Box>
+        <Box $keywordBoxNight>비추는</Box>
+        <Box $keywordBoxNight>아이유</Box>
       {/* 키워드 영역 */}
       </div>
 
@@ -61,125 +60,7 @@ const AuctionCard = () => {
         </div>
 
       </div>
-
     </div> 
-    <div className="auction-card barbarian">
-      <div className="auction-end-time">마감 2시간 전</div>
-      <div className="clash-card__image clash-card__image--barbarian">
-        <Image $nightImageBorder $auctionCard><img src={`${process.env.PUBLIC_URL}/image/iu.png`}/></Image>
-        {/* <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/barbarian.png" alt="barbarian" /> */}
-      </div>
-      <div className="keyword-region">
-        <Box $keywordBoxNight>다섯임임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
-      {/* 키워드 영역 */}
-      </div>
-
-      <div className="grade-region clearfix">
-        <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">SS</div>
-          <div className="grade-value">길몽</div>
-        </div>
-
-        <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">S</div>
-          <div className="grade-value">희귀</div>
-        </div>
-
-      </div>
-
-    </div> 
-    <div className="auction-card barbarian">
-      <div className="auction-end-time">마감 2시간 전</div>
-      <div className="clash-card__image clash-card__image--barbarian">
-        <Image $nightImageBorder $auctionCard><img src={`${process.env.PUBLIC_URL}/image/iu.png`}/></Image>
-        {/* <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/barbarian.png" alt="barbarian" /> */}
-      </div>
-      <div className="keyword-region">
-        <Box $keywordBoxNight>다섯임임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
-      {/* 키워드 영역 */}
-      </div>
-
-      <div className="grade-region clearfix">
-        <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">SS</div>
-          <div className="grade-value">길몽</div>
-        </div>
-
-        <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">S</div>
-          <div className="grade-value">희귀</div>
-        </div>
-
-      </div>
-
-    </div> 
-    <div className="auction-card barbarian">
-      <div className="auction-end-time">마감 2시간 전</div>
-      <div className="clash-card__image clash-card__image--barbarian">
-        <Image $nightImageBorder $auctionCard><img src={`${process.env.PUBLIC_URL}/image/iu.png`}/></Image>
-        {/* <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/barbarian.png" alt="barbarian" /> */}
-      </div>
-      <div className="keyword-region">
-        <Box $keywordBoxNight>다섯임임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
-      {/* 키워드 영역 */}
-      </div>
-
-      <div className="grade-region clearfix">
-        <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">SS</div>
-          <div className="grade-value">길몽</div>
-        </div>
-
-        <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">S</div>
-          <div className="grade-value">희귀</div>
-        </div>
-
-      </div>
-
-    </div> 
-    <div className="auction-card barbarian">
-      <div className="auction-end-time">마감 2시간 전</div>
-      <div className="clash-card__image clash-card__image--barbarian">
-        <Image $nightImageBorder $auctionCard><img src={`${process.env.PUBLIC_URL}/image/iu.png`}/></Image>
-        {/* <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/barbarian.png" alt="barbarian" /> */}
-      </div>
-      <div className="keyword-region">
-        <Box $keywordBoxNight>다섯임임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
-        <Box $keywordBoxNight>다섯임</Box>
-      {/* 키워드 영역 */}
-      </div>
-
-      <div className="grade-region clearfix">
-        <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">SS</div>
-          <div className="grade-value">길몽</div>
-        </div>
-
-        <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">S</div>
-          <div className="grade-value">희귀</div>
-        </div>
-
-      </div>
-
-    </div> 
-  </div> 
 
     </>
   )

@@ -1,27 +1,4 @@
 
-.scroll::-webkit-scrollbar {
-  display: none;
-}
-
-
-.wrapper {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  /* margin: 0.5rem; */
-  height: 90%;
-  /* display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly; */
-  &:focus {
-    outline: 0;
-  } 
- 
-}
-/* .wrapper > .auction-card:nth-child(odd) {
-  align-self: flex-start; 
-
-} */
-
 .auction-card {
   background: rgba(190, 169, 215, 0.5);
   display: inline-block;
@@ -110,3 +87,4 @@
 	clear: both;
 	height: 0;
 }
+
