@@ -1,5 +1,6 @@
 package dream.card.dto.response;
 
+import dream.card.domain.CardKeyword;
 import dream.card.domain.DreamCard;
 import dream.card.domain.Grade;
 import dream.common.domain.BaseCheckType;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,9 +22,8 @@ public class ResponseFlipDreamCardDetail {
     private long dreamCardAuthor;
     private Grade grade;
     private LocalDateTime createdAt;
-    private String dreamTelling;
-    private Enum<Grade> positivePoint;
-    private Enum<Grade> rarePoint;
+    private Grade positiveGrade;
+    private Grade rareGrade;
     private BaseCheckType auctionStatus;
     private BaseCheckType isShow;
     private List<ResponseKeyword> keywords;
@@ -36,15 +37,18 @@ public class ResponseFlipDreamCardDetail {
         response.dreamCardAuthor = dreamCard.getDreamCardAuthor().getUserId();
         response.grade = dreamCard.getGrade();
         response.createdAt = dreamCard.getCreatedAt();
-        response.dreamTelling = dreamCard.getDreamTelling();
-        // 이거는 DB 수정하고 다시 GRADE 먹이는 방법 대화하고 코드 수정 필요
-//        response.positivePoint = globalService.cardRE(dreamCard.getPositivePoint());
-//        response.rarePoint = dreamCard.getRarePoint();
+        response.positiveGrade = dreamCard.getPositiveGrade();
+        response.rareGrade = dreamCard.getRareGrade();
         response.auctionStatus = dreamCard.getAuctionStatus();
         response.isShow = dreamCard.getIsShow();
 
-//        for(Keyword key: dreamCard.get)
+        List<ResponseKeyword> keywords = new ArrayList<>();
+        List<CardKeyword> cardKeywords = dreamCard.getCardKeyword();
+        for (CardKeyword cardKeyword : cardKeywords) {
+            keywords.add(ResponseKeyword.from(cardKeyword));
+        }
+        response.keywords = keywords;
 
-        return null;
+        return response;
     }
 }

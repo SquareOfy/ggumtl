@@ -13,6 +13,7 @@ public class ResponseChallenge {
     private Long challengeId;
     private String title;
     private String period;
+    private int participateCount;
 
     public static ResponseChallenge from(Challenge challenge){
 
@@ -21,6 +22,7 @@ public class ResponseChallenge {
         response.challengeId = challenge.getChallengeId();
         response.title = challenge.getChallengeTitle();
         response.period = challenge.getPeriod();
+        response.participateCount = challenge.getChallengeParticipations().size();
 
         return response;
     }

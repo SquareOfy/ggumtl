@@ -25,4 +25,14 @@ public class DreamCardLike {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    public static DreamCardLike createLike(DreamCard dreamCard, User user){
+
+        DreamCardLike dreamCardLike = new DreamCardLike();
+        dreamCardLike.dreamCard = dreamCard;
+        dreamCardLike.user = user;
+
+        return dreamCardLike;
+    }
+
+
 }

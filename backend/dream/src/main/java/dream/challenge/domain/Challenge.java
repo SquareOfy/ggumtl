@@ -31,6 +31,9 @@ public class Challenge extends BaseUpdateTimeEntity {
     private String badgeUrl;
     private int timeCapsuleOpenAt;
 
-    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChallengeKeyword> keywords;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChallengeParticipation> challengeParticipations;
 }
