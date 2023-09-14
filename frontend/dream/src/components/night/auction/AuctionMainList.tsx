@@ -16,6 +16,7 @@ import Input from "style/Input";
 import axios from 'axios'
 
 // 스타일
+import Wrap from "style/Wrap";
 
 export interface AuctionMainType {
   color : string
@@ -54,7 +55,13 @@ const AuctionMainList = () => {
   return (
     <>
     <SearchBar onChange={()=>console.log("짠")} />
-    <AuctionCard />
+    <Wrap $auctionCardWrap>
+      <AuctionCard />
+      <AuctionCard />
+      <AuctionCard />
+      <AuctionCard />
+      <AuctionCard />
+    </Wrap>
     </>
   )
 }
