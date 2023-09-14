@@ -1,5 +1,6 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import userdataReducer from "./userdataReducer";
+import themeModeReducer from "./themeModeReducer";
 
 import storageSession from 'redux-persist/lib/storage/session'
 import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
@@ -7,7 +8,8 @@ import { combineReducers } from "@reduxjs/toolkit";
 
 // 이 부분에 reducer 추가
 const rootReducer = combineReducers({
-  auth: userdataReducer.reducer, // .reducer 붙여야 타입에러가 안남
+  authReducer: userdataReducer.reducer, // .reducer 붙여야 타입에러가 안남
+  themeModeReducer: themeModeReducer.reducer
 })
 
 // storage에 저장하기 위해서 persistConfig 생성

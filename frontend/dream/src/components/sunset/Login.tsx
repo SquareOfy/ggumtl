@@ -15,7 +15,6 @@ const LoginContainer = styled.div`
   width: 80%;
   margin:auto;
   margin-top: 45vh;
-  position: fixed;
 `;
 
 
