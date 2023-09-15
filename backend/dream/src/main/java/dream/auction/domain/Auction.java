@@ -1,5 +1,6 @@
 package dream.auction.domain;
 
+import dream.auction.dto.request.RequestAuction;
 import dream.card.domain.DreamCard;
 import dream.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -19,7 +20,7 @@ public class Auction extends BaseTimeEntity{
     private Long auctionId;
 
     @JoinColumn(name = "dream_card_id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private DreamCard dreamCard;
 
     private int startAuctionMoney;
@@ -27,4 +28,24 @@ public class Auction extends BaseTimeEntity{
     private int askingMoney;
 
     private LocalDateTime endedAt;
+
+
+    public static Auction createAuction(DreamCard dreamCard, RequestAuction request){
+
+        Auction auction = new Auction();
+        auction.dreamCard = dreamCard;
+        auction.startAuctionMoney = request.getStartAuctionMoney();
+        auction.immediatelyBuyMoney = request.getImmediatelyBuyMoney();
+
+        int start = request.getStartAuctionMoney();
+        int count = 0;
+        while (start >= 10) {
+            start /= 10;
+            count++;
+        }
+        auction.askingMoney = start * (int)Math.pow(10, count - 1);
+        auction.endedAt = request.getEndedAt();
+
+        return auction;
+    }
 }

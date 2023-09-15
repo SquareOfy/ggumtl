@@ -1,13 +1,20 @@
 package dream.auction.service;
 
+import dream.auction.domain.Auction;
 import dream.auction.domain.AuctionRepository;
+import dream.auction.dto.request.RequestAuction;
 import dream.auction.dto.request.RequestBidding;
 import dream.auction.dto.request.RequestCardReview;
 import dream.auction.dto.request.RequestChangeOwner;
 import dream.auction.dto.response.ResponseAuction;
 import dream.auction.dto.response.ResponseAuctionDetail;
+import dream.card.domain.DreamCard;
+import dream.card.domain.DreamCardRepository;
 import dream.card.dto.request.RequestDreamCardId;
+import dream.common.domain.BaseCheckType;
 import dream.common.domain.ResultTemplate;
+import dream.common.exception.NotFoundException;
+import dream.common.exception.NotMatchException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,10 +27,23 @@ import java.util.List;
 public class AuctionService {
 
     private final AuctionRepository auctionRepository;
+    private final DreamCardRepository dreamCardRepository;
 
     // 경매 등록하는 함수
-    public ResultTemplate postAuction(long dreamCardId) {
-        
+    public ResultTemplate postAuction(Long dreamCardId, RequestAuction request, Long userId) {
+
+        DreamCard findCard = dreamCardRepository.findById(dreamCardId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+        if (!findCard.getDreamCardOwner().getUserId().equals(userId)) throw new NotMatchException(NotMatchException.CARD_OWNER_MATCH);
+
+        if (findCard.getAuctionStatus().equals(BaseCheckType.T)) throw new NotMatchException(NotMatchException.CARD_AUCTION_STATUS);
+
+        findCard.insertAuction();
+
+        Auction auction = Auction.createAuction(findCard, request);
+        auctionRepository.save(auction);
+
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 

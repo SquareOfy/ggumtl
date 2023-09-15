@@ -77,9 +77,10 @@ public class DreamCardController {
     }
 
     @PutMapping(value = "/dream")
-    public ResultTemplate updateCardIsShow(@RequestBody RequestDreamCardIsShow request){
+    public ResultTemplate updateCardIsShow(@RequestBody RequestDreamCardIsShow request,
+                                           Long userId){
 
-        return dreamCardService.updateCardIsShow(request);
+        return dreamCardService.updateCardIsShow(request, 1L);
     }
 
     @GetMapping(value = "/dream/interpretation?keyword={keyword}")
