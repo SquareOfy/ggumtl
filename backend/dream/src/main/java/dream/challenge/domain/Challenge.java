@@ -36,4 +36,8 @@ public class Challenge extends BaseUpdateTimeEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChallengeParticipation> challengeParticipations;
+
+    public void updateChallengeHits() {
+        this.hits++;
+    }
 }

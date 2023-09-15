@@ -13,7 +13,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler( {NotFoundException.class, DuplicateException.class, NotMatchException.class, NoSuchElementException.class} )
     public ResultTemplate handleBadRequestExceptions(Exception e){
-        log.error("error", e);
+
+        return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Object handleMethodArgumentNotValidException(Exception e) {
+
         return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
     }
 
@@ -28,6 +34,4 @@ public class GlobalExceptionHandler {
 
         return ResultTemplate.builder().status(HttpStatus.FORBIDDEN.value()).data(e.getMessage()).build();
     }
-
-
 }
