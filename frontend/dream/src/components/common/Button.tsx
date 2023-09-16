@@ -4,12 +4,12 @@ import React from 'react'
 import styled, {css} from "styled-components"
 
 interface ButtonProps {
-    children?: React.ReactNode;
+    children ?: React.ReactNode;
     // styles?: string;
-    onClick?: () => void;
+    onClick ?: () => void;
 
-    disabled?: boolean;    
-    type?: 'submit' | 'button' | 'reset';
+    disabled ?: boolean;    
+    type ?: 'submit' | 'button' | 'reset';
 
     // 별개 스타일링
     // 너비
@@ -132,7 +132,7 @@ const StyledButton = styled.button<ButtonProps>`
             background-color: rgb(190, 169, 215, 0.5);
             border: 1px solid rgb(190, 169, 215, 0.5);
             border-radius: 1rem;
-            height: 3rem;
+            height: 5rem;
             &:not(:disabled):hover {
                 background-color: rgba(190, 169, 215, 0.8);
             }
@@ -154,8 +154,9 @@ const StyledButton = styled.button<ButtonProps>`
         props.$nightPurple &&
         css`
             background-color: #6659A5;
-            border: 1px solid #6659A5;
+            // border: 1px solid #6659A5;
             color: #FFFFFF;
+            padding: 0.75rem 1rem;
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
@@ -168,7 +169,8 @@ const StyledButton = styled.button<ButtonProps>`
         css`
             background: rgba(102, 89, 165, 0.5);
             box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(102, 89, 165, 0.5);
+            // border: 1px solid rgba(102, 89, 165, 0.5);
+            padding: 0.75rem 1rem;
             color: #FFFFFF;
             &:not(:disabled):hover {
                 opacity: 0.8;
@@ -181,7 +183,7 @@ const StyledButton = styled.button<ButtonProps>`
         props.$nightPalePurple &&
         css`
             background-color: #BEA9D7;
-            border: 1px solid #BEA9D7;
+            // border: 1px solid #BEA9D7;
             color: #FFFFFF;
             &:not(:disabled):hover {
                 opacity: 0.8;

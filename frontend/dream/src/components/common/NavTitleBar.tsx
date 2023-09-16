@@ -7,6 +7,7 @@ const NavTitleBar = () =>  {
 
   return (
     <>
+    <h1>NavTitleBar</h1>
     </>
   )
 }
