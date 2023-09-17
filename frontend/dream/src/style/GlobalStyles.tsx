@@ -34,7 +34,8 @@ html, body {
 	/* margin: 0 0.5rem; 마진 nav바에도 영향 미쳐서 다른 방법 물색해야 함 */
 }
 body {
-
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 a {
   text-decoration: none;

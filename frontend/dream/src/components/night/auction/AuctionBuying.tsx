@@ -18,6 +18,12 @@ import Container from "style/Container";
 import Text from "style/Text";
 import Input from "style/Input";
 
+// push 알림
+import { getMessaging, onMessage } from 'firebase/messaging';
+import { requestPermission } from 'utils/alert/notification';
+import { FCM_VALID_KEY } from 'ignore/Ignore';
+
+
 const AuctionBidContainer = styled.div`
   margin: 1rem 3rem;
 
@@ -84,12 +90,22 @@ const AuctionBuying = () => {
     setMyBiddingMoney(() => myBiddingMoney+askingMoney)
   }
 
+  // push 알림 확인
+  const messaging = getMessaging()
+  onMessage(messaging, (payload) => {
+    console.log("메시지 수신", payload)
+  })
+  
+
   return (
     <>
       {/* <Image $mainImage $nightImageBorder>
         <img src={`${process.env.PUBLIC_URL}/image/samsung.png`}
         />
       </Image> */}
+
+      {/* 실험용 */}
+      <Button></Button>
 
       {/* 호가 */}
       <Container $centerContainer>

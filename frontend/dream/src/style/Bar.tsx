@@ -25,6 +25,7 @@ const BarContainer = styled.div<NavProps>`
       bottom: 0;
       display: flex;
       justify-content: space-around;
+      /* position: sticky; */
       `
   }
   // navBar

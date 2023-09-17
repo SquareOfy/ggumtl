@@ -13,8 +13,8 @@ import TextArea from "style/TextArea";
 import styled from "styled-components";
 
 const DreamCreateContainer = styled.div`
-  width: 100%;
-  margin: 6rem 0.5rem;
+  /* width: 100%; */
+  margin: 0.5rem;
 `;
 
 const DreamCreate = () => {

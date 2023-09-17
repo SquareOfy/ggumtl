@@ -3,7 +3,7 @@ import React from 'react'
 
 import styled, {css} from "styled-components"
 
-interface InputProps {
+export interface InputProps {
     children?: React.ReactNode;
     // styles?: string;
     onChange ?: (e :any) => void;
@@ -20,6 +20,9 @@ interface InputProps {
     
     // 경매 Input
     $biddingValue ?: boolean;
+
+    // 경매 생성 Input
+    $auctionInput ?: boolean
 
     // 일반
     // 챌린지
@@ -102,6 +105,19 @@ const StyledInput = styled.input<InputProps>`
         padding-right: 1rem;
       `
     }
+
+    /* auctionInput */
+    ${(props)=>
+      props.$auctionInput &&
+      css`
+        display: block;
+        border-radius: 1rem;
+        padding-left: 1rem;
+        height: 2rem;
+        /* width: 100%; */
+      `
+    }
+
     // chalTitleValue
     ${(props) =>
       props.$chalTitleValue &&

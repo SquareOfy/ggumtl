@@ -11,6 +11,9 @@ interface WrapProps {
   // 경매장 전용 Box Wrap
   $spaceBetweenWrap ?: boolean
   $biddingPriceWrap ?: boolean
+
+  // 밤 - 버튼 2개 용도
+  $nightBotButtonWrap ?: boolean
   
 }
 const StyledWrap = styled.div<WrapProps>`
@@ -27,6 +30,30 @@ const StyledWrap = styled.div<WrapProps>`
     css`
       display: flex;
       justify-content: space-between;
+    `
+  }
+
+  // 공개 - 버튼 2개 용 (밤)
+  ${(props) =>
+    props.$nightBotButtonWrap &&
+    css`
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      margin: inherit;
+      margin-bottom: 0.5rem;
+      
+      & > div:nth-child(1) {
+        margin: inherit;
+      }
+      & > div:nth-child(2) {
+        display: flex;
+        margin: inherit;
+        justify-content: right;
+
+        & > button:nth-child(1) {
+          margin-right: 0.5rem;
+        }
+      }
     `
   }
 

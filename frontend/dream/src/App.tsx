@@ -58,6 +58,19 @@ function App() {
     }
   })
 
+  // 웹 알림
+  // useEffect(() => {
+  //     Notification.requestPermission().then(permission => {
+  //       if (permission === 'granted') {
+  //         alert("오예 승인")
+  //       } else if (permission === 'denied') {
+  //         alert("윽... 부정")
+  //       } else {
+  //         // 선택 안함
+  //       }
+  //     })
+  // }, [])
+
   return (
     <>
     {/* <ThemeProvider theme={theme}> */}
@@ -77,7 +90,9 @@ function App() {
         {/* 경매장 */}
         <Route path="/night/auction/list" element={<AuctionMainPage/>}/>
 
-        <Route path="/night/auction/detail/:dreamCardId" element={<AuctionDetailPage/>}/> 
+        <Route path="/night/auction/detail/:dreamCardId" element={<AuctionDetailPage/>}/>
+         {/* 라우터 경로만 */}
+        <Route path="/night/auction/detail/:dreamCardId/create" element={<AuctionCreatePage/>}/> 
         <Route path="/night/auction/bidding/:dreamCardId" element={<AuctionBuyingPage/>}/> 
 
         <Route path="/night/auction/bidding/review" element={<AuctionBuyingSuccessPage/>}/> 
