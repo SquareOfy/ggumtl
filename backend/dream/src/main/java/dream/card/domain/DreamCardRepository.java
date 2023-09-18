@@ -34,4 +34,11 @@ public interface DreamCardRepository extends JpaRepository<DreamCard, Long> {
             "left join d.wriggleReviews " +
             "where d.dreamCardId = :id")
     Optional<DreamCard> findDetailsLikeById(@Param("id") Long id);
+
+
+    @Query("select distinct d from DreamCard d " +
+            "left join fetch d.cardKeyword dc " +
+            "left join fetch dc.keyWordId " +
+            "where d.dreamCardId = :id")
+    Optional<DreamCard> findKeywordById(@Param("id") Long id);
 }
