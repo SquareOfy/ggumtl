@@ -6,10 +6,10 @@ import styled, {css} from "styled-components"
 interface ButtonProps {
     children ?: React.ReactNode;
     // styles?: string;
-    onClick ?: () => void;
-
-    disabled ?: boolean;    
-    type ?: 'submit' | 'button' | 'reset';
+    onClick?: () => void;
+    style ? : {};
+    disabled?: boolean;    
+    type?: 'submit' | 'button' | 'reset';
 
     // 별개 스타일링
     // 너비
@@ -234,6 +234,7 @@ const StyledButton = styled.button<ButtonProps>`
             background-color: #F1E3E6;
             border: 1px solid #F1E3E6;
             color: #000000;
+            box-shadow: 0px 4px 20px 0px rgba(0,0,0,0.20);
             &:not(:disabled):hover {
                 opacity: 0.8;
             }

@@ -32,7 +32,7 @@ interface ImageProps {
     $profileCard ?: boolean;
     $auctionCard ?: boolean;
 
-
+    $signupImage ? :boolean;
 }
 
 const StyledImage = styled.div<ImageProps>`
@@ -194,6 +194,27 @@ const StyledImage = styled.div<ImageProps>`
       `
     }
 
+${(props) =>
+      props.$signupImage &&
+      css`
+        width: 100%;
+        aspect-ratio: 1/1;
+        background-size: cover;
+        border-radius: 1rem;
+        margin: 2rem 0;
+        background-color: #666666;
+        
+        & > img { // 정사각형 만들기
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          aspect-ratio: 1/1;
+          object-position: center;
+          border-radius: 1rem;
+          object-fit: cover;
+        }
+      `
+    }
 
 `
 

@@ -74,7 +74,7 @@ function App() {
   return (
     <>
     {/* <ThemeProvider theme={theme}> */}
-    <BackgroundImage backgroundImage={themeMode.backgroundImageUrl}/>
+    <BackgroundImage backgroundimage={themeMode.backgroundImageUrl}/>
     <GlobalStyle/>
       <Routes>
         {/* 초기 3개 화면 */}

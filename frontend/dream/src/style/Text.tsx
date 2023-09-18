@@ -18,8 +18,12 @@ interface TextProps {
   $nightWhite ?: boolean;
   $nightBlue ?: boolean;
   $black ?: boolean;
-  $danger ?: boolean
+  $danger ?: boolean;
   
+  //인풋 에러 메세지
+  $wrongMessage ?: boolean;
+  $successMessage ?: boolean;
+
 }
 const StyledText = styled.div<TextProps>`
 
@@ -41,6 +45,26 @@ const StyledText = styled.div<TextProps>`
       margin-bottom: 0.5rem;
     `
   }
+
+  // 입력 오류 경고 메세지
+  ${(props) => 
+    props.$wrongMessage &&
+    css`
+      font-size: 0.7rem;
+      padding: 0.5rem;
+      color: #dc3545;
+    `
+  }
+  ${(props) => 
+    props.$successMessage &&
+    css`
+      font-size: 0.7rem;
+      padding: 0.5rem;
+      color: #198754;
+    `
+  }
+
+
   ${(props) =>
     props.$nightWhite &&
     css`
