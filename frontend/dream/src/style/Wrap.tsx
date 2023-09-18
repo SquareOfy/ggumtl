@@ -14,6 +14,7 @@ interface WrapProps {
 
   // 밤 - 버튼 2개 용도
   $nightBotButtonWrap ?: boolean
+  $nightButtonCheckWrap ?: boolean
   
 }
 const StyledWrap = styled.div<WrapProps>`
@@ -54,6 +55,15 @@ const StyledWrap = styled.div<WrapProps>`
           margin-right: 0.5rem;
         }
       }
+    `
+  }
+
+  // 공개 - 버튼 2개 + 체크박스 용 (밤)
+  ${(props) =>
+    props.$nightButtonCheckWrap &&
+    css`
+      margin-top: 0.25rem;
+      align-items: center;
     `
   }
 

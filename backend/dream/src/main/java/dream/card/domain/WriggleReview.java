@@ -20,7 +20,7 @@ public class WriggleReview extends BaseTimeEntity {
     private Long wriggleReviewId;
 
     @JoinColumn(name = "dream_card_id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private DreamCard dreamCard;
 
     @JoinColumn(name = "seller_id")

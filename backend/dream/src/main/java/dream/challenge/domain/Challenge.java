@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,7 +17,7 @@ public class Challenge extends BaseUpdateTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long challengeId;
 
     @JoinColumn(name = "owner")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,4 +30,10 @@ public class Challenge extends BaseUpdateTimeEntity {
     private long hits;
     private String badgeUrl;
     private int timeCapsuleOpenAt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChallengeKeyword> keywords;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChallengeParticipation> challengeParticipations;
 }

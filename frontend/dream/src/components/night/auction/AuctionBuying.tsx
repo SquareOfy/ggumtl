@@ -18,10 +18,10 @@ import Container from "style/Container";
 import Text from "style/Text";
 import Input from "style/Input";
 
-// push 알림
-import { getMessaging, onMessage } from 'firebase/messaging';
-import { requestPermission } from 'utils/alert/notification';
-import { FCM_VALID_KEY } from 'ignore/Ignore';
+// // push 알림
+// import { getMessaging, onMessage } from 'firebase/messaging';
+// import { requestPermission } from 'utils/alert/notification';
+// import { FCM_VALID_KEY } from 'ignore/Ignore';
 
 
 const AuctionBidContainer = styled.div`
@@ -91,10 +91,10 @@ const AuctionBuying = () => {
   }
 
   // push 알림 확인
-  const messaging = getMessaging()
-  onMessage(messaging, (payload) => {
-    console.log("메시지 수신", payload)
-  })
+  // const messaging = getMessaging()
+  // onMessage(messaging, (payload) => {
+  //   console.log("메시지 수신", payload)
+  // })
   
 
   return (

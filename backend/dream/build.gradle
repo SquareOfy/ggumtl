@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.15'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	//querydsl
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com'
@@ -9,6 +11,11 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '11'
+}
+
+//querydsl
+ext {
+	queryDslVersion = "5.0.0"
 }
 
 configurations {
@@ -31,7 +38,33 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	//jwt
+	implementation 'com.auth0:java-jwt:4.4.0'
+
+	//redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	//querydsl
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 }
+
+//querydsl
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()

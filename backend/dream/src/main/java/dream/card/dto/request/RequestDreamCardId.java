@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestDreamCardId {
-    private long dreamCardId;
+    private Long dreamCardId;
 }
