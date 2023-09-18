@@ -18,14 +18,20 @@ public class DreamCardController {
     private final DreamCardService dreamCardService;
 
     @GetMapping(value = "/")
-    public ResultTemplate getNightMain(){
-        return dreamCardService.getNightMain();
+    public ResultTemplate getNightMain(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
+                                       @RequestParam("size") int size){
+        return dreamCardService.getNightMain(lastItemId, size);
     }
 
     @GetMapping(value = "/dream/detail/{dreamCardId}")
-    public ResultTemplate getFlipDreamCardDetail(@PathVariable("dreamCardId") long id){
+    public ResultTemplate getFlipDreamCardDetail(@PathVariable("dreamCardId") Long id){
 
         return dreamCardService.getFlipDreamCardDetail(id);
+    }
+    @GetMapping(value = "/dream/userInfo/{dreamCardId}")
+    public ResultTemplate getDreamCardUserInfo(@PathVariable("dreamCardId") Long id){
+
+        return dreamCardService.getDreamCardUserInfo(id);
     }
 
     @PutMapping(value = "/dream/detail/hit")
@@ -37,17 +43,13 @@ public class DreamCardController {
     @PostMapping(value = "/dream/like")
     public ResultTemplate updateCardLike(@RequestBody RequestDreamCardId request) {
 
-        // 매개변수에 login 정보 받아오기 추가
-
-//        return dreamCardService.updateCardLike(로그인한, 유저, 정보, request.getDreamCardId());
-        return null;
+        return dreamCardService.updateCardLike(1L, request.getDreamCardId());
     }
 
     @DeleteMapping(value = "/dream/{dreamCardId}/unlike")
-    public ResultTemplate updateCardUnlike(@RequestBody RequestDreamCardId request){
-        // 매개변수에 login 정보 받아오기 추가
-//        return dreamCardService.updateCardUnlike(로그인한, 유저, 정보, request.getDreamCardId());
-        return null;
+    public ResultTemplate updateCardUnlike(@PathVariable("dreamCardId") Long dreamCardId){
+
+        return dreamCardService.updateCardUnlike(1L, dreamCardId);
     }
 
     @PostMapping(value = "/dream/keyword")
@@ -63,15 +65,15 @@ public class DreamCardController {
     }
 
     @GetMapping(value = "/dream/{dreamCardId}/interpretation")
-    public ResultTemplate getDreamCardDetailByUser(@PathVariable("dreamCardId") long dreamCardId){
-
-        return dreamCardService.getDreamCardDetailByUser(dreamCardId);
+    public ResultTemplate getDreamCardDetailByUser(@PathVariable("dreamCardId") Long id,
+                                                   Long userId){
+        return dreamCardService.getDreamCardDetailByUser(id, 1L);
     }
-
     @DeleteMapping(value = "/dream/{dreamCardId}")
-    public ResultTemplate deleteDreamCard(@PathVariable("dreamCardId") long dreamCardId){
+    public ResultTemplate deleteDreamCard(@PathVariable("dreamCardId") Long dreamCardId,
+                                          Long userId){
 
-        return dreamCardService.deleteDreamCard(dreamCardId);
+        return dreamCardService.deleteDreamCard(dreamCardId, 1L);
     }
 
     @PutMapping(value = "/dream")

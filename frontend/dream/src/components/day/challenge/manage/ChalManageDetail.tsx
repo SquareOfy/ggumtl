@@ -15,3 +15,20 @@
 
 // 다른 사람들의 응원메시지를 확인해보세요 //  인증기간에 따른 활성//비활성
 // LongButton 타임 캡슐 + 타임캡슐 이미지 // 클릭 시 ChalCapsulePage
+
+// 리액트
+import React from "react";
+
+// 컴포넌트
+import Button from "components/common/Button";
+// 스타일
+
+const ChalManageDetail = () => {
+
+  return (
+    <>
+    </>
+  )
+}
+
+export default ChalManageDetail

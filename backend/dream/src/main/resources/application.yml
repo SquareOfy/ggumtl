@@ -5,6 +5,7 @@ server:
     multipart:
       enabled: true
 
+
 spring:
   # MySQL
   datasource:
@@ -20,9 +21,12 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 1000 # 최적화 옵션
-
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
 logging.level:
   org.hibernate.SQL: debug
+  org.springframework.security: DEBUG
 
 

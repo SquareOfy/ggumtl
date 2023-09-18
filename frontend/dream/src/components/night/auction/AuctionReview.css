@@ -1,0 +1,25 @@
+.dreamStar {
+    position: relative;
+    font-size: 2rem;
+    color: #ddd;
+    height: 2rem;
+  }
+  
+  .dreamStar input {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    /* cursor: pointer; */
+  }
+  
+  .dreamStar span {
+    width: 0;
+    height: 100%;
+    position: absolute; 
+    left: 0;
+    color: #ffedbf;
+    overflow: hidden;
+    pointer-events: none;
+  }

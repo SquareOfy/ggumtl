@@ -22,7 +22,7 @@ public class ResponseAuctionDetail {
     private String nickname;
     private int startAuctionMoney;
     private int immediatelyBuyMoney;
-    private JndiLocatorDelegate endedAt;
+    private LocalDateTime endedAt;
     private int askingMoney;
     private int biddingCount;
     private long dreamCardId;
