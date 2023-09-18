@@ -2,6 +2,7 @@ package dream.card.domain;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import dream.common.domain.BaseCheckType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,8 @@ public class DreamCardQueryRepository {
                 .leftJoin(dreamCard.dreamCardOwner).fetchJoin()
                 .leftJoin(dreamCard.dreamCardLikes)
                 .where(
-                        lastItemIdLt(lastItemId)
+                        lastItemIdLt(lastItemId),
+                        dreamCard.isShow.eq(BaseCheckType.T)
                 )
                 .orderBy(dreamCard.dreamCardId.desc())
                 .limit(size + 1)

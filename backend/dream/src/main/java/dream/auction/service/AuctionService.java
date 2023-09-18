@@ -1,6 +1,7 @@
 package dream.auction.service;
 
 import dream.auction.domain.Auction;
+import dream.auction.domain.AuctionQueryRepository;
 import dream.auction.domain.AuctionRepository;
 import dream.auction.dto.request.RequestAuction;
 import dream.auction.dto.request.RequestBidding;
@@ -8,9 +9,12 @@ import dream.auction.dto.request.RequestCardReview;
 import dream.auction.dto.request.RequestChangeOwner;
 import dream.auction.dto.response.ResponseAuction;
 import dream.auction.dto.response.ResponseAuctionDetail;
+import dream.auction.dto.response.ResponseAuctionList;
 import dream.card.domain.DreamCard;
 import dream.card.domain.DreamCardRepository;
 import dream.card.dto.request.RequestDreamCardId;
+import dream.card.dto.response.ResponseDreamCard;
+import dream.card.dto.response.ResponseDreamCardList;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.NotFoundException;
@@ -21,12 +25,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AuctionService {
 
     private final AuctionRepository auctionRepository;
+    private final AuctionQueryRepository auctionQueryRepository;
     private final DreamCardRepository dreamCardRepository;
 
     // 경매 등록하는 함수
@@ -48,10 +54,20 @@ public class AuctionService {
     }
 
     // 전체 경매등록 카드들 조회 함수
-    public ResultTemplate getAllAuctionList() {
-        List<ResponseAuction> response = new ArrayList<>();
+    public ResultTemplate getAllAuctionList(Long lastItemId, int size, String keyword) {
 
-        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+        List<Auction> findAuctions = auctionQueryRepository.findAuctionPaging(lastItemId, size, keyword);
+        if (findAuctions.isEmpty()) throw new NotFoundException(NotFoundException.AUCTION_LIST_NOT_FOUND);
+
+        List<ResponseAuction> auctions = findAuctions.stream()
+                .limit(size)
+                .map(ResponseAuction::from)
+                .collect(Collectors.toList());
+
+        boolean hasNext = findAuctions.size() > size;
+        ResponseAuctionList list = ResponseAuctionList.from(auctions, hasNext);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(list).build();
     }
 
     // 키워드를 통해 경매 등록 카드들 조회
