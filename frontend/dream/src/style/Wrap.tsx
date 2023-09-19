@@ -111,9 +111,19 @@ const StyledWrap = styled.div<WrapProps>`
           flex-direction: column;
           justify-content: center;
 
+          /* 닉네임 + 버튼 부분 */
           & > div:nth-child(1) {
-            display: flex;
+            display: grid;
+            grid-template-columns: 4fr 3fr;
             align-items: center;
+
+            & > div:nth-child(2){
+              align-items: center;
+              display: flex;
+              justify-content: end;
+              text-align: right;
+              font-size: 0.7rem;
+            }
           }
           
           /* 팔로잉 + 팔로워 부분 세 개 */

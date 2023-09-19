@@ -19,6 +19,8 @@ interface TextProps {
   $nightBlue ?: boolean;
   $black ?: boolean;
   $danger ?: boolean;
+  $nightMoney ?: boolean;
+  $dayMoney ?: boolean;
   
   //인풋 에러 메세지
   $wrongMessage ?: boolean;
@@ -88,6 +90,18 @@ const StyledText = styled.div<TextProps>`
     props.$danger &&
     css`
       color: #C70000;
+    `
+  }
+  ${(props) =>
+    props.$nightMoney &&
+    css`
+      color: #a5a5a5;
+    `
+  }
+  ${(props) =>
+    props.$dayMoney &&
+    css`
+      color: #424242;
     `
   }
 `
