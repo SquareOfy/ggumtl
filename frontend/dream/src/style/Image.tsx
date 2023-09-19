@@ -58,6 +58,7 @@ const StyledImage = styled.div<ImageProps>`
         width: 4rem;
         height: 4rem;
         margin: 1rem;
+        background-color: transparent;
         & > img {
           width: 100%;
           object-fit: cover;
