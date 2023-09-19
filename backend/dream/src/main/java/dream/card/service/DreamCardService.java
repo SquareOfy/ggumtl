@@ -1,10 +1,9 @@
 package dream.card.service;
 
-import dream.card.domain.DreamCard;
-import dream.card.domain.DreamCardQueryRepository;
-import dream.card.domain.DreamCardRepository;
+import dream.card.domain.*;
 import dream.card.dto.request.RequestDreamCardDetail;
 import dream.card.dto.request.RequestDreamCardIsShow;
+import dream.card.dto.request.RequestKeyword;
 import dream.card.dto.response.*;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.ResultTemplate;
@@ -32,6 +31,7 @@ public class DreamCardService {
     private final DreamCardRepository dreamCardRepository;
     private final DreamCardQueryRepository dreamCardQueryRepository;
     private final UserRepository userRepository;
+    private final DreamKeywordRepository dreamKeywordRepository;
 
     /**
      * 밤 메인 화면에서 카드 리스트를 조회 하는 함수 !
@@ -126,19 +126,29 @@ public class DreamCardService {
     // 카드 전처리 후 결과 반환
     public ResultTemplate getPreProcessingForDreamCard(String dreamCardContent) {
 
-
-        ResponseDreamCardPreprocessing response = new ResponseDreamCardPreprocessing();
         // 아마 이건 하둡이랑 연관된 함수
+        // dreamCardContent 를 통해, keyword를 추출
+        // 해몽 내용도 조회
+        // 추출하는 과정에서 희귀도와 길몽도를 판단 -> 등급까지 설정
+        // 종합해서 전체 등급 설정
+        // ResponseDreamCardPreprocessing 안에 넣어서 응답 !
+        ResponseDreamCardPreprocessing response = ResponseDreamCardPreprocessing.from();
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
     // 실제 꿈카드 생성 함수
+    @Transactional
     public ResultTemplate postDreamCard(RequestDreamCardDetail request) {
 
-        ResponseDreamCardId response = new ResponseDreamCardId();
+        User author = userRepository.findById(request.getDreamCardAuthor())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
-        // 꿈 카드 삽입하고 PK 반환받기
+        List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
+
+        DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords);
+        dreamCardRepository.save(makeDreamCard);
+        ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }

@@ -17,4 +17,12 @@ public class ResponseDreamCardPreprocessing {
     private String dreamTelling;
     private int positivePoint;
     private int rarePoint;
+    private Grade positiveGrade;
+    private Grade rareGrade;
+
+    public static ResponseDreamCardPreprocessing from(){
+        ResponseDreamCardPreprocessing response = new ResponseDreamCardPreprocessing();
+
+        return response;
+    }
 }

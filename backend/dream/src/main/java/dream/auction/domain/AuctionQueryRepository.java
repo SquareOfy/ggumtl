@@ -2,22 +2,20 @@ package dream.auction.domain;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import dream.card.domain.DreamCard;
 import dream.card.domain.QCardKeyword;
 import dream.card.domain.QDreamCard;
 import dream.common.domain.BaseCheckType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static dream.auction.domain.QAuction.auction;
-import static dream.card.domain.QCardKeyword.cardKeyword;
 import static dream.card.domain.QDreamCard.dreamCard;
 
+@Slf4j
 @Repository
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
