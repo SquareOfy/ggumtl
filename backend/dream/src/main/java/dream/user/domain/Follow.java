@@ -1,6 +1,9 @@
 package dream.user.domain;
 
 
+import dream.auction.domain.Auction;
+import dream.auction.dto.request.RequestAuction;
+import dream.card.domain.DreamCard;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +25,14 @@ public class Follow {
     @JoinColumn(name = "to_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User toUser;
+
+    public static Follow createFollow(User fromUser, User toUser){
+        Follow follow = new Follow();
+        follow.fromUser = fromUser;
+        follow.toUser = toUser;
+
+        return follow;
+
+    }
 
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/day")
+@RequestMapping(value = "/api/day")
 public class ChallengeController {
 
     private final ChallengeService challengeService;

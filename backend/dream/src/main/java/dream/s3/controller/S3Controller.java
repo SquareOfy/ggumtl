@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/s3")
+@RequestMapping(value = "/api/s3")
 public class S3Controller {
 
     private final ChallengeService challengeService;

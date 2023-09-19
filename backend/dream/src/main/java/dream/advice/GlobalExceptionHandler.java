@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler( {NotFoundException.class, DuplicateException.class, NotMatchException.class, NoSuchElementException.class} )
+    @ExceptionHandler( {NotFoundException.class, DuplicateException.class, NotMatchException.class, NoSuchElementException.class, BadRequestException.class} )
     public ResultTemplate handleBadRequestExceptions(Exception e){
         log.error("error", e);
         return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
@@ -28,6 +28,10 @@ public class GlobalExceptionHandler {
 
         return ResultTemplate.builder().status(HttpStatus.FORBIDDEN.value()).data(e.getMessage()).build();
     }
+
+
+
+
 
 
 }

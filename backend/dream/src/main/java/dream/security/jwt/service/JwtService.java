@@ -4,10 +4,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import dream.common.exception.InvalidAccessTokenException;
+import dream.common.exception.InvalidRefreshTokenException;
+import dream.common.exception.NoSuchElementException;
 import dream.security.jwt.dto.RefreshTokenDto;
 import dream.security.jwt.dto.TokenDto;
 import dream.security.jwt.repository.TokenRepository;
 import dream.user.domain.Role;
+import dream.user.domain.User;
+import dream.user.domain.UserRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Optional;
 
 @Service
@@ -45,11 +51,13 @@ public class JwtService {
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String USER_ID_CLAIM = "userId";
+    private static final String USER_EMAIL_CLAIM = "email";
     private static final String BEARER = "Bearer ";
 
 
     private final RedisTemplate redisTemplate;
     private final TokenRepository tokenRepository;
+    private final UserRepository userRepository;
 
     /**
      * JWT TokenDto 생성
@@ -57,25 +65,32 @@ public class JwtService {
 
     public TokenDto createTokenDto(Long userId) {
 
+        Optional<User> user = userRepository.findByUserId(userId);
+        if (user.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_USER);
+
+
         Date now = new Date();
 
+        //액세스 토큰 생성
         String accessToken = JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withIssuedAt(now)
                 .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
                 .withClaim(USER_ID_CLAIM, userId)
                 .sign(Algorithm.HMAC512(secretKey));
-
+        //리프레시 토큰 생성
         String refreshToken = JWT.create()
                 .withSubject(REFRESH_TOKEN_SUBJECT)
                 .withIssuedAt(now)
                 .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
+                .withClaim(USER_ID_CLAIM, user.get().getUserId())
+                .withClaim(USER_EMAIL_CLAIM, user.get().getEmail())
                 .sign(Algorithm.HMAC512(secretKey));
 
 
         //redis에 refreshToken 객체 생성하여 저장
         RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder().
-                userId(userId).
+                email(user.get().getEmail()).
                 refreshToken(refreshToken).build();
 
         tokenRepository.saveRefreshToken(refreshTokenDto);
@@ -91,9 +106,11 @@ public class JwtService {
      * refreshToken을 redis에서 삭제
      */
     public void removeRefreshToken(String refreshToken) {
-        tokenRepository.findByRefreshToken(refreshToken)
+        Optional<String> email = extractEmailFromRefreshToken(refreshToken);
+        if (email.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_EMAIL_IN_REFRESH_TOKEN);
+        tokenRepository.findByEmail(email.get())
                 .ifPresent(refreshTokenDto -> {
-                    tokenRepository.deleteByRefreshToken(refreshToken);
+                    tokenRepository.deleteByEmail(email.get());
                     log.info("Refresh Token 삭제 : {} ", refreshToken);
 
 
@@ -108,44 +125,56 @@ public class JwtService {
 
         response.setStatus(HttpServletResponse.SC_OK);
 
-        response.setHeader(accessHeader, BEARER+tokenDto.getAccessToken());
-        response.setHeader(refreshHeader, BEARER+tokenDto.getRefreshToken());
+        response.setHeader(accessHeader, BEARER + tokenDto.getAccessToken());
+        response.setHeader(refreshHeader, BEARER + tokenDto.getRefreshToken());
 
         log.info("Access Token, Refresh Token 헤더 설정 완료");
 
     }
+
     /**
-    * 토큰에서 userId 정보 꺼내기
+     * 토큰에서 userId 정보 꺼내기
      */
 
     public Optional<Long> extractUserIdFromAccessToken(String accessToken) {
         log.info("token in extractUserIdFromAccessToken : {}", accessToken);
-        try {
+        Optional<Long> userId = Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
+                .build().verify(accessToken.replace(BEARER, ""))
+                .getClaim(USER_ID_CLAIM).asLong());
+        if (userId.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_USERID_IN_ACCESS_TOKEN);
 
-            return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
-                    .build().verify(accessToken.replace(BEARER, ""))
-                    .getClaim(USER_ID_CLAIM).asLong());
+        return userId;
+    }
 
-            //어떻게 처리해야할지 모르겠다 ,,
-        } catch (Exception e) {
-            log.error("유효하지 않은 토큰입니다. in extractUserIdFromAccessToken {}", e.getMessage());
-            return Optional.empty();
-        }
+    public Optional<String> extractEmailFromRefreshToken(String refreshToken) {
+
+        Optional<String> email = Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
+                .build().verify(refreshToken.replace(BEARER, ""))
+                .getClaim(USER_EMAIL_CLAIM).asString());
+
+        if (email.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_EMAIL_IN_REFRESH_TOKEN);
+
+
+        return email;
     }
 
     public Optional<Long> extractUserIdFromRefreshToken(String refreshToken) {
-        Optional<RefreshTokenDto> refreshTokenDtoOptional = tokenRepository.findByRefreshToken(refreshToken);
 
-        return refreshTokenDtoOptional.map(RefreshTokenDto::getUserId);
+        Optional<Long> userId = Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
+                .build().verify(refreshToken.replace(BEARER, ""))
+                .getClaim(USER_ID_CLAIM).asLong());
+
+        if (userId.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_USERID_IN_REFRESH_TOKEN);
+
+
+        return userId;
     }
-
 
     /**
      * 헤더에서 RefreshToken 추출
      */
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
         log.info("extractRefreshToken 동작");
-        log.info("추출한 Refresh Token : {}", Optional.ofNullable(request.getHeader(refreshHeader)).get());
         return Optional.ofNullable(request.getHeader(refreshHeader))
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
@@ -156,48 +185,87 @@ public class JwtService {
      */
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         log.info("extract AccessToken");
-        log.info("accessHeader Token : {} ",request.getHeader(accessHeader));
-        return Optional.ofNullable(request.getHeader(accessHeader))
-                .map(accessToken -> accessToken.replace(BEARER, ""));
+        Optional<String> accessToken = Optional.ofNullable(request.getHeader(accessHeader))
+                .map(token -> token.replace(BEARER, ""));
+        if (accessToken.isEmpty())
+            throw new NoSuchElementException(NoSuchElementException.NO_SUCH_ACCESSTOKEN_IN_HEADER);
+        return accessToken;
+    }
+
+    public Long getExpiration(String accessToken) {
+        Optional<Date> expiration = Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
+                .build().verify(accessToken.replace(BEARER, ""))
+                .getExpiresAt());
+        if (expiration.isEmpty())
+            throw new NoSuchElementException(NoSuchElementException.NO_SUCH_EXPIREAT_IN_ACCESS_TOKEN);
+        Long now = new Date().getTime();
+        return expiration.get().getTime() - now;
+
     }
 
     /**
      * Access Token 유효성 검증
      */
     public boolean isAccessTokenValid(String accessToken) {
+
+        //REDIS의 블랙리스트에 해당 AccessToken이 존재하는지 확인
+        Optional<String> isLogoutOption = tokenRepository.findByKey(accessToken);
+        //있다면 유효하지 않은 accessToken 예외 반환
+        if (isLogoutOption.isPresent())
+            throw new InvalidAccessTokenException(InvalidAccessTokenException.INVALID_ACCESS_TOKEN);
+
+
         try {
-            log.info("isAccessTokenValid 동작");
-                    
+            //아래 부분 성립하지 않을 때 에러 처리 필요
             JWT.require(Algorithm.HMAC512(secretKey)).build().verify(accessToken);
-            return true;
-            //이부분 Exception으로 만들어야 하는가...?
         } catch (Exception e) {
-            log.error("유효하지 않은 토큰입니다. in isAccessTokenValid {}", e.getMessage());
-            return false;
+            throw new InvalidAccessTokenException(InvalidAccessTokenException.INVALID_ACCESS_TOKEN);
         }
+        return true;
+
     }
+
     /**
      * Refresh Token 유효성 검증
      */
     public boolean isRefreshTokenValid(String refreshToken) {
         log.info("isRefreshTokenValid 동작");
-
-        Optional<RefreshTokenDto> savedRefreshTokenDto = tokenRepository.findByRefreshToken(String.valueOf(refreshToken));
+        Optional<String> email = extractEmailFromRefreshToken(refreshToken);
+        log.info("refresh에서 추출한 email : {} " , email.get());
+        if (email.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_EMAIL_IN_REFRESH_TOKEN);
+        Optional<RefreshTokenDto> savedRefreshTokenDto = tokenRepository.findByEmail(email.get());
 
         if (!savedRefreshTokenDto.isPresent()) {
-            log.error("유효하지 않은 리프레시 토큰입니다.");
-            return false;
+            throw new InvalidRefreshTokenException(InvalidRefreshTokenException.INVALID_REFRESH_TOKEN);
         }
 
         // 여기서 JWT 라이브러리를 사용해 리프레시 토큰의 서명을 검증할 수 있습니다.
         try {
-            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(refreshToken);
-        } catch (Exception e) {
-            log.error("유효하지 않은 리프레시 토큰입니다. {}", e.getMessage());
-            return false;
-        }
+            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(savedRefreshTokenDto.get().getRefreshToken());
 
+        } catch (Exception e) {
+            throw new InvalidRefreshTokenException(InvalidRefreshTokenException.INVALID_REFRESH_TOKEN);
+        }
         return true;
+    }
+
+    public void logAllHeaders(HttpServletRequest request) {
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = request.getHeader(headerName);
+            log.info("Header Name: " + headerName + ", Header Value : " + headerValue);
+        }
+    }
+
+    public void saveBlackList(String accessToken) {
+
+
+        if (isAccessTokenValid(accessToken)) {
+
+            tokenRepository.saveBlackList(accessToken, getExpiration(accessToken));
+
+        }
     }
 
 

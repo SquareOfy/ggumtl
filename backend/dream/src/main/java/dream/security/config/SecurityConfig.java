@@ -10,19 +10,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity()
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -30,8 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private SocialLoginService socialLoginService;
     @Autowired
     private SocialLoginSuccessHandler socialLoginSuccessHandler;
-    @Autowired
-    private SocialLoginFailureHandler socialLoginFailureHandler;
+//    @Autowired
+//    private SocialLoginFailureHandler socialLoginFailureHandler;
     @Autowired
     private JwtService jwtService;
     @Autowired
@@ -63,17 +65,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/user/jwt-test/**").hasRole("GUEST")
+                .antMatchers("/user/jwt-test/**").hasRole("GUEST")
+//                .antMatchers("/api/**").hasRole("USER")
                 .anyRequest().permitAll()
 
+
+
                 .and()
+//                .logout().deleteCookies("JSESSION")
                 .oauth2Login()
-                .successHandler(socialLoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
-//                .failureHandler(socialLoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
+                .successHandler(new SocialLoginSuccessHandler(jwtService, userRepository)) // 동의하고 계속하기를 눌렀을 때 Handler 설정
+//                .failureHandler(new SocialLoginFailureHandler()) // 소셜 로그인 실패 시 핸들러 설정
                 .userInfoEndpoint().userService(socialLoginService); // customUserService 설정
 
 
-//                http.addFilterBefore(new JwtAuthentificationProcessingFilter(jwtService, userRepository),  UsernamePasswordAuthenticationFilter.class);
+                http.addFilterAfter(new UsernamePasswordAuthenticationFilter(), LogoutFilter.class);
+                http.addFilterBefore(new JwtAuthentificationProcessingFilter(jwtService, userRepository),  UsernamePasswordAuthenticationFilter.class);
+
+
     }
 
 
