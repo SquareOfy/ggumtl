@@ -8,7 +8,7 @@ const NightHomeList = () => {
 
   return (
     <>
-
+    <NightHomeItem/>
     </>
   )
 }

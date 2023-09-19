@@ -18,7 +18,7 @@ const StyledContainer = styled.div<ContainerProps>`
   ${(props) =>
     props.$baseContainer &&
     css`
-      margin: 0 0.5rem;
+      margin: 0.5rem 0.5rem 0;
     `
   }
 
