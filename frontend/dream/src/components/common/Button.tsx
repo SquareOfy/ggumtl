@@ -245,10 +245,12 @@ const StyledButton = styled.button<ButtonProps>`
     ${(props) => 
         props.$follow &&
         css`
-            font-size: 1rem;
-            padding: 0.1rem 1.5rem;
+            font-size: 0.75rem;
+            padding: 0 1.5rem;
             /* font-weight: 400; */
-            border-radius: 1.5rem;
+            border-radius: 0.5rem;
+            height: 1.5rem;
+            margin: 0 0.7rem;
         `
     }
 
