@@ -19,11 +19,11 @@ import java.util.Enumeration;
 
 @Slf4j
 @Component
-public class SocialLoginFailureHandler implements AuthenticationFailureHandler{
-    @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+public class SocialLoginFailureHandler{
+//    implements
+//} AuthenticationFailureHandler {
 
-        // 실패 요인 추적을 위한 다양한 로그 추가
+        // 실패 요인 추적을 위한 로그 추가
         log.error("Request URL: {}", request.getRequestURL());
         log.error("Query Parameters: {}", request.getQueryString());
         log.error("code Parameter : {}",request.getParameter("code"));
@@ -38,7 +38,7 @@ public class SocialLoginFailureHandler implements AuthenticationFailureHandler{
         if (exception instanceof OAuth2AuthenticationException) {
             OAuth2Error error = ((OAuth2AuthenticationException) exception).getError();
             if ("authorization_request_not_found".equals(error.getErrorCode())) {
-                // 여기에서 로직을 추가하거나 조건에 따라 다르게 처리할 수 있습니다.
+
                 log.error("OAuth2 Error Code: {}", error.getErrorCode());
                 log.error("OAuth2 Error Description: {}", error.getDescription());
             }
@@ -52,5 +52,5 @@ public class SocialLoginFailureHandler implements AuthenticationFailureHandler{
         log.info("소셜 로그인에 실패했습니다. 에러 메시지 : {}", exception.getMessage());
 
     }
-}
+
 

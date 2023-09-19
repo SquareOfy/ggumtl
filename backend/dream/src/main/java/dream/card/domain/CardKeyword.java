@@ -23,5 +23,12 @@ public class CardKeyword {
     @ManyToOne(fetch = FetchType.LAZY)
     private DreamKeyword keyWordId;
 
+    public static CardKeyword addKeyword(DreamCard dreamCard, DreamKeyword keyWordId){
+        CardKeyword cardKeyword = new CardKeyword();
+        cardKeyword.cardId = dreamCard;
+        cardKeyword.keyWordId = keyWordId;
+
+        return cardKeyword;
+    }
 
 }

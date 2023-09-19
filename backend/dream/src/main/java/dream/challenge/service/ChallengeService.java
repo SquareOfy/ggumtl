@@ -5,16 +5,20 @@ import dream.card.domain.DreamKeyword;
 import dream.card.domain.DreamKeywordRepository;
 import dream.challenge.domain.*;
 import dream.challenge.dto.response.*;
+import dream.challenge.dto.request.RequestTimeCapsule;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.NoSuchElementException;
 import dream.common.exception.NotFoundException;
+import dream.common.exception.DuplicateException;
 import dream.s3.dto.response.ResponseBadgeImage;
 import dream.user.domain.FollowRepository;
 import dream.user.domain.User;
+import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +29,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ChallengeService {
 
+    private final UserRepository userRepository;
     private final ChallengeRepository challengeRepository;
     private final ChallengeQueryRepository challengeQueryRepository;
     private final DreamKeywordRepository dreamKeywordRepository;
-    private final FollowRepository followRepository;
     private final ChallengeDetailQueryRepository challengeDetailQueryRepository;
+    private final ChallengeParticipationRepository challengeParticipationRepository;
+
 
     /**
      * 낮 메인 화면 조회 !@!
@@ -144,4 +150,53 @@ public class ChallengeService {
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
+
+    @Transactional
+    public ResultTemplate postParicipateChallenge(Long userId, Long challengeId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        Optional<ChallengeParticipation> list = challengeParticipationRepository.getChallengeParticipationListByUserAndChallenge(userId, challengeId);
+
+        boolean isDuplicated = list.stream()
+                .anyMatch(participation -> participation.getIsIn().equals(ChallengeStatus.P));
+
+        if(isDuplicated) throw new DuplicateException(DuplicateException.CHALLENGE_PARTICIPATION_DUPLICATE);
+
+        ChallengeParticipation challengeParticipation = ChallengeParticipation.createChallengeParticipation(user, challenge);
+        challengeParticipationRepository.save(challengeParticipation);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+
+    @Transactional
+    public ResultTemplate updateChallengeHits(Long challengeId) {
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow( () ->  new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        challenge.updateChallengeHits();
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    @Transactional
+    public ResultTemplate postTimeCapsule(User user, RequestTimeCapsule request) {
+
+        Optional<ChallengeParticipation> list = challengeParticipationRepository
+                .getChallengeParticipationListByUserAndChallengeAndStatus(user.getUserId(), request.getChallengeId(), ChallengeStatus.P);
+
+        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_CHALLNENGE_PARTICIPATE);
+
+        ChallengeParticipation challengeParticipation = list.get();
+        challengeParticipation.updateTimeCapsuleContent(request.getTimeCapsuleContent());
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
 }

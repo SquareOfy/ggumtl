@@ -26,9 +26,11 @@ public class AuctionController {
     }
 
     @GetMapping(value = "/list")
-    public ResultTemplate getAllAuctionList(){
+    public ResultTemplate getAllAuctionList(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
+                                            @RequestParam("size") int size,
+                                            @RequestParam(value = "keyword", required = false) String keyword){
 
-        return auctionService.getAllAuctionList();
+        return auctionService.getAllAuctionList(lastItemId, size, keyword);
     }
 
     @GetMapping(value = "/list/{searchKeyword}")

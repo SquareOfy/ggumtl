@@ -1,6 +1,8 @@
 package dream.card.domain;
 
 
+import dream.card.dto.request.RequestDreamCardDetail;
+import dream.card.dto.request.RequestKeyword;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.BaseTimeEntity;
 import dream.common.exception.DuplicateException;
@@ -66,6 +68,27 @@ public class DreamCard extends BaseTimeEntity {
         this.hits++;
     }
 
+    public static DreamCard makeDreamCard(RequestDreamCardDetail request, User user, List<DreamKeyword> dreamKeywords){
+
+        DreamCard dreamCard = new DreamCard();
+        dreamCard.dreamCardOwner = user;
+        dreamCard.dreamCardAuthor = user;
+        dreamCard.dreamCardContent = request.getDreamCardContent();
+        dreamCard.dreamCardImageUrl = request.getDreamCardImageUrl();
+        dreamCard.grade = request.getGrade();
+        dreamCard.dreamTelling = request.getDreamTelling();
+        dreamCard.positivePoint = request.getPositivePoint();
+        dreamCard.positiveGrade = request.getPositiveGrade();
+        dreamCard.rarePoint = request.getRarePoint();
+        dreamCard.rareGrade = request.getRareGrade();
+        dreamCard.isShow = request.getIsShow();
+        dreamCard.auctionStatus = BaseCheckType.F;
+        dreamCard.cardKeyword = dreamKeywords.stream()
+                .map(dreamKeyword -> CardKeyword.addKeyword(dreamCard, dreamKeyword))
+                .collect(Collectors.toList());
+
+        return dreamCard;
+    }
 
     public void addDreamCardLike(User user){
 

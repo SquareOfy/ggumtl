@@ -1,0 +1,3 @@
+{/* <NavTitleBar></NavTitleBar> */}
+
+// <DayBadgeDetail></DayBadgeDetail>

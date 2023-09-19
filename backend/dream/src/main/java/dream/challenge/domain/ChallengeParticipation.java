@@ -15,7 +15,6 @@ import java.util.PriorityQueue;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChallengeParticipation extends BaseTimeEntity {
 
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long challengeParticipationId;
 
@@ -32,5 +31,17 @@ public class ChallengeParticipation extends BaseTimeEntity {
 
     private String timeCapsuleContent;
 
+    public static ChallengeParticipation createChallengeParticipation(User user, Challenge challenge) {
 
+        ChallengeParticipation challengeParticipation = new ChallengeParticipation();
+        challengeParticipation.user = user;
+        challengeParticipation.challenge = challenge;
+        challengeParticipation.isIn = ChallengeStatus.P;
+
+        return challengeParticipation;
+    }
+
+    public void updateTimeCapsuleContent(String timeCapsuleContent) {
+        this.timeCapsuleContent = timeCapsuleContent;
+    }
 }

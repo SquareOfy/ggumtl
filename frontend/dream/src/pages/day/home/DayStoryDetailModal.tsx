@@ -1,0 +1,2 @@
+
+// <DayStoryDetail></DayStoryDetail>
