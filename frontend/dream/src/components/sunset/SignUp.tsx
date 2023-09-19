@@ -40,6 +40,9 @@ const SignUp = () => {
   const [profileImageURL, setProfileImageURL] = useState<string | undefined>(undefined)
   const [nicknameInput,setNicknameInput] = useState('') 
 
+  // good 한글 7자 이하, 옳은 닉네임 / bad 자음만 있는 닉네임 / double 중복된 닉네임
+  const [wrongNicknameSign, setWrongNicknameSign] = useState('good')
+
   // useRef를 이용해서 input 태그에 접근
   const imageInput = useRef<HTMLInputElement | null>(null);
   const imageInputClick = () => {
@@ -66,7 +69,11 @@ const SignUp = () => {
     // 한글이고 7자까지 가능
     if (regex.test(nickname) && (nickname.length <= 7) ){
       setNicknameInput(nickname)
-      console.log('닉네임 중복 체크 api보냄') // 함수 제작 예정
+      setWrongNicknameSign('good')
+      // axios(url) 보냈는데 
+      // response 가 중복(true)이라면 -> setWrongNicknameSign('double')
+      // 중복 x -> setWrongNicknameSign('good')
+      console.log('닉네임 중복 체크 api보냄')
     }
   }
 
@@ -75,7 +82,7 @@ const SignUp = () => {
     const consRegex = /^[ㄱ-ㅎ]*$/;
     if (consRegex.test(nicknameInput)){
       // 닉네임 잘못 입력 체크
-      console.log('잘못 입력하셨습니다.')
+      setWrongNicknameSign('bad')
       // 경고창 예쁜걸로 수정
       alert('닉네임을 올바르게 입력해주세요.')
     }
@@ -103,10 +110,24 @@ const SignUp = () => {
       ></Input>
       {/* 경고창 */}
       <CheckMessageBox>
-        <FaCircleCheck color= "#198754"/>
-        <Text $successMessage>한글 7자</Text>
-        <FaCircleXmark color= "#dc3545"/>
-        <Text $wrongMessage>닉네임 중복</Text>
+        { wrongNicknameSign === 'good' && 
+          <>
+            <FaCircleCheck color= "#198754"/>
+            <Text $successMessage>한글 7자, 영어/숫자는 입력이 안됩니다.</Text>
+          </>
+        }
+        { wrongNicknameSign === 'bad' && 
+          <>
+            <FaCircleXmark color= "#dc3545"/>
+            <Text $wrongMessage>자음만 입력할 수 없습니다.</Text>
+          </>
+        }
+        { wrongNicknameSign === 'double' && 
+          <>
+            <FaCircleXmark color= "#dc3545"/>
+            <Text $wrongMessage>닉네임 중복입니다.</Text>
+          </>
+        }
       </CheckMessageBox>
 
       <Button 
