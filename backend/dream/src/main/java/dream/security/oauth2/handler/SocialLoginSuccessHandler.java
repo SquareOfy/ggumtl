@@ -1,18 +1,13 @@
 package dream.security.oauth2.handler;
 
-import dream.common.domain.ResultTemplate;
 import dream.security.jwt.dto.TokenDto;
 import dream.security.jwt.service.JwtService;
 import dream.security.oauth2.userinfo.CustomOAuth2User;
-import dream.user.controller.UserController;
 import dream.user.domain.Role;
-import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +22,7 @@ import java.io.IOException;
 public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final UserRepository userRepository;
-    private final UserController userController;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("Social Login 성공");
@@ -60,5 +55,6 @@ public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
         response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
         jwtService.sendTokenDto(response, tokenDto);
+//        response.sendRedirect("http://localhost:3000/");
     }
 }

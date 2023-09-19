@@ -20,82 +20,90 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
-//import org.springframework.web.filter.OncePerRequestFilter;
 
-//import javax.servlet.FilterChain;
-//import javax.servlet.ServletException;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import java.io.IOException;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL = "/login/oauth2/code/kakao";
+    private static final String NO_CHECK_URL1 = "/login/oauth2/code/kakao";
+    private static final String NO_CHECK_URL2 = "/login";
+    private static final String NO_CHECK_URL3 = "/api/user/signup";
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //jwt를 검증할 필요가 없는 url은 다음 filter호출 후 메서드 종료하기
-        if(request.getRequestURI().equals(NO_CHECK_URL)){
+        if (request.getRequestURI().equals(NO_CHECK_URL1)||request.getRequestURI().equals(NO_CHECK_URL2)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         Optional<String> refreshToken = jwtService.extractRefreshToken(request);
 
-        if(refreshToken.isPresent()){
-            checkRefreshTokenAndReIssueNewToken(response, refreshToken.get());
+        if (refreshToken.isPresent()) {
+            checkRefreshTokenAndReIssueNewToken(request, response, refreshToken.get());
 
-        }else{
+        } else {
             checkAccessToken(request, response, filterChain);
         }
 
     }
 
-    public void checkRefreshTokenAndReIssueNewToken(HttpServletResponse response, String refreshToken) {
-        if(jwtService.isRefreshTokenValid(refreshToken)){
-            Optional<Long> userIdOptional = jwtService.extractUserIdFromRefreshToken(refreshToken);
+    public void checkRefreshTokenAndReIssueNewToken(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
+        if (jwtService.isRefreshTokenValid(refreshToken)) {
             jwtService.removeRefreshToken(refreshToken);
+            Long userId = jwtService.extractUserIdFromRefreshToken(refreshToken).get();
 
-            if(userIdOptional.isPresent()) {
-                log.info("RefreshToken & AccessToken 재발급");
-                jwtService.sendTokenDto(response, jwtService.createTokenDto(userIdOptional.get()));
+            log.info("RefreshToken & AccessToken 재발급");
+            jwtService.sendTokenDto(response, jwtService.createTokenDto(userId));
 
-            }
-
+        }else{
+            throw new InvalidRefreshTokenException(InvalidRefreshTokenException.INVALID_REFRESH_TOKEN);
         }
 
     }
 
+
     public void checkAccessToken(HttpServletRequest request, HttpServletResponse response,
                                  FilterChain filterChain) throws ServletException, IOException {
-            log.info("checkAccessToken 호출");
-            log.info("extract AccessToken : {}", jwtService.extractAccessToken(request));
-            jwtService.extractAccessToken(request).filter(jwtService::isAccessTokenValid)
-                    .ifPresent(accessToken -> jwtService.extractUserIdFromAccessToken(accessToken).
-                            ifPresent(userId -> {
-                                log.info("userId in checkAccessToken:{}", userId);
-                                log.info("findUserId() : {}", userRepository.findByUserId(userId));
-                                userRepository.findByUserId(userId)
-                                        .ifPresent(this::saveAuthentication);
+
+        log.info("checkAccessToken 호출");
+        log.info("extract AccessToken : {}", jwtService.extractAccessToken(request).get());
+        jwtService.extractAccessToken(request).filter(jwtService::isAccessTokenValid)
+                .ifPresent(accessToken -> jwtService.extractUserIdFromAccessToken(accessToken).
+                        ifPresent(userId -> {
+                            log.info("userId in checkAccessToken:{}", userId);
+                            log.info("findUserId() : {}", userRepository.findByUserId(userId));
+                            userRepository.findByUserId(userId)
+                                    .ifPresent(this::saveAuthentication);
 
 
-                            }));
-            filterChain.doFilter(request, response);
+                        }));
+        filterChain.doFilter(request, response);
 
     }
 
 
+
+
     public void saveAuthentication(User myUser) {
-        log.info("saveAuthentication : {}"+myUser.toString());
+        log.info("saveAuthentication : {}" + myUser.toString());
         log.info("myUser.getUserId(): {}", myUser.getUserId());
         log.info("myUser.getRole().name(): {}", myUser.getRole().name());
         UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
@@ -107,13 +115,12 @@ public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDetailsUser, null,
                         authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
-        log.info("getAuthorities() : {}",authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
+        log.info("getAuthorities() : {}", authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
         log.info("authentification : {} ", authentication.toString());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("Role in saveAuthentication : {}", authentication.getAuthorities().toString());
 
     }
-
 
 
 }

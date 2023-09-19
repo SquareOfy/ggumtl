@@ -53,6 +53,8 @@ public class OAuth2Attributes {
         return User.builder()
                 .email(oAuth2UserInfo.getEmail())
                 .name(oAuth2UserInfo.getNickname())
+                .profileImageName("default.jpg")
+                .wrigglePoint(500.0)
                 .profileUrl(oAuth2UserInfo.getImageUrl())
                 .role(Role.GUEST)
                 .build();

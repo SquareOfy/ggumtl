@@ -53,8 +53,7 @@ public class SocialLoginService implements OAuth2UserService<OAuth2UserRequest, 
         log.info("getUser 시도");
         log.info("getOauthUserInfo() : {} ",attributes.getOAuth2UserInfo().toString());
 //        log.info("email : {} ", attributes.getOAuth2UserInfo().getEmail());
-        Optional<User> findUser = Optional.empty();
-//                userRepository.findByEmail();
+        Optional<User> findUser = userRepository.findByEmail(attributes.getOAuth2UserInfo().getEmail());
 
         if(findUser.isPresent()) {
 
