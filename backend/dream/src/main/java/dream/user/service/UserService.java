@@ -2,16 +2,16 @@ package dream.user.service;
 
 import antlr.Token;
 import dream.common.domain.ResultTemplate;
-import dream.common.exception.BadRequestException;
-import dream.common.exception.DuplicateException;
-import dream.common.exception.NotFoundException;
-import dream.common.exception.NotMatchException;
+import dream.common.exception.*;
 import dream.security.jwt.repository.TokenRepository;
 import dream.security.jwt.service.JwtService;
 import dream.s3.dto.response.ResponseImageUrl;
+import dream.user.domain.Follow;
+import dream.user.domain.FollowRepository;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import dream.user.dto.request.RequestNickname;
+import dream.user.dto.request.RequestToId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
-
+    private final FollowRepository followRepository;
     // 예시 - 지워질 코드
     public ResultTemplate getUser(long id) {
 
@@ -114,6 +114,47 @@ public class UserService {
             throw new DuplicateException(DuplicateException.NICKNAME_DUPLICATE);
         }
     }
+
+    @Transactional
+    public ResultTemplate follow(User user, RequestToId request){
+
+        User toUser = userRepository.findByUserId(request.getToId())
+                .orElseThrow(() ->  {
+                    throw new NoSuchElementException(NoSuchElementException.NO_SUCH_USER);
+                });
+
+
+        Follow follow = Follow.createFollow(user, toUser);
+
+        int checkExistFollow = followRepository.checkExistFollow(user.getUserId(), toUser.getUserId());
+        if(checkExistFollow>0) throw new DuplicateException(DuplicateException.FOLLOW_DUPLICATE);
+        if(toUser.getUserId()==user.getUserId()) throw new BadRequestException(BadRequestException.IMPOSSIBLE_FOLLOW_SELF);
+
+        followRepository.save(follow);
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+
+
+
+    }
+
+    @Transactional
+    public ResultTemplate unfollowToId(User user, Long toId){
+
+        User toUser = userRepository.findByUserId(toId)
+                .orElseThrow(() ->  {
+                    throw new NoSuchElementException(NoSuchElementException.NO_SUCH_USER);
+                });
+
+        Follow follow = followRepository.findByFromIdAndToId(user.getUserId(), toUser.getUserId())
+                .orElseThrow(()->{
+                    throw new BadRequestException(BadRequestException.UNFOLLOW_IMPOSSIBLE);
+                });
+
+        followRepository.delete(follow);
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+
+    }
+
 
 
 

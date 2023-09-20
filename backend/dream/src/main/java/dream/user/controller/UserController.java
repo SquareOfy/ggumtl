@@ -4,10 +4,12 @@ import dream.common.domain.ResultTemplate;
 import dream.security.jwt.domain.UserInfo;
 import dream.user.domain.User;
 import dream.user.dto.request.RequestNickname;
+import dream.user.dto.request.RequestToId;
 import dream.user.dto.response.ResponseUser;
 import dream.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +38,13 @@ public class UserController{
         return resultTemplate;
     }
 
+    @PostMapping("/refresh-token")
+    public ResultTemplate reissueRefreshToken(){
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+
     @PutMapping("signup/extra-info")
     public ResultTemplate setExtraInfo(HttpServletResponse response, @UserInfo User user, @RequestBody RequestNickname request){
 
@@ -56,6 +65,15 @@ public class UserController{
         return userService.updateNickname(user, nickname);
     }
 
+    @PostMapping("/follow")
+    public ResultTemplate postFollow(@UserInfo User user, @RequestBody RequestToId request){
+        return userService.follow(user, request);
+    }
+
+    @DeleteMapping("/unfollow/{toId}")
+    public ResultTemplate deleteFollow(@UserInfo User user, @PathVariable Long toId){
+        return userService.unfollowToId(user, toId);
+    }
 
 
 
