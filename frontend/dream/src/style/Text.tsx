@@ -6,6 +6,8 @@ import styled, {css} from 'styled-components'
 interface TextProps {
   children?: React.ReactNode;
   onClick ?: () => void;
+  className ?: string;
+
   $nightKeword ?: boolean;
 
   // 강조
@@ -13,6 +15,9 @@ interface TextProps {
 
   // 마진
   $MBHalf ?: boolean
+
+  // 수직정렬
+  $verticalAlign ?: boolean
 
   // 색상
   $nightWhite ?: boolean;
@@ -65,8 +70,15 @@ const StyledText = styled.div<TextProps>`
       color: #198754;
     `
   }
-
-
+  /* 수직정렬 */
+  ${(props) => 
+    props.$verticalAlign &&
+    css`
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    `
+  }
   ${(props) =>
     props.$nightWhite &&
     css`

@@ -15,26 +15,13 @@
   position: absolute;
   gap: .5em;
   flex-direction: column;
+  justify-content: space-between;
   background-color: rgb(190, 169, 215,0.95);
-  /* opacity: 50%; */
-  /* color: #212121; */
   height: 100%;
+  width: 100%;
   bottom: 0;
   border-radius: 1rem;
   transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
   padding: 1rem;
 
 }
-
-
-.text-body {
-  font-size: 1rem;
-  line-height: 130%;
-}
-
-
-/* Hover states */
-.card:hover .card-description {
-  transform: translateY(100%);
-}
-

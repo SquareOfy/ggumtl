@@ -9,6 +9,8 @@ const NightHomeList = () => {
   return (
     <>
     <NightHomeItem/>
+    <NightHomeItem/>
+    <NightHomeItem/>
     </>
   )
 }

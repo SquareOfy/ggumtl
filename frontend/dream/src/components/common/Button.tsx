@@ -10,6 +10,7 @@ interface ButtonProps {
     style ? : {};
     disabled?: boolean;    
     type?: 'submit' | 'button' | 'reset';
+    className ?:string;
 
     // 별개 스타일링
     // 너비
