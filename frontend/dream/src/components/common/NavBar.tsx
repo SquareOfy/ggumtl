@@ -43,7 +43,7 @@ const NavBar = () => {
         <ModeToggle/>
       </div>
       <div>
-        <Button $icon ><FiBell/></Button>
+        <Button $icon><FiBell/></Button>
       </div>
     </Bar>
     </>
