@@ -41,9 +41,9 @@ public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
             String accessToken = tokenDto.getAccessToken();
             response.addHeader(jwtService.getAccessHeader(),  "Bearer " + accessToken);
             log.info("response : {}", response.getHeader(jwtService.getAccessHeader()));
-//            log.info("userId : {} ",jwtService.extractUserIdFromAccessToken(accessToken));
+
             jwtService.sendTokenDto(response, tokenDto);
-//            response.sendRedirect("http://localhost:3000/sunset/signup");
+            response.sendRedirect("http://localhost:3000/sunset/signup");
 
 
         }else{
@@ -59,6 +59,7 @@ public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
         response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
+        response.sendRedirect("http://localhost:3000/");
         jwtService.sendTokenDto(response, tokenDto);
     }
 }

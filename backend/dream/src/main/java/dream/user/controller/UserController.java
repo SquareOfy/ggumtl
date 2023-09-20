@@ -1,11 +1,12 @@
 package dream.user.controller;
 
 import dream.common.domain.ResultTemplate;
-import dream.security.jwt.domain.UserId;
+import dream.security.jwt.domain.UserInfo;
+import dream.user.domain.User;
+import dream.user.dto.response.ResponseUser;
 import dream.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController{
 
     private final UserService userService;
@@ -25,11 +26,11 @@ public class UserController{
     }
 
     @GetMapping("/jwt-test")
-    public void testJwt(@UserId Long userId) {
-        log.info("userId : {} ", userId);
-//        log.info("userId : {} ", String.valueOf(userId));
-//        ResultTemplate resultTemplate = ResultTemplate.builder().status(HttpServletResponse.SC_OK).data(userId).build();
-//
-//        return resultTemplate;
+    public ResultTemplate testJwt(@UserInfo User user) {
+        log.info("User : {} ", user.toString());
+        ResponseUser responseUser = ResponseUser.from(user);
+        ResultTemplate resultTemplate = ResultTemplate.builder().status(HttpServletResponse.SC_OK).data(responseUser).build();
+
+        return resultTemplate;
     }
 }
