@@ -14,6 +14,7 @@ interface ImageProps {
     // 프로필
     // $circleImage ?: boolean;
     $smallProfileImage ?: boolean;
+    $tinyProfileImage ?: boolean;
     $badge ?: boolean;
     $largeBadge ?: boolean;
 
@@ -59,6 +60,24 @@ const StyledImage = styled.div<ImageProps>`
         height: 4rem;
         margin: 1rem;
         background-color: transparent;
+        & > img {
+          width: 100%;
+          object-fit: cover;
+          aspect-ratio: 1/1;
+          object-position: center;
+          border-radius: 50%;
+        }
+      `
+    }
+
+    // 매우 작은 프로필 이미지
+    ${(props) =>
+      props.$tinyProfileImage && 
+      css`
+        width: 2.5rem;
+        height: 2.5rem;
+        margin: 1rem;
+        background-color: red;
         & > img {
           width: 100%;
           object-fit: cover;

@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 // 컴포넌트
 import ChalContentListItem from "../daycommon/ChalContentListItem";
 import InfiniteScroll from "components/common/InfiniteScroll";
+import Text from "style/Text";
 
 // 스타일
 export interface DayChallengeObjType {
@@ -67,6 +68,7 @@ const DayChallengeList = () => {
 
   return (
     <>
+    <Text $isBold>Hot Challenge</Text>
     <InfiniteScroll 
     setArriveEnd={setArriveEnd} 
     // lastItemId={lastItemId}
