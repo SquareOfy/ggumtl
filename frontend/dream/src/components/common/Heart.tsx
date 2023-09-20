@@ -1,6 +1,6 @@
 
 // 리액트
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
 
 // 컴포넌트
@@ -26,10 +26,9 @@ interface HeartProps {
 const Heart = (props: HeartProps) => {
   const location = useLocation()
   const [isLike, setIsLike] = useState(props.isLike)
-  const [likeCount, setLikeCount] = useState(props.likedNumber)
+  const [likeCount, setLikeCount] = useState(() => props.likedNumber)
 
-  const textColor = () => {
-  }
+  console.log(props.likedNumber, "좋아요 숫자")
 
   return (
     <>
@@ -62,7 +61,7 @@ const Heart = (props: HeartProps) => {
           // 밤, 낮에 따른 글자 색상 변화
           // 추후 좋아요 수 넘길 필요
           $nightWhite={location.pathname.includes("night")} 
-          $black={location.pathname.includes("day")}>33</Text>
+          $black={location.pathname.includes("day")}> {likeCount} </Text>
       </HeartWrap>
     </Container>
     </>
