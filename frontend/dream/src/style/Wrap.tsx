@@ -172,22 +172,31 @@ const StyledWrap = styled.div<WrapProps>`
       width: 100%;
       height: 100%;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      padding:  0 0.5rem;
       position: fixed;
       top: 0;
       left: 0;
+      overflow: scroll;
       background-image: url("/image/background-image/day-background.jpg");
-      /* z-index: 300; */
-
+        
       & > div:nth-child(1) {
         display: grid;
         grid-template-columns: 1fr 8fr 1fr;
         align-items: center;
-        position: fixed;
+        /* position: fixed; */
         top: 0;
         left: 0;
+        width: 100%;
       }
+      
+      & > div:nth-child(2) {
+        margin-bottom: 5rem;
+        height: 100%;
+      }
+      
     `
   }
 

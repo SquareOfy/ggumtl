@@ -14,6 +14,7 @@ interface BoxProps {
   $keywordBoxDay ?: boolean;
   $challengeContentBox ?: boolean;
   $mainTitleBox ?: boolean;
+  $storyContentsBox ?: boolean;
 
   // 모드 관련
   $night ?: boolean;
@@ -131,8 +132,9 @@ const StyledBox = styled.div<BoxProps>`
   // 제목 박스 (내 챌린지)
   ${(props) => props.$mainTitleBox &&
     css`
-      padding: 0.5rem;
-      margin: 3rem;
+      padding: 0.5rem 2rem;
+      margin: 1rem 3rem;
+      margin-bottom: 0;
       border-radius: 1rem;
       background-color: rgba(249, 249, 249, 0.5);
       color: black;
@@ -151,6 +153,18 @@ const StyledBox = styled.div<BoxProps>`
       }
     `
   }
+
+  // 스토리 컨텐츠 박스
+  ${(props) => props.$storyContentsBox &&
+    css`
+      padding: 1rem;
+      margin-bottom: 3rem;
+      border-radius: 1rem;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    `
+  }
 `;
 
 
@@ -161,14 +175,11 @@ const StyledTitle = styled.p<BoxProps>`
   ${(props) => props.$boxTitle && 
     css`
       font-size : 1rem;
-      margin : 0px;
+      /* margin : 0; */
       position : relative;
       padding: 0 0.5rem;
       top: -1.6rem;
       font-weight: 800;
-      /* display:inline-block;
-      background-color: yellow;
-      border-radius: 1rem; */
     `
   }
 `;
