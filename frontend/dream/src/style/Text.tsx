@@ -26,10 +26,12 @@ interface TextProps {
   $danger ?: boolean;
   $nightMoney ?: boolean;
   $dayMoney ?: boolean;
-  
+  $dayWhite ?: boolean;
+
   //인풋 에러 메세지
   $wrongMessage ?: boolean;
   $successMessage ?: boolean;
+
 
 }
 const StyledText = styled.div<TextProps>`
@@ -114,6 +116,15 @@ const StyledText = styled.div<TextProps>`
     props.$dayMoney &&
     css`
       color: #424242;
+    `
+  }
+  ${(props) =>
+    props.$dayWhite &&
+    css`
+      color: #e8e8e8;
+      line-height: 1.5rem;
+      font-size: 1rem;
+      margin-top: 8rem;
     `
   }
 `

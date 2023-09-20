@@ -13,15 +13,13 @@ import styled from "styled-components";
 
 // 컴포넌트
 import Button from "components/common/Button";
-import Input from "style/Input";
 import Dropdown from "components/common/Dropdown";
+
+import Input from "style/Input";
 import TextArea from "style/TextArea";
+import Container from "style/Container";
 
 
-// 스타일
-const ChalCreateContainer = styled.div`
-  margin: 1rem;
-`
 const ChalCreate = () => {
   // 지금은 하드코딩
   const categoryList = ['카테고리','사랑','공부','운동']
@@ -42,7 +40,8 @@ const ChalCreate = () => {
   },[showCategoryDropdown, showPeriodDropdown])
 
   return (
-    <ChalCreateContainer>
+    <Container $dayBaseContainer $dayCreate>
+
     {/* 챌린지 제목 */}
     <Input $chalCreateInput $dayColor placeholder="챌린지 제목"></Input>
 
@@ -60,8 +59,9 @@ const ChalCreate = () => {
     </div>
 
     {/* 등록하기 버튼 */}
-    <Button $fullWidth $dayBlue $isBold>{'등록하기'}</Button>
-    </ChalCreateContainer>
+    <Button $dayCreate $fullWidth $dayBlue $isBold>{'등록하기'}</Button>
+
+    </Container>
   )
 }
 
