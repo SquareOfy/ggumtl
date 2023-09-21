@@ -47,7 +47,7 @@ function App() {
   
   // 라우터 이동 시에 url pathname 확인
   // const [theme,setTheme] = useState(sunsetTheme);
-  const themeMode = useSelector((state: RootState) => state.themeModeReducer.themeMode);
+  const themeMode = useSelector((state: RootState) => state.themeMode.themeMode);
   
   useEffect(()=>{
     if (location.pathname.includes('sunset')){

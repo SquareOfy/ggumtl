@@ -24,7 +24,7 @@ const ChalDetail = () => {
     <>
     {/* 공부흔적 남기기 */}
     <ChalDetailInfo />
-
+    
     {/* 참여하기 버튼 */}
 
     {/* 인증글 목록 */}

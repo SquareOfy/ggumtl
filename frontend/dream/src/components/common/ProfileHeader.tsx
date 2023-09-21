@@ -56,7 +56,7 @@ const ProgressBar = styled.div<ProgressBarProps>`
 `
 
 const ProfileHeader = () => {
-  const themeMode = useSelector((state: RootState) => state.themeModeReducer.themeMode);
+  const themeMode = useSelector((state: RootState) => state.themeMode.themeMode);
   const [isNight, setIsNight] = useState<boolean>(false);
   const [isStarClicked, setIsStarClicked] = useState<boolean>(true);
   const [isMyProfile, setIsMyProfile] = useState<boolean>(true); // 내 프로필인지 유저 확인

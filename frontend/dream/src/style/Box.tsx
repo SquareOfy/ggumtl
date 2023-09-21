@@ -9,6 +9,7 @@ interface BoxProps {
 
   // 사이즈 관련
   $fullWidth ?: boolean
+  $tripleWidth ?: boolean
 
   $wideTextBox ?: boolean;
   $keywordBoxNight ?: boolean;
@@ -16,6 +17,7 @@ interface BoxProps {
   $challengeContentBox ?: boolean;
   $mainTitleBox ?: boolean;
   $storyContentsBox ?: boolean;
+  $chalDetailBox ?: boolean;  // 챌린지 정보 박스
 
   // 모드 관련
   $night ?: boolean;
@@ -31,6 +33,12 @@ const StyledBox = styled.div<BoxProps>`
   ${(props) => props.$fullWidth &&
     css`
       width: 100%;
+    `
+  }
+
+  ${(props) => props.$tripleWidth &&
+    css`
+      width: 30%;
     `
   }
 
@@ -166,20 +174,34 @@ const StyledBox = styled.div<BoxProps>`
       align-items:center;
     `
   }
+
+  // 챌린지 디테일 박스
+  ${(props) => props.$chalDetailBox && 
+   css`
+      background-color: rgba(249, 249, 249, 0.7);
+      border-radius: 1rem;
+      margin-top: 1rem;
+      // 두번쨰 요소인 내용만 가운데 정렬
+      & :nth-child(2) {
+        text-align: center;
+      }
+    `
+  }  
+
 `;
 
 
 
 // 텍스트 박스 제목 관련
-const StyledTitle = styled.p<BoxProps>`
+const StyledTitle = styled.div<BoxProps>`
   
   ${(props) => props.$boxTitle && 
     css`
-      font-size : 1rem;
-      /* margin : 0; */
+      font-size : 0.8rem;
       position : relative;
-      padding: 0 0.5rem;
-      top: -1.6rem;
+      height:0; // relative가 그전 것에 영향을 안주기 위해 사용
+      padding: 0 0.7rem;
+      top: -0.4rem;
       font-weight: 800;
     `
   }

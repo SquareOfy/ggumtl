@@ -32,6 +32,8 @@ interface TextProps {
   $wrongMessage ?: boolean;
   $successMessage ?: boolean;
 
+  //챌린지 디테일 정보 박스 내부
+  $chalBoxInnerText ?: boolean;
 
 }
 const StyledText = styled.div<TextProps>`
@@ -127,6 +129,14 @@ const StyledText = styled.div<TextProps>`
       margin-top: 8rem;
     `
   }
+
+  ${(props) => 
+    props.$chalBoxInnerText && 
+    css`
+      line-height: 3.5rem;
+    `
+  }
+
 `
 
 const Text = (props:TextProps) => {

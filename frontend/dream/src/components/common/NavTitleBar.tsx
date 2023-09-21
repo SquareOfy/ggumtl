@@ -15,7 +15,7 @@ interface NavTitleProps {
 const NavTitleBar = (props:NavTitleProps) => {
 
   const [nightDayMode, setNightDayMode] = useState<boolean>(true);
-  const themeMode = useSelector((state :RootState) => state.themeModeReducer.themeMode);
+  const themeMode = useSelector((state :RootState) => state.themeMode.themeMode);
   
   useEffect(()=>{
     setNightDayMode(themeMode.mode === 'night' ? true : false)
