@@ -37,7 +37,7 @@ public class DreamCardService {
     /**
      * 밤 메인 화면에서 카드 리스트를 조회 하는 함수 !
      */
-    public ResultTemplate getNightMain(Long lastItemId, int size, User user) {
+    public ResultTemplate getNightMain(Long lastItemId, int size) {
 
         List<DreamCard> findCards = dreamCardQueryRepository.findDreamCardPaging(lastItemId, size);
         if (findCards.isEmpty()) throw new NotFoundException(NotFoundException.CARD_LIST_NOT_FOUND);
@@ -48,7 +48,7 @@ public class DreamCardService {
                     boolean isLike = findCard.getDreamCardLikes().stream()
                             .anyMatch(dreamCardLike ->
                                     dreamCardLike.getDreamCard().getDreamCardId().equals(findCard.getDreamCardId()) &&
-                                            dreamCardLike.getUser().getUserId().equals(user.getUserId()));
+                                            dreamCardLike.getUser().getUserId().equals(1L));
                     return ResponseDreamCard.from(findCard, isLike);
                 })
                 .collect(Collectors.toList());
