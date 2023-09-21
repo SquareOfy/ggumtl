@@ -13,7 +13,6 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DreamCardLike {
 
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dreamCardLikeId;
 
@@ -33,6 +32,4 @@ public class DreamCardLike {
 
         return dreamCardLike;
     }
-
-
 }

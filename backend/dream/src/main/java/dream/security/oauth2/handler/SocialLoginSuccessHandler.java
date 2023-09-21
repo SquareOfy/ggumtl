@@ -8,8 +8,10 @@ import dream.user.controller.UserController;
 import dream.user.domain.Role;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -28,6 +30,9 @@ public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final UserController userController;
+
+    @Value("${FRONT_URL}")
+    private String FRONT_URL;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("Social Login 성공");
@@ -39,11 +44,12 @@ public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
             log.info("userId :{}" ,oAuth2User.getUserId());
             log.info("oAuth2User : {}", oAuth2User);
             String accessToken = tokenDto.getAccessToken();
+            String refreshToken = tokenDto.getRefreshToken();
             response.addHeader(jwtService.getAccessHeader(),  "Bearer " + accessToken);
             log.info("response : {}", response.getHeader(jwtService.getAccessHeader()));
-//            log.info("userId : {} ",jwtService.extractUserIdFromAccessToken(accessToken));
+
             jwtService.sendTokenDto(response, tokenDto);
-//            response.sendRedirect("http://localhost:3000/sunset/signup");
+            response.sendRedirect(FRONT_URL+"?type=signup&accessToken="+accessToken+"&refreshToken="+refreshToken);
 
 
         }else{
@@ -60,5 +66,7 @@ public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
         response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
         jwtService.sendTokenDto(response, tokenDto);
+        response.sendRedirect(FRONT_URL+"?type=login&accessToken="+accessToken+"&refreshToken="+refreshToken);
+
     }
 }

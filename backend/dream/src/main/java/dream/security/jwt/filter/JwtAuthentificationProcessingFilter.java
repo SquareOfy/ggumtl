@@ -34,7 +34,9 @@ import java.util.Optional;
 @Slf4j
 public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL = "/login/oauth2/code/kakao";
+    private static final String NO_CHECK_URL1 = "/login/oauth2/code/kakao";
+    private static final String NO_CHECK_URL2 = "/login";
+
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
@@ -44,7 +46,7 @@ public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //jwt를 검증할 필요가 없는 url은 다음 filter호출 후 메서드 종료하기
-        if(request.getRequestURI().equals(NO_CHECK_URL)){
+        if(request.getRequestURI().equals(NO_CHECK_URL1)||request.getRequestURI().equals(NO_CHECK_URL2)){
             filterChain.doFilter(request, response);
             return;
         }
@@ -52,7 +54,7 @@ public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
         Optional<String> refreshToken = jwtService.extractRefreshToken(request);
 
         if(refreshToken.isPresent()){
-            checkRefreshTokenAndReIssueNewToken(response, refreshToken.get());
+            checkRefreshTokenAndReIssueNewToken(request, response, refreshToken.get());
 
         }else{
             checkAccessToken(request, response, filterChain);
@@ -60,17 +62,15 @@ public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
 
     }
 
-    public void checkRefreshTokenAndReIssueNewToken(HttpServletResponse response, String refreshToken) {
-        if(jwtService.isRefreshTokenValid(refreshToken)){
-            Optional<Long> userIdOptional = jwtService.extractUserIdFromRefreshToken(refreshToken);
+    public void checkRefreshTokenAndReIssueNewToken(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
+        if (jwtService.isRefreshTokenValid(refreshToken)) {
             jwtService.removeRefreshToken(refreshToken);
+            Long userId = jwtService.extractUserIdFromRefreshToken(refreshToken).get();
 
-            if(userIdOptional.isPresent()) {
-                log.info("RefreshToken & AccessToken 재발급");
-                jwtService.sendTokenDto(response, jwtService.createTokenDto(userIdOptional.get()));
-
-            }
-
+            log.info("RefreshToken & AccessToken 재발급");
+            jwtService.sendTokenDto(response, jwtService.createTokenDto(userId));
+        }else {
+            throw new InvalidRefreshTokenException(InvalidRefreshTokenException.INVALID_REFRESH_TOKEN);
         }
 
     }
@@ -95,7 +95,6 @@ public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
 
 
     public void saveAuthentication(User myUser) {
-        log.info("saveAuthentication : {}"+myUser.toString());
         log.info("myUser.getUserId(): {}", myUser.getUserId());
         log.info("myUser.getRole().name(): {}", myUser.getRole().name());
         UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
@@ -107,7 +106,7 @@ public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDetailsUser, null,
                         authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
-        log.info("getAuthorities() : {}",authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
+
         log.info("authentification : {} ", authentication.toString());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("Role in saveAuthentication : {}", authentication.getAuthorities().toString());
