@@ -12,6 +12,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import FooterBar from 'components/common/FooterBar';
 import SunsetMainPage from 'pages/sunset/SunsetMainPage';
 import LoginPage from 'pages/sunset/LoginPage';
+import GetTokenPage from 'pages/sunset/GetTokenPage';
 import SignUpPage from 'pages/sunset/SignUpPage';
 import NightHomePage from 'pages/night/home/NightHomePage';
 import DreamCreatePage from 'pages/night/dream/DreamCreatePage';
@@ -37,6 +38,7 @@ import ChalCreateCertPage from 'pages/day/challenge/ChalCreateCertPage';
 import ChalCapsuleListPage from 'pages/day/capsule/ChalCapsuleListPage';
 import DayAlertPage from 'pages/alert/DayAlertPage';
 import BackgroundImage from 'style/backgroundImage';
+
 
 function App() {
 
@@ -81,6 +83,8 @@ function App() {
         <Route path="/sunset/main" element={<SunsetMainPage/>} />
         <Route path="/sunset/login" element={<LoginPage/>}/>
         <Route path="/sunset/signup" element={<SignUpPage/>}/>
+        <Route path="/sunset/token" element={<GetTokenPage/>}/>
+
         {/* 밤 페이지 */}
         <Route path="/night/main" element={<NightHomePage/>}/>
         <Route path="/night/search" element={<NightSearchPage/>}/>

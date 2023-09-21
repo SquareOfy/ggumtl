@@ -12,6 +12,7 @@ import Button from "components/common/Button";
 import Text from "style/Text";
 import { FaCircleCheck,FaCircleXmark } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import basicHttp from "api/basicHttp";
 // import { BoxTitle } from "style/Box";
 
 
@@ -70,11 +71,20 @@ const SignUp = () => {
     if (regex.test(nickname) && (nickname.length <= 7) ){
       setNicknameInput(nickname)
       setWrongNicknameSign('good')
-      // axios(url) 보냈는데 
-      // response 가 중복(true)이라면 -> setWrongNicknameSign('double')
-      // 중복 x -> setWrongNicknameSign('good')
-      console.log('닉네임 중복 체크 api보냄')
     }
+  }
+  
+  // 닉네임 중복 체크 함수
+  const checkDoubleNickname = (nickname:string):void => {
+    console.log('닉네임 중복 체크 api보냄')
+    // axios(url) 보냈는데 
+    // response 가 중복(true)이라면 -> setWrongNicknameSign('double')
+    // 중복 x -> setWrongNicknameSign('good')
+    basicHttp.get(`/user/nickname/duplication/${nickname}`)
+      .then((response)=>{
+        console.log(response)
+      })
+      .catch((e) => console.log(e))
   }
 
   // 가입 완료 버튼 클릭 시 함수
@@ -92,11 +102,6 @@ const SignUp = () => {
     }
   }
 
-
-  useEffect(()=>{
-
-  })
-
   return (
     <SignUpContainer>
       {/* 로고 */}
@@ -107,6 +112,7 @@ const SignUp = () => {
         placeholder="닉네임" 
         value={nicknameInput}
         onChange={(e)=>{checkNickname(e.target.value)}}
+        onBlur={(e)=>{checkDoubleNickname(e.target.value)}}
       ></Input>
       {/* 경고창 */}
       <CheckMessageBox>
