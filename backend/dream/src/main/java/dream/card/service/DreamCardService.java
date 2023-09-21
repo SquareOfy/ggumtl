@@ -10,6 +10,7 @@ import dream.common.domain.ResultTemplate;
 import dream.common.exception.DeleteException;
 import dream.common.exception.NotFoundException;
 import dream.common.exception.NotMatchException;
+import dream.security.jwt.domain.UserInfo;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class DreamCardService {
     /**
      * 밤 메인 화면에서 카드 리스트를 조회 하는 함수 !
      */
-    public ResultTemplate getNightMain(Long lastItemId, int size) {
+    public ResultTemplate getNightMain(Long lastItemId, int size, User user) {
 
         List<DreamCard> findCards = dreamCardQueryRepository.findDreamCardPaging(lastItemId, size);
         if (findCards.isEmpty()) throw new NotFoundException(NotFoundException.CARD_LIST_NOT_FOUND);
@@ -47,7 +48,7 @@ public class DreamCardService {
                     boolean isLike = findCard.getDreamCardLikes().stream()
                             .anyMatch(dreamCardLike ->
                                     dreamCardLike.getDreamCard().getDreamCardId().equals(findCard.getDreamCardId()) &&
-                                            dreamCardLike.getUser().getUserId().equals(1L));
+                                            dreamCardLike.getUser().getUserId().equals(user.getUserId()));
                     return ResponseDreamCard.from(findCard, isLike);
                 })
                 .collect(Collectors.toList());
