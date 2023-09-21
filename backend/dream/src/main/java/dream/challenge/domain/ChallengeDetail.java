@@ -46,6 +46,9 @@ public class ChallengeDetail extends BaseUpdateTimeEntity {
     @OneToMany(mappedBy = "challengeDetail", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChallengeDetailLike> challengeDetailLikes;
 
+    @OneToMany(mappedBy = "challengeDetail", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<comment> comments;
+
     public static ChallengeDetail makeChallengeDetail(User user,RequestChallengeDetail request, Challenge challenge, String fileName){
 
         ChallengeDetail challengeDetail = new ChallengeDetail();

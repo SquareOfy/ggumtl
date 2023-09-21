@@ -12,6 +12,7 @@ public class NoSuchElementException extends RuntimeException {
     public static final String NO_SUCH_EXPIREAT_IN_ACCESS_TOKEN = "ACCESS TOKEN 내에 만료 기한이 없습니다.";
     public static final String NO_SUCH_ACCESSTOKEN_IN_HEADER = "헤더에 ACCESS TOKEN이 없습니다.";
     public static final String NO_SUCH_COMMENT = "해당 챌린지 인증글에 댓글이 존재하지 않습니다.";
+    public static final String NO_SUCH_CHALLENGE_DETAIL = "해당 챌린지에 인증글이 없습니다.";
 
 
     public NoSuchElementException(String message) {
