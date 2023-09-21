@@ -28,4 +28,25 @@ public class Bidding extends BaseTimeEntity {
 
     private int biddingMoney;
 
+
+    public static Bidding insertFirstBidding(Auction auction){
+
+        Bidding bidding = new Bidding();
+        bidding.user = auction.getDreamCard().getDreamCardOwner();
+        bidding.auction = auction;
+        bidding.biddingMoney = auction.getStartAuctionMoney();
+
+        return bidding;
+    }
+
+    public static Bidding insertBidding(Auction auction, User user, int biddingMoney){
+
+        Bidding bidding = new Bidding();
+
+        bidding.auction = auction;
+        bidding.user = user;
+        bidding.biddingMoney = biddingMoney;
+        return bidding;
+    }
+
 }

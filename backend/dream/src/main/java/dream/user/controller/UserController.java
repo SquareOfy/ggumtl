@@ -19,13 +19,16 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-public class UserController{
+public class UserController {
 
     private final UserService userService;
 
+//    private User user = userService.getUserForDev(20L);
+
+
     // 예시 - 지워질 코드
     @GetMapping("/{id}")
-    public ResultTemplate getUser(@PathVariable("id") long id){
+    public ResultTemplate getUser(@PathVariable("id") long id) {
         return userService.getUser(id);
     }
 
@@ -39,42 +42,69 @@ public class UserController{
     }
 
     @PostMapping("/refresh-token")
-    public ResultTemplate reissueRefreshToken(){
+    public ResultTemplate reissueRefreshToken() {
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
-
     @PutMapping("signup/extra-info")
-    public ResultTemplate setExtraInfo(HttpServletResponse response, @UserInfo User user, @RequestBody RequestNickname request){
+    public ResultTemplate setExtraInfo(HttpServletResponse response, @UserInfo User user, @RequestBody RequestNickname request) {
 
         return userService.setNickname(response, user, request);
     }
-    @PostMapping("/logout")
-    public ResultTemplate logout(@UserInfo User user, HttpServletRequest request){
 
-        return userService.logout(user,request );
+    @PostMapping("/logout")
+    public ResultTemplate logout(@UserInfo User user, HttpServletRequest request) {
+
+        return userService.logout(user, request);
 
     }
+
+
+//개발용
     @GetMapping("/nickname/duplication/{nickname}")
-    public ResultTemplate checkDuplicationNick(@PathVariable RequestNickname nickname){
+    public ResultTemplate checkDuplicationNick( @PathVariable RequestNickname nickname){
+        User user = userService.getUserForDev(20L);
         return userService.checkDuplicateNick(nickname);
     }
     @PutMapping("/nickname")
-    public ResultTemplate updateNickname(@UserInfo User user, @RequestBody RequestNickname nickname){
+    public ResultTemplate updateNickname( @RequestBody RequestNickname nickname){
+        User user = userService.getUserForDev(20L);
         return userService.updateNickname(user, nickname);
     }
 
     @PostMapping("/follow")
-    public ResultTemplate postFollow(@UserInfo User user, @RequestBody RequestToId request){
+    public ResultTemplate postFollow(@RequestBody RequestToId request){
+       User user = userService.getUserForDev(20L);
         return userService.follow(user, request);
     }
 
     @DeleteMapping("/unfollow/{toId}")
-    public ResultTemplate deleteFollow(@UserInfo User user, @PathVariable Long toId){
+    public ResultTemplate deleteFollow(@PathVariable Long toId){
+        User user = userService.getUserForDev(20L);
         return userService.unfollowToId(user, toId);
     }
 
+
+    //배포용
+//    @GetMapping("/nickname/duplication/{nickname}")
+//    public ResultTemplate checkDuplicationNick(@PathVariable RequestNickname nickname){
+//        return userService.checkDuplicateNick(nickname);
+//    }
+//    @PutMapping("/nickname")
+//    public ResultTemplate updateNickname(@UserInfo User user, @RequestBody RequestNickname nickname){
+//        return userService.updateNickname(user, nickname);
+//    }
+//
+//    @PostMapping("/follow")
+//    public ResultTemplate postFollow(@UserInfo User user, @RequestBody RequestToId request){
+//        return userService.follow(user, request);
+//    }
+//
+//    @DeleteMapping("/unfollow/{toId}")
+//    public ResultTemplate deleteFollow(@UserInfo User user, @PathVariable Long toId){
+//        return userService.unfollowToId(user, toId);
+//    }
 
 
 }

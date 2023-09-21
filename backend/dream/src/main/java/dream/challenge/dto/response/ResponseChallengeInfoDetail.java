@@ -15,6 +15,7 @@ public class ResponseChallengeInfoDetail {
     private String challengeTitle;
     private String challengeContent;
     private String period;
+    private String badgeUrl;
     private int participationCount;
     private String keyword;
     private List<ResponseChallengeUserRanking> ranking;
@@ -28,6 +29,7 @@ public class ResponseChallengeInfoDetail {
         response.challengeTitle = challengeWithKeyword.getChallengeTitle();
         response.challengeContent = challengeWithKeyword.getChallengeContent();
         response.period = challengeWithKeyword.getPeriod();
+        response.badgeUrl = challengeWithKeyword.getBadgeUrl();
         response.participationCount = challengeWithParticipates.getChallengeParticipations().size();
         response.keyword = challengeWithKeyword.getKeywords().get(0).getKeyword().getKeyword();
         response.ranking = ranking;

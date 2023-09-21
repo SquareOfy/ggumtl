@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestCardReview {
-    private long dreamCardId;
+    private Long dreamCardId;
     private int reviewPoint;
 }

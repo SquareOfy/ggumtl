@@ -14,7 +14,6 @@ import dream.common.exception.NotFoundException;
 import dream.common.exception.DuplicateException;
 import dream.s3.dto.request.RequestChallengeDetail;
 import dream.s3.dto.response.ResponseBadgeImage;
-import dream.user.domain.FollowRepository;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +37,7 @@ public class ChallengeService {
     private final DreamKeywordRepository dreamKeywordRepository;
     private final commentQueryRepository commentQueryRepository;
     private final ChallengeQueryRepository challengeQueryRepository;
-    private final ChallengeDetailRepositoy challengeDetailRepositoy;
+    private final ChallengeDetailRepository challengeDetailRepository;
     private final ChallengeKeywordRepository challengeKeywordRepository;
     private final ChallengeDetailQueryRepository challengeDetailQueryRepository;
     private final ChallengeParticipationRepository challengeParticipationRepository;
@@ -221,7 +220,7 @@ public class ChallengeService {
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
 
         ChallengeDetail challengeDetail = ChallengeDetail.makeChallengeDetail(user, requestChallengeDetail, challenge, fileName);
-        challengeDetailRepositoy.save(challengeDetail);
+        challengeDetailRepository.save(challengeDetail);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
@@ -277,7 +276,7 @@ public class ChallengeService {
     @Transactional
     public ResultTemplate postComment(User user, RequestComment request) {
 
-        ChallengeDetail challengeDetail = challengeDetailRepositoy.findById(request.getDetailId())
+        ChallengeDetail challengeDetail = challengeDetailRepository.findById(request.getDetailId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_DETAIL_NOT_FOUND));
 
         comment postComment = comment.makeComment(user, request, challengeDetail);
@@ -299,7 +298,7 @@ public class ChallengeService {
     @Transactional
     public ResultTemplate postLike(User user, Long challengeDetailId) {
 
-        ChallengeDetail challengeDetail = challengeDetailRepositoy.findById(challengeDetailId)
+        ChallengeDetail challengeDetail = challengeDetailRepository.findById(challengeDetailId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_DETAIL_NOT_FOUND));
 
         challengeDetail.addChallengeDetailLike(user);
@@ -310,11 +309,71 @@ public class ChallengeService {
     @Transactional
     public ResultTemplate postUnLike(User user, Long challengeDetailId) {
 
-        ChallengeDetail challengeDetail = challengeDetailRepositoy.findById(challengeDetailId)
+        ChallengeDetail challengeDetail = challengeDetailRepository.findById(challengeDetailId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_DETAIL_NOT_FOUND));
 
         challengeDetail.deleteChallengeDetailLike(user);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    public ResultTemplate getChallengeDetails(User user, Long challengeId, Long lastItemId, int size) {
+
+        List<ChallengeDetail> list = challengeDetailQueryRepository.getChallengeDetailByChallengeId(challengeId, lastItemId, size);
+        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_CHALLENGE_DETAIL);
+
+        List<ResponseChallengeDetail> challengeDetailList = new ArrayList<>();
+        int count = 0;
+        for (ChallengeDetail challengeDetail : list) {
+            boolean isLike = challengeDetail.getChallengeDetailLikes().stream()
+                    .anyMatch(like -> like.getUser().getUserId().equals(user.getUserId()));
+
+            List<ChallengeDetail> forCountList = challengeDetailQueryRepository
+                    .getChallengeDetailByChallengeIdAndUserId(challengeId, challengeDetail.getUser().getUserId());
+
+            ResponseChallengeDetail tmp = ResponseChallengeDetail.from(challengeDetail, isLike, forCountList.size());
+            // challengeDetailCount 처리
+            challengeDetailList.add(tmp);
+            if(++count == size) break;
+        }
+
+        boolean hasNext = (list.size() > size);
+        ResponseChallengeDetailResult response = ResponseChallengeDetailResult.from(challengeDetailList, hasNext);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getMyChallengeList(User user, Long lastItemId, int size) {
+
+        List<Challenge> list = challengeQueryRepository.getChallengeByUserId(user.getUserId(), lastItemId, size);
+        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_CHALLENGE_LIST);
+
+        List<ResponseMyChallengeInfo> resultList = new ArrayList<>();
+        int count = 0;
+        for(Challenge challenge : list){
+            ResponseMyChallengeInfo tmp = ResponseMyChallengeInfo.from(challenge);
+            resultList.add(tmp);
+            if(++count == size) break;
+        }
+
+        boolean hasNext = (list.size() > size);
+        ResponseMyChallengeInfoResult response = ResponseMyChallengeInfoResult.from(resultList, hasNext);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getMyChallengeInfo(User user, Long challengeMidId) {
+
+        Challenge challenge = challengeRepository.findById(challengeMidId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        List<ChallengeDetail> challengeDetailList = challengeDetailQueryRepository
+                .getOneChallengeDetailByUserIdAndChallengeIdAndDate(user.getUserId(), challengeMidId);
+
+        boolean canWrite = challengeDetailList.isEmpty();
+
+        ResponseMyChallengeInfoDetail response = ResponseMyChallengeInfoDetail.from(challenge, canWrite);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 }
