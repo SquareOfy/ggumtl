@@ -45,16 +45,17 @@ const BiddingWrap = styled.div`
 `
 
 // 타입
-interface AuctionBuyingAxiosType {
-
+interface AuctionBuyingProps {
+  biddingMoney: number;
+  askingMoney: number;
 }
 
-const AuctionBuying = () => {
+const AuctionBuying = ({biddingMoney, askingMoney} :AuctionBuyingProps) => {
 
   const point :number = 8000 // 서버에서받을 값(내 꿈머니)
-  const biddingMoney :number = 5000 // 서버에서 받을 값
+  // const biddingMoney :number = 5000 // 서버에서 받을 값
   const [myBiddingMoney, setMyBiddingMoney] = useState<number>(biddingMoney)
-  const [askingMoney, setAskingMoney] = useState<number>(1000)
+  const [currentAskingMoney, setAskingMoney] = useState<number>(askingMoney)
 
   // 숫자만 입력 받는 정규식
   const numberCheck = /^[0-9]+$/;
@@ -87,7 +88,7 @@ const AuctionBuying = () => {
   }
   
   const addBiddingMoney = () => {
-    setMyBiddingMoney(() => myBiddingMoney+askingMoney)
+    setMyBiddingMoney(() => myBiddingMoney+currentAskingMoney)
   }
 
   // push 알림 확인
@@ -99,19 +100,11 @@ const AuctionBuying = () => {
 
   return (
     <>
-      {/* <Image $mainImage $nightImageBorder>
-        <img src={`${process.env.PUBLIC_URL}/image/samsung.png`}
-        />
-      </Image> */}
-
-      {/* 실험용 */}
-      <Button></Button>
-
       {/* 호가 */}
       <Container $centerContainer>
         <Button $nightPalePurple $biddingBtn
         onClick={addBiddingMoney}
-        ><Text $black $isBold>+{askingMoney}</Text></Button>
+        ><Text $black $isBold>+{currentAskingMoney}</Text></Button>
       </Container>
 
       <AuctionBidContainer>

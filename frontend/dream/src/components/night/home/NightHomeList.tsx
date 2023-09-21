@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 
 // 외부 라이브러리 파일
 import axios from "axios";
-import { baseUrl } from "api/api";
+import basicHttp from "api/basicHttp";
 
 // 컴포넌트
 import NightHomeItem from "./NightHomeItem";
@@ -15,31 +15,21 @@ export interface NightHomeItemType {
   dreamCardOwner: number;
   ownerNickname: string;
   ownerProfileUrl: string;
+  dreamCardImageUrl: string;
   dreamCardAuthor: number; // 꿈 카드 작성자
   createAt: string;
   likedNumber: number,
   like: boolean;
 }
 
-export interface NightHomeListType {
-  [index: number] : NightHomeItemType[]
-}
+export interface NightHomeListType extends Array<NightHomeItemType>{}
 
 const NightHomeList = () => {
-  const initNightHomeDataSet :NightHomeItemType = {
-      dreamCardId: 0,
-      dreamCardOwner: 0,
-      ownerNickname: "",
-      ownerProfileUrl: "",
-      dreamCardAuthor: 0, // 꿈 카드 작성자
-      createAt: "",
-      likedNumber: 0,
-      like: false,  
-    }
-  const [nightHomeDataSet, setNightHomeDataSet] = useState<any>([initNightHomeDataSet])
+
+  const [nightHomeDataSet, setNightHomeDataSet] = useState<NightHomeListType>([])
 
   useEffect(() => {
-    axios.get(`${baseUrl}/night/?size=${6}`)
+    basicHttp.get(`/night/?size=${6}`)
     .then((res)=> {
       setNightHomeDataSet(res.data.data.list)
       // setNightHomeDataSet((prev:any) => {

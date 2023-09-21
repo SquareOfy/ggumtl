@@ -20,7 +20,6 @@ import DreamDetailPage from 'pages/night/dream/DreamDetailPage';
 import AuctionCreatePage from 'pages/night/auction/AuctionCreatePage';
 import AuctionMainPage from 'pages/night/auction/AuctionMainPage';
 import AuctionDetailPage from 'pages/night/auction/AuctionDetailPage';
-import AuctionBuyingPage from 'pages/night/auction/AuctionBuyingPage';
 import AuctionBuyingSuccessPage from 'pages/night/auction/AuctionBuyingSuccessPage';
 import NightSearchPage from 'pages/night/search/NightSearchPage';
 import NightSearchDetailPage from 'pages/night/search/NightSearchDetailPage';
@@ -97,7 +96,7 @@ function App() {
         <Route path="/night/auction/detail/:dreamCardId" element={<AuctionDetailPage/>}/>
          {/* 라우터 경로만 */}
         <Route path="/night/auction/detail/:dreamCardId/create" element={<AuctionCreatePage/>}/> 
-        <Route path="/night/auction/bidding/:dreamCardId" element={<AuctionBuyingPage/>}/> 
+        <Route path="/night/auction/bidding/:dreamCardId" element={<AuctionDetailPage/>}/> 
 
         <Route path="/night/auction/bidding/review" element={<AuctionBuyingSuccessPage/>}/> 
 

@@ -28,8 +28,6 @@ const Heart = (props: HeartProps) => {
   const [isLike, setIsLike] = useState(props.isLike)
   const [likeCount, setLikeCount] = useState(() => props.likedNumber)
 
-  console.log(props.likedNumber, "좋아요 숫자")
-
   return (
     <>
     <Container $baseContainer>

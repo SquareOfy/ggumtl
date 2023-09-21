@@ -16,3 +16,15 @@ export const changeDate = (date:string|undefined) :string => {
 
   return [year, month, day].join("/")
 }
+
+export const changeDateHour = (date: string | undefined) :string => {
+  if (date === undefined) return "0"
+    const createdDate = new Date(date)
+    const year = createdDate.getFullYear()
+    const month = createdDate.getMonth() +1
+    const day = createdDate.getDate()
+    const hour = createdDate.getHours()
+    const miniutes = createdDate.getMinutes()
+    
+    return [year, month, day].join(".") + " " + [hour, miniutes].join(":")
+}

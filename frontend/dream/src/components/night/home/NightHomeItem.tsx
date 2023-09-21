@@ -1,14 +1,11 @@
-// 제목
-{/* <NightFlipCard></NightFlipCard> */}
-// 좋아요
-
 // 리액트
 import React, {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 // 외부 파일
 import axios from "axios";
-import { baseUrl } from "api/api";
 import { changeDate } from "utils/dateForm";
+import basicHttp from "api/basicHttp";
 
 // 컴포넌트
 import NightFlipCard from "../nightcommon/NightFlipCard";
@@ -73,22 +70,29 @@ export interface ReverseCardType {
   positiveGrade: string;
   rareGrade: string;
   auctionStatus: string;
+  dreamCardImageUrl: string;
   isShow: string;
   keywords: string[];
 }
 
 const NightHomeItem = ({cardData}:NightHomeItemProps) => {
-  console.log("왔니", cardData.ownerProfileUrl)
+  const navigation = useNavigate()
   const [reverseCard, setReverseCard] = useState<ReverseCardType | null>(null)
-
   useEffect(()=> {
-    axios(`${baseUrl}/night/dream/detail/${cardData.dreamCardId}`)
+    basicHttp(`/night/dream/detail/${cardData.dreamCardId}`)
     .then(res=> {
       setReverseCard(res.data.data)
-      console.log(res.data, "아이템")
+      console.log(res.data.data)
     })
     .catch(err => console.log(err, "아이템 에러"))
   }, [])
+
+  
+  // 꿈 주인 유저 프로필로 이동
+  const moveUserProfile = () => {
+    navigation(`/night/profile/${cardData?.dreamCardOwner}`)
+  }
+  
   return (
     <>
     <Container $baseContainer>
@@ -97,9 +101,14 @@ const NightHomeItem = ({cardData}:NightHomeItemProps) => {
         <ProfileWrap>
           <CustomImage 
           // 여기에 이동하는 곳
-          onClick={()=>console.log("짠")}
-          ><img src={cardData.ownerProfileUrl}/></CustomImage>
-          <Text $verticalAlign $nightWhite> {reverseCard?.ownerNickname} </Text>
+          onClick={moveUserProfile}
+          >
+            {/* 에러나서 주석처리 */}
+            {/* <img src={cardData?.ownerProfileUrl} alt="없음"/> */}
+          </CustomImage>
+          <Text $verticalAlign $nightWhite
+          onClick={moveUserProfile}
+          > {reverseCard?.ownerNickname} </Text>
         </ProfileWrap>
         <Text $verticalAlign $nightWhite>{changeDate(cardData.createAt)}</Text>
       </ProfileDateWrap>

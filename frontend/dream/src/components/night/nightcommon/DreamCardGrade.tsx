@@ -21,6 +21,7 @@ const CustomGradeWrappingBox = styled(GradeWrappingBox)`
 
 const DreamCardGrade = (props:DreamCardGradeProps) => {
   const {positiveGrade, rareGrade} = props
+  console.log(props, "그레이드")
   return (
     <>
     <CustomGradeWrappingBox>
