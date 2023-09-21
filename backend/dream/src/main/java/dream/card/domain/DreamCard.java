@@ -1,6 +1,7 @@
 package dream.card.domain;
 
 
+import dream.auction.domain.Auction;
 import dream.card.dto.request.RequestDreamCardDetail;
 import dream.card.dto.request.RequestKeyword;
 import dream.common.domain.BaseCheckType;
@@ -64,6 +65,9 @@ public class DreamCard extends BaseTimeEntity {
     @OneToMany(mappedBy = "dreamCard", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WriggleReview> wriggleReviews;
 
+    @OneToMany(mappedBy = "dreamCard", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Auction> auction;
+
     public void updateHits(){
         this.hits++;
     }
@@ -121,5 +125,13 @@ public class DreamCard extends BaseTimeEntity {
         this.isShow = BaseCheckType.T;
     }
 
+    public void endAuction(User user){
+        this.dreamCardOwner = user;
+        this.auctionStatus = BaseCheckType.F;
+    }
+
+    public void addReview(User buyer, User seller){
+        wriggleReviews.add(WriggleReview.makeReview(this, buyer, seller));
+    }
 
 }

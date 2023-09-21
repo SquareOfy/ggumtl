@@ -11,6 +11,9 @@ public class NotFoundException extends RuntimeException {
     public static final String COMMENT_NOT_FOUND = "존재하지 않는 댓글입니다.";
     public static final String FOLLOWING_NOT_FOUND = "팔로우하는 유저가 없습니다.";
     public static final String FOLLOWER_NOT_FOUND = "팔로잉하는 유저가 없습니다.";
+    public static final String AUCTION_NOT_FOUND = "존재하는 경매가 없습니다.";
+    public static final String BIDDING_NOT_FOUND = "존재하는 입찰이 없습니다.";
+    public static final String REVIEW_NOT_FOUND = "존재하는 리뷰가 없습니다.";
 
 
     public NotFoundException(String message) {

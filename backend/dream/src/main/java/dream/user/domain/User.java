@@ -48,5 +48,9 @@ public class User extends BaseTimeEntity {
         this.profileUrl = updateProfileUrlName;
     }
 
+    public void purchaseDreamCard(int point){
+        this.point -= point;
+    }
+
 
 }
