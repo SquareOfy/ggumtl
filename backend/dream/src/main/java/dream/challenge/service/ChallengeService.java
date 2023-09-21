@@ -295,4 +295,26 @@ public class ChallengeService {
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
+
+    @Transactional
+    public ResultTemplate postLike(User user, Long challengeDetailId) {
+
+        ChallengeDetail challengeDetail = challengeDetailRepositoy.findById(challengeDetailId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_DETAIL_NOT_FOUND));
+
+        challengeDetail.addChallengeDetailLike(user);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    @Transactional
+    public ResultTemplate postUnLike(User user, Long challengeDetailId) {
+
+        ChallengeDetail challengeDetail = challengeDetailRepositoy.findById(challengeDetailId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_DETAIL_NOT_FOUND));
+
+        challengeDetail.deleteChallengeDetailLike(user);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
 }
