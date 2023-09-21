@@ -10,23 +10,23 @@ import dream.auction.dto.request.RequestChangeOwner;
 import dream.auction.dto.response.ResponseAuction;
 import dream.auction.dto.response.ResponseAuctionDetail;
 import dream.auction.dto.response.ResponseAuctionList;
+import dream.card.domain.CardKeyword;
 import dream.card.domain.DreamCard;
 import dream.card.domain.DreamCardRepository;
 import dream.card.dto.request.RequestDreamCardId;
-import dream.card.dto.response.ResponseDreamCard;
-import dream.card.dto.response.ResponseDreamCardList;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.NotFoundException;
 import dream.common.exception.NotMatchException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuctionService {
@@ -58,6 +58,11 @@ public class AuctionService {
 
         List<Auction> findAuctions = auctionQueryRepository.findAuctionPaging(lastItemId, size, keyword);
         if (findAuctions.isEmpty()) throw new NotFoundException(NotFoundException.AUCTION_LIST_NOT_FOUND);
+        List<CardKeyword> cardKeyword = findAuctions.get(0).getDreamCard().getCardKeyword();
+
+        for (CardKeyword cardKeyword1 : cardKeyword) {
+            log.info("{}", cardKeyword1.getKeyWordId().getKeyword());
+        }
 
         List<ResponseAuction> auctions = findAuctions.stream()
                 .limit(size)

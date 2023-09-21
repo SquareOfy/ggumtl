@@ -92,6 +92,20 @@ public class ChallengeDetailQueryRepository {
                 .fetch();
     }
 
+    public List<ChallengeDetail> getChallengeDetailByUserIdAndChallengeIdAndDate(long userId, long challengeId) {
+        QChallengeDetail challengeDetail = QChallengeDetail.challengeDetail;
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+        return queryFactory.selectFrom(challengeDetail)
+                .where(
+                        challengeDetail.user.userId.eq(userId),
+                        challengeDetail.challenge.challengeId.eq(challengeId),
+                        challengeDetail.createdAt.between(startOfDay, endOfDay)
+                )
+                .fetch();
+    }
+
 
     private BooleanExpression lastItemIdLt(Long lastItemId) {
         return lastItemId != null ? challengeDetail.challengeDetailId.lt(lastItemId) : null;

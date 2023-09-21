@@ -12,7 +12,6 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChallengeKeyword {
 
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long challengeKeywordId;
 
@@ -24,4 +23,12 @@ public class ChallengeKeyword {
     @ManyToOne(fetch = FetchType.LAZY)
     private DreamKeyword keyword;
 
+    public static ChallengeKeyword makeChallengeKeyword(Challenge challenge, DreamKeyword keyword){
+
+        ChallengeKeyword challengeKeyword = new ChallengeKeyword();
+        challengeKeyword.challenge = challenge;
+        challengeKeyword.keyword = keyword;
+
+        return challengeKeyword;
+    }
 }

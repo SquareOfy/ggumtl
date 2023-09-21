@@ -1,5 +1,8 @@
 package dream.challenge.controller;
 
+import dream.challenge.domain.ChallengeDetail;
+import dream.challenge.dto.request.RequestChallenge;
+import dream.challenge.dto.request.RequestComment;
 import dream.challenge.service.ChallengeService;
 import dream.challenge.dto.request.RequestTimeCapsule;
 import dream.challenge.dto.request.RequestChallengeId;
@@ -13,7 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/day")
+@RequestMapping(value = "/api/day")
 public class ChallengeController {
 
     private final ChallengeService challengeService;
@@ -89,4 +92,48 @@ public class ChallengeController {
 
         return challengeService.postTimeCapsule(user, request);
     }
+
+    @GetMapping(value = "/challenge/writeDetailPossible/{challengeId}")
+    public ResultTemplate writeDetailPossible(@PathVariable("challengeId") Long challengeId){
+
+        User user = userRepository.findByUserId(2L).
+                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        return challengeService.writeDetailPossible(user, challengeId);
+    }
+
+    @PostMapping(value = "/challenge/new")
+    public ResultTemplate postChallenge(@RequestBody RequestChallenge request){
+
+        User user = userRepository.findByUserId(2L).
+                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        Long challengeId = challengeService.postChallenge(user, request);
+
+        return challengeService.postChallengeKeyword(challengeId, request);
+    }
+
+    @GetMapping(value = "/challange/detail/{detailId}/comment")
+    public ResultTemplate getComments(@PathVariable("detailId") Long detailId,
+                                      @RequestParam(value = "lastItemId", required = false) Long lastItemId,
+                                      @RequestParam("size") int size){
+
+        return challengeService.getComments(detailId, lastItemId, size);
+    }
+
+    @PostMapping(value = "/challange/detail/comment")
+    public ResultTemplate postComments(@RequestBody RequestComment request){
+
+        User user = userRepository.findByUserId(2L).
+                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        return challengeService.postComment(user, request);
+    }
+
+    @DeleteMapping(value = "/challange/detail/comment/{commentId}")
+    public ResultTemplate deleteComment(@PathVariable("commentId") Long commentId) {
+
+        return challengeService.deleteComment(commentId);
+    }
+
 }

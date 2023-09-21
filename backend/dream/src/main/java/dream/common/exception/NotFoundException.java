@@ -6,7 +6,9 @@ public class NotFoundException extends RuntimeException {
     public static final String CARD_NOT_FOUND = "존재하지 않는 꿈 카드입니다.";
     public static final String DREAM_KEYWORD_NOT_FOUND = "생성된 키워드가 없습니다.";
     public static final String CHALLENGE_NOT_FOUND = "존재하지 않는 챌린지입니다.";
-    public static final String AUCTION_LIST_NOT_FOUND = "생성된 경매가 없습니다..";
+    public static final String AUCTION_LIST_NOT_FOUND = "생성된 경매가 없습니다.";
+    public static final String CHALLENGE_DETAIL_NOT_FOUND = "존재하지 않는 인증 글입니다.";
+    public static final String COMMENT_NOT_FOUND = "존재하지 않는 댓글입니다.";
 
     public NotFoundException(String message) {
         super(message);

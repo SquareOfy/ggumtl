@@ -4,12 +4,15 @@ package dream.challenge.service;
 import dream.card.domain.DreamKeyword;
 import dream.card.domain.DreamKeywordRepository;
 import dream.challenge.domain.*;
+import dream.challenge.dto.request.RequestChallenge;
+import dream.challenge.dto.request.RequestComment;
 import dream.challenge.dto.response.*;
 import dream.challenge.dto.request.RequestTimeCapsule;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.NoSuchElementException;
 import dream.common.exception.NotFoundException;
 import dream.common.exception.DuplicateException;
+import dream.s3.dto.request.RequestChallengeDetail;
 import dream.s3.dto.response.ResponseBadgeImage;
 import dream.user.domain.FollowRepository;
 import dream.user.domain.User;
@@ -30,16 +33,16 @@ import java.util.Optional;
 public class ChallengeService {
 
     private final UserRepository userRepository;
+    private final commentRepository commentRepository;
     private final ChallengeRepository challengeRepository;
-    private final ChallengeQueryRepository challengeQueryRepository;
     private final DreamKeywordRepository dreamKeywordRepository;
+    private final commentQueryRepository commentQueryRepository;
+    private final ChallengeQueryRepository challengeQueryRepository;
+    private final ChallengeDetailRepositoy challengeDetailRepositoy;
+    private final ChallengeKeywordRepository challengeKeywordRepository;
     private final ChallengeDetailQueryRepository challengeDetailQueryRepository;
     private final ChallengeParticipationRepository challengeParticipationRepository;
 
-
-    /**
-     * 낮 메인 화면 조회 !@!
-     */
     public ResultTemplate getDayMain(Long keywordId, Long lastItemId, int size) {
 
         List<Challenge> challenges = challengeQueryRepository.findChallengeListByPage(keywordId, lastItemId, size);
@@ -199,4 +202,97 @@ public class ChallengeService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
+    public ResultTemplate writeDetailPossible(User user, Long challengeId) {
+
+        List<ChallengeDetail> writeDetailPossibleList = challengeDetailQueryRepository.
+                getChallengeDetailByUserIdAndChallengeIdAndDate(user.getUserId(), challengeId);
+        
+        // 이 챌린지에 참여중인지 어떻게 알지 예외 처리가 필요할 수 있겠다.
+
+        if(writeDetailPossibleList.size() == 1) throw new DuplicateException(DuplicateException.CHLLENGE_DETAIL_DATE_DUPLICATE);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    @Transactional
+    public ResultTemplate postChallengeDetail(User user, RequestChallengeDetail requestChallengeDetail, String fileName) {
+
+        Challenge challenge = challengeRepository.findById(requestChallengeDetail.getChallengeId())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        ChallengeDetail challengeDetail = ChallengeDetail.makeChallengeDetail(user, requestChallengeDetail, challenge, fileName);
+        challengeDetailRepositoy.save(challengeDetail);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    @Transactional
+    public Long postChallenge(User requestUser, RequestChallenge request) {
+
+        User user = userRepository.findById(requestUser.getUserId())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        Challenge challenge = Challenge.makeChallenge(user, request);
+        challengeRepository.save(challenge);
+
+        return challenge.getChallengeId();
+    }
+
+    @Transactional
+    public ResultTemplate postChallengeKeyword(Long challengeId, RequestChallenge request) {
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        DreamKeyword dreamKeyword = dreamKeywordRepository.findById(request.getKeywordId())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.DREAM_KEYWORD_NOT_FOUND));
+
+        ChallengeKeyword challengeKeyword = ChallengeKeyword.makeChallengeKeyword(challenge, dreamKeyword);
+        challengeKeywordRepository.save(challengeKeyword);
+
+        ResponseChallengeId response = new ResponseChallengeId(challengeId);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getComments(Long detailId, Long lastItemId, int size) {
+
+        List<comment> list = commentQueryRepository.findCommentByPage(detailId, lastItemId, size);
+        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_COMMENT);
+
+        List<ResponseComment> commentList = new ArrayList<>();
+        int count = 0;
+        for(comment comment : list){
+            ResponseComment responseComment = ResponseComment.from(comment);
+            commentList.add(responseComment);
+            if(++count == size) break;
+        }
+
+        boolean hasNext = (list.size() > size);
+        ResponseCommentsssss response = ResponseCommentsssss.from(commentList, hasNext);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    @Transactional
+    public ResultTemplate postComment(User user, RequestComment request) {
+
+        ChallengeDetail challengeDetail = challengeDetailRepositoy.findById(request.getDetailId())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_DETAIL_NOT_FOUND));
+
+        comment postComment = comment.makeComment(user, request, challengeDetail);
+        commentRepository.save(postComment);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    @Transactional
+    public ResultTemplate deleteComment(Long commentId) {
+
+        comment dComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.COMMENT_NOT_FOUND));
+        commentRepository.delete(dComment);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
 }
