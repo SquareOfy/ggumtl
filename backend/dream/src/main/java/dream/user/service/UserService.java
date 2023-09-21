@@ -39,6 +39,12 @@ public class UserService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(user).build();
     }
 
+    public User getUserForDev(long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        return user;
+    }
+
 
 
     // 로그아웃

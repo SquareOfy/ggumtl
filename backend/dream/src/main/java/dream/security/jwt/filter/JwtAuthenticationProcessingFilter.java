@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 //import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,7 +30,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
-public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
+public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     private static final String NO_CHECK_URL1 = "/login/oauth2/code/kakao";
     private static final String NO_CHECK_URL2 = "/login";
@@ -63,6 +61,7 @@ public class JwtAuthentificationProcessingFilter extends OncePerRequestFilter {
     }
 
     public void checkRefreshTokenAndReIssueNewToken(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
+        log.info("checkRefreshTokenAndReIsuueNewToken 동작");
         if (jwtService.isRefreshTokenValid(refreshToken)) {
             jwtService.removeRefreshToken(refreshToken);
             Long userId = jwtService.extractUserIdFromRefreshToken(refreshToken).get();

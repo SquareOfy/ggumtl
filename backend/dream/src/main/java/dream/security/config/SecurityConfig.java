@@ -1,6 +1,6 @@
 package dream.security.config;
 
-import dream.security.jwt.filter.JwtAuthentificationProcessingFilter;
+import dream.security.jwt.filter.JwtAuthenticationProcessingFilter;
 import dream.security.jwt.service.JwtService;
 import dream.security.oauth2.handler.SocialLoginFailureHandler;
 import dream.security.oauth2.handler.SocialLoginSuccessHandler;
@@ -8,7 +8,6 @@ import dream.security.oauth2.service.SocialLoginService;
 import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -71,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint().userService(socialLoginService); // customUserService 설정
 
 
-//                http.addFilterBefore(new JwtAuthentificationProcessingFilter(jwtService, userRepository),  UsernamePasswordAuthenticationFilter.class);
+//                http.addFilterBefore(new JwtAuthenticationProcessingFilter(jwtService, userRepository),  UsernamePasswordAuthenticationFilter.class);
     }
 
 
