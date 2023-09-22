@@ -140,17 +140,39 @@ public class DreamCardService {
 
     // 실제 꿈카드 생성 함수
     @Transactional
-    public ResultTemplate postDreamCard(RequestDreamCardDetail request) {
-
-        User author = userRepository.findById(request.getDreamCardAuthor())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+    public ResultTemplate postDreamCard(User author, RequestDreamCardDetail request, String fileName) {
 
         List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
 
-        DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords);
+        // 아마 수치로 넘어온다면 그거 0~100으로 변환해서 밑에꺼까지 싹 다 변환해서 보내야할듯
+
+        // 긍정도 수치, 부정도 수치, 긍정도 등급 판단하는 녀석하나 만들기
+
+
+        List<String> wordKeywords = request.getWordKeywords();
+        // 키워드 기반으로 희귀도 판단하는 녀석 하나 만들기
+
+
+        // 희귀도 기반으로 등급 추출
+
+        // 긍정도 등급이랑 희귀도 기반으로 꿈 최종 등급 추출
+
+        // 꿈 해몽 내용 추출
+
+        DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords, fileName);
         dreamCardRepository.save(makeDreamCard);
         ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard);
 
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getDreamCardImage(Long dreamCardId) {
+
+        DreamCard dreamCard = dreamCardRepository.findLikeById(dreamCardId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+        ResponseDreamCardImage response = ResponseDreamCardImage.from(dreamCard);
+        
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
@@ -210,5 +232,4 @@ public class DreamCardService {
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
-
 }

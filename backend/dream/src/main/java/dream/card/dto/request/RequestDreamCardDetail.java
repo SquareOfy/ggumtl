@@ -14,13 +14,9 @@ import java.util.List;
 public class RequestDreamCardDetail {
     private String dreamCardContent;
     private Long dreamCardAuthor;
-    private String dreamCardImageUrl;
-    private Grade grade;
-    private String dreamTelling;
     private int positivePoint;
     private int rarePoint;
-    private Grade positiveGrade;
-    private Grade rareGrade;
     private BaseCheckType isShow;
     private List<String> keywords;
+    private List<String> wordKeywords;
 }
