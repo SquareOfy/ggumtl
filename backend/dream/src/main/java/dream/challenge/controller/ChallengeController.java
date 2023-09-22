@@ -35,7 +35,7 @@ public class ChallengeController {
     public ResultTemplate getFollowUsers(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
                                          @RequestParam(value = "size") int size) {
 
-        User user = userRepository.findByUserId(1L).
+        User user = userRepository.findByUserId(3L).
                 orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.getFollowUsers(user, lastItemId, size);

@@ -1,5 +1,7 @@
 package dream.s3.controller;
 
+import dream.card.dto.request.RequestDreamCardDetail;
+import dream.card.service.DreamCardService;
 import dream.challenge.domain.Challenge;
 import dream.challenge.domain.ChallengeRepository;
 import dream.challenge.service.ChallengeService;
@@ -27,13 +29,8 @@ public class S3Controller {
     private final AwsS3Uploader awsS3Uploader;
     private final UserRepository userRepository;
     private final ChallengeService challengeService;
+    private final DreamCardService dreamCardService;
     private final ChallengeRepository challengeRepository;
-
-    @GetMapping(value = "/day/challenge/item/{challengeId}/image")
-    public ResultTemplate getChallengeImage(@PathVariable("challengeId") Long challengeId) {
-
-        return challengeService.getChallengeImage(challengeId);
-    }
 
 
 //    @PostMapping("/upload")
@@ -77,9 +74,35 @@ public class S3Controller {
 
         String fileName = awsS3Uploader.upload(multipartFile, "challengeDetail");
 
-        log.info("for upload file name : {}", fileName);
+        log.info("upload Complete! file name : {}", fileName);
 
         return challengeService.postChallengeDetail(user, requestChallengeDetail, fileName);
+    }
+
+    @GetMapping(value = "/day/challenge/item/{challengeId}/image")
+    public ResultTemplate getChallengeImage(@PathVariable("challengeId") Long challengeId) {
+
+        return challengeService.getChallengeImage(challengeId);
+    }
+
+    @PostMapping(value = "/dream/new")
+    public ResultTemplate postDreamCard(@RequestPart("dreamCardDetail") RequestDreamCardDetail request,
+                                        @RequestPart("file") MultipartFile multipartFile) throws IOException{
+
+        User author = userRepository.findById(request.getDreamCardAuthor())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        String fileName = awsS3Uploader.upload(multipartFile, "dreamCard");
+
+        log.info("upload Complete! file name : {}", fileName);
+
+        return dreamCardService.postDreamCard(author, request, fileName);
+    }
+
+    @GetMapping(value = "/night/{dreamCardId}/image")
+    public ResultTemplate getDreamCardImage(@PathVariable("dreamCardId") Long dreamCardId){
+
+        return dreamCardService.getDreamCardImage(dreamCardId);
     }
 }
 

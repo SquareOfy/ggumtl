@@ -61,12 +61,6 @@ public class DreamCardController {
         return dreamCardService.getPreProcessingForDreamCard(request.getDreamCardContent());
     }
 
-    @PostMapping(value = "/dream/new")
-    public ResultTemplate postDreamCard(@RequestBody RequestDreamCardDetail request){
-
-        return dreamCardService.postDreamCard(request);
-    }
-
     @GetMapping(value = "/dream/{dreamCardId}/interpretation")
     public ResultTemplate getDreamCardDetailByUser(@PathVariable("dreamCardId") Long id,
                                                    Long userId){
