@@ -9,6 +9,7 @@ import dream.challenge.dto.request.RequestComment;
 import dream.challenge.dto.response.*;
 import dream.challenge.dto.request.RequestTimeCapsule;
 import dream.common.domain.ResultTemplate;
+import dream.common.exception.BadRequestException;
 import dream.common.exception.NoSuchElementException;
 import dream.common.exception.NotFoundException;
 import dream.common.exception.DuplicateException;
@@ -373,6 +374,40 @@ public class ChallengeService {
         boolean canWrite = challengeDetailList.isEmpty();
 
         ResponseMyChallengeInfoDetail response = ResponseMyChallengeInfoDetail.from(challenge, canWrite);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getTimeCapsule(User user, Long challengeId, Long lastItemId, int size) {
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        long detailCount = challenge.getChallengeDetails().stream()
+                .filter(challengeDetail -> challengeDetail.getUser().getUserId().equals(user.getUserId()))
+                .count();
+
+        if(detailCount < challenge.getTimeCapsuleOpenAt())
+            throw new BadRequestException(BadRequestException.CANNOT_READ_TIMECAPSULE);
+
+        List<ChallengeParticipation> list = challenge.getChallengeParticipations();
+        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_TIMECAPSULE);
+
+        ArrayList<ResponseTimeCapsule> timeCapsules = new ArrayList<>();
+
+
+
+        int count = 0;
+        for(ChallengeParticipation challengeParticipation : list){
+            if (challengeParticipation.getChallengeParticipationId() < lastItemId && !challengeParticipation.getTimeCapsuleContent().equals(" ")) {
+                ResponseTimeCapsule tmp = ResponseTimeCapsule.from(challengeParticipation);
+                timeCapsules.add(tmp);
+                if(++count == size) break;
+            }
+        }
+
+        boolean hasNext = (list.size() > size);
+        ResponseTimeCapsuleResult response = ResponseTimeCapsuleResult.from(challenge, timeCapsules, hasNext);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
