@@ -4,6 +4,7 @@ package dream.challenge.domain;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import dream.common.domain.BaseCheckType;
 import dream.user.domain.QFollow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -73,6 +74,8 @@ public class ChallengeQueryRepository {
                 .limit(size + 1)
                 .fetch();
     }
+
+
 
     private BooleanExpression searchKeywordLike(String searchKeyword){
         if (searchKeyword != null && !searchKeyword.isEmpty()) {

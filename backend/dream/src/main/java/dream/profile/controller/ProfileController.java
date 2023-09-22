@@ -4,6 +4,7 @@ import dream.common.domain.ResultTemplate;
 import dream.profile.service.ProfileService;
 import dream.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,4 +26,6 @@ public class ProfileController {
 
         return profileService.getFollowerList(profileUserId, lastItemId, size);
     }
+
+
 }
