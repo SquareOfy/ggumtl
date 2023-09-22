@@ -12,55 +12,83 @@
 // 획득 뱃지 ContentBox
 // 연속 일수 랭킹 ContentBox
 // 리액트
-import React from "react";
+import React, { useEffect, useState } from "react";
+import basicHttp from "api/basicHttp";
 
 // 컴포넌트
 import Button from "components/common/Button";
 import Container from "style/Container";
 import { Box, BoxTitle } from "style/Box";
 import Text from "style/Text";
+import { BsChevronCompactDown, BsChevronCompactUp } from "react-icons/bs";
+// 타입
+import { ChalDetailInfoProps } from "./ChalDetail";
 
 // 스타일
 
+const ChalDetailInfo: React.FC<ChalDetailInfoProps> = (props) => {
 
+  const chalDetail = props.chalDetailData
+  const [moreData, setMoreData] = useState<boolean>(false)
 
-const ChalDetailInfo = () => {
-  // 가능하면 map으로 돌릴수 있도록 다시 제작
   return (
-    <Container $dayBaseContainer $chalDetail>
-      <Text>챌린지 제목</Text>
+    <Container $chalDetail>
+      <Text>{chalDetail.challengeContent}</Text>
       {/* 기간 참여자 카테고리 */}
       <Container $spaceBetweenContainer>
         <Box $tripleWidth  $chalDetailBox>
           <BoxTitle $boxTitle>기간</BoxTitle>
-          <Text $chalBoxInnerText>30일</Text>
+          <Text $chalBoxInnerText>{chalDetail.period}</Text>
         </Box>
 
         <Box $tripleWidth  $chalDetailBox>
           <BoxTitle $boxTitle>참여자</BoxTitle>
-          <Text $chalBoxInnerText>1,100명</Text>
+          <Text $chalBoxInnerText>{chalDetail.participationCount}</Text>
         </Box>
 
         <Box $tripleWidth  $chalDetailBox>
           <BoxTitle $boxTitle>카테고리</BoxTitle>
-          <Text $chalBoxInnerText>공부</Text>
+          <Text $chalBoxInnerText>{chalDetail.keyword}</Text>
         </Box>
       </Container>
 
-      <Box $fullWidth $chalDetailBox>
-        <BoxTitle $boxTitle>미션</BoxTitle>
-        <Text $chalBoxInnerText>1알 1커밋 남기기</Text>
-      </Box>
-      <Box $fullWidth $chalDetailBox>
-        <BoxTitle $boxTitle>획득 뱃지</BoxTitle>
-        <Text $chalBoxInnerText>뱃지 이미지</Text>
-      </Box>
-      <Box $fullWidth $chalDetailBox>
-        <BoxTitle $boxTitle>랭킹</BoxTitle>
-        <Text $chalBoxInnerText>랭킹</Text>
-      </Box>
-
-
+      {
+        //닫기와 더보기 버튼 클릭했을 때 변경
+        moreData ? (
+          <>
+          <Box $fullWidth $chalDetailBox>
+            <BoxTitle $boxTitle>미션</BoxTitle>
+            <Text $chalBoxInnerText>{chalDetail.challengeContent}</Text>
+          </Box>
+          <Box $fullWidth $chalDetailBox>
+            <BoxTitle $boxTitle>획득 뱃지</BoxTitle>
+            <Text $chalBoxInnerText>뱃지가 들어갑니다.</Text>
+            {/* <img src={`${chalDetail.badgeUrl}`} alt="뱃지 이미지" /> */}
+          </Box>
+          <Box $fullWidth $chalDetailBox>
+            <BoxTitle $boxTitle>랭킹</BoxTitle>
+            <Text $chalBoxInnerText>랭킹</Text>
+          </Box>
+          <Button 
+            $fullWidth 
+            $moreButton
+            onClick={()=>{setMoreData(false)}}
+          >
+            <BsChevronCompactUp/>
+            <p>닫기</p>
+          </Button>
+          </>
+        ):(
+          <Button 
+            $fullWidth 
+            $moreButton
+            onClick={()=>{setMoreData(true)}}
+          >
+            <BsChevronCompactDown/>
+            <p>더보기</p>
+          </Button>
+        )
+      }
     </Container>
   )
 }

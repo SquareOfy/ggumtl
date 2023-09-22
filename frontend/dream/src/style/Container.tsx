@@ -84,9 +84,12 @@ const StyledContainer = styled.div<ContainerProps>`
   ${(props) =>
     props.$chalDetail &&
     css`
+      margin: 1.5rem 0;
       padding:1rem;
       background-color: rgba(249, 249, 249, 0.3);
       border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
     `
   }
 

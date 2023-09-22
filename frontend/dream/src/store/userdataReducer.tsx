@@ -1,14 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-export interface UserdataState{
-  userdata: {}
-  // 데이터 형태 나오면 작성
+export interface UserdataType{
+  userdata:{
+    userId :number
+    name :string
+    nickname :string
+    point :number
+    profileImageName :string
+    profileUrl :string
+    createdAt :string
+    wrigglePoint :number
+  }
 }
 
-const initialState: UserdataState={
-  userdata: {},
-  // 데이터 형태 나오면 작성
+const initialState: UserdataType={
+  userdata: {
+    userId : -1,
+    name: '',
+    nickname:'',
+    point:0,
+    profileImageName : '',
+    profileUrl:'',
+    createdAt : '',
+    wrigglePoint: 36.5,
+  },
 }
 
 export const userdataReducer = createSlice({
@@ -19,11 +35,21 @@ export const userdataReducer = createSlice({
       state.userdata =  action.payload;
     },
     logout: (state) => {
-      state.userdata = {};
+      // initialState 초기화
+      state.userdata = {
+        userId : -1,
+        name: '',
+        nickname:'',
+        point:0,
+        profileImageName : '',
+        profileUrl:'',
+        createdAt : '',
+        wrigglePoint: 36.5,
+      };
     }
   },
 });
 
-export const { getCurrentUserdata, logout} = userdataReducer.actions;
+export const { getCurrentUserdata, logout } = userdataReducer.actions;
 
 export default userdataReducer;

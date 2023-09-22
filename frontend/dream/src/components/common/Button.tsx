@@ -29,6 +29,7 @@ interface ButtonProps {
     $follow ?:boolean
     $halfWidthImeBuy ?:boolean;
     $dayCreate ?: boolean;
+    $moreButton ?: boolean;
 
     // 색상 지정
     $nightPurple ?:boolean
@@ -261,6 +262,19 @@ const StyledButton = styled.button<ButtonProps>`
         props.$dayCreate && 
         css`
             margin-top: 3rem;
+        `
+    }
+
+    ${(props)=>
+        props.$moreButton &&
+        css`
+            margin-top: 0.5rem;
+            padding: 0;
+            background-color: transparent;
+            & > p {
+                margin: 0;
+                font-size: 0.7rem;
+            }
         `
     }
 

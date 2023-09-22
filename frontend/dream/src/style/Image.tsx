@@ -30,6 +30,7 @@ interface ImageProps {
 
     // 밤 꿈 카드
     $nightImageBorder ?: boolean;
+    $dayImageBorder ?: boolean;
     $profileCard ?: boolean;
     $auctionCard ?: boolean;
 
@@ -176,6 +177,13 @@ const StyledImage = styled.div<ImageProps>`
       props.$nightImageBorder &&
       css`
         border-radius: 1rem;  
+      `
+    }
+    // day image는 직각
+    ${(props) =>
+      props.$dayImageBorder &&
+      css`
+        border-radius: 0rem;  
       `
     }
 

@@ -47,7 +47,7 @@ const StyledBox = styled.div<BoxProps>`
   ${(props) => props.$wideTextBox &&
     css`
       padding : 1rem;
-      margin: 1rem;
+      margin: 0.5rem 0;
       min-height: 10rem;
       border-radius: 1rem;
     `
