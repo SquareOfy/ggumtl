@@ -16,7 +16,7 @@ const NightProfileSellingTab = () => {
   return (
     <>
 
-    <AuctionCard />
+    {/* <AuctionCard /> */}
     </>
   )
 }
