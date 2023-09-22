@@ -88,13 +88,14 @@ public class DreamCard extends BaseTimeEntity {
 
 
         dreamCard.positivePoint = request.getPositivePoint();
-        dreamCard.rarePoint = request.getRarePoint();
 
+        dreamCard.rarePoint = 23;
         dreamCard.grade = Grade.SS;
         dreamCard.dreamTelling = "아직 못 했어요 구현을";
         dreamCard.positiveGrade = Grade.S;
         dreamCard.rareGrade = Grade.SS;
 
+//        dreamCard.rarePoint = request.getRarePoint();
 //        dreamCard.grade = request.getGrade();
 //        dreamCard.dreamTelling = request.getDreamTelling();
 //        dreamCard.positiveGrade = request.getPositiveGrade();

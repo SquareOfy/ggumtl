@@ -15,7 +15,7 @@ public class RequestDreamCardDetail {
     private String dreamCardContent;
     private Long dreamCardAuthor;
     private int positivePoint;
-    private int rarePoint;
+    private int negativePoint;
     private BaseCheckType isShow;
     private List<String> keywords;
     private List<String> wordKeywords;
