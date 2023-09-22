@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +21,7 @@ public class ResponseChallengeDetail {
     private boolean isLike;
     private int commentCount;
     private int challengeDetailCount;
+    private LocalDateTime createdAt;
 
     public static ResponseChallengeDetail from(ChallengeDetail challengeDetail, boolean isLike, int count) {
 
@@ -32,6 +35,7 @@ public class ResponseChallengeDetail {
         response.photoUrl = challengeDetail.getPhotoUrl();
         response.commentCount = challengeDetail.getComments().size();
         response.isLike = isLike;
+        response.createdAt = challengeDetail.getCreatedAt();
         response.challengeDetailCount = count;
 
         return response;
