@@ -20,7 +20,7 @@ public class DreamCardQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<DreamCard> findDreamCardPaging(Long lastItemId, int size){
+    public List<DreamCard> findDreamCardPaging(Long lastItemId, int size) {
 
         QDreamCard dreamCard = QDreamCard.dreamCard;
 
@@ -48,6 +48,29 @@ public class DreamCardQueryRepository {
                         dreamCard.dreamCardId.eq(id)
                 )
                 .fetchOne());
+    }
+
+    public List<DreamCard> findDreamCardByOwnerIdAndIsShowPaging(Long ownerId, BaseCheckType isShow, Long lastItemId, int size) {
+        return queryFactory.selectFrom(dreamCard)
+                .distinct().leftJoin(dreamCard.dreamCardAuthor).fetchJoin()
+                .where(lastItemIdLt(lastItemId),
+                        dreamCard.isShow.eq(isShow),
+                        dreamCard.dreamCardOwner.userId.eq(ownerId)
+                ).orderBy(dreamCard.dreamCardId.desc())
+                .limit(size + 1)
+                .fetch();
+
+    }
+
+    public List<DreamCard> findDreamCardByOwnerIdPaging(Long ownerId, Long lastItemId, int size) {
+        return queryFactory.selectFrom(dreamCard)
+                .distinct().leftJoin(dreamCard.dreamCardAuthor).fetchJoin()
+                .where(lastItemIdLt(lastItemId),
+                        dreamCard.dreamCardOwner.userId.eq(ownerId)
+                ).orderBy(dreamCard.dreamCardId.desc())
+                .limit(size + 1)
+                .fetch();
+
     }
 
 

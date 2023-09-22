@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 public class ResponseFollowingUserInfo {
     private Long followId;
     private Long userId;
-    private String profileImgName;
-    private String profileImgUrl;
+    private String profileImageName;
+    private String profileImageUrl;
     private String nickname;
 
     public static ResponseFollowingUserInfo from(Follow follow){
@@ -21,8 +21,8 @@ public class ResponseFollowingUserInfo {
         response.followId = follow.getFollowId();
         response.userId = follow.getToUser().getUserId();
         response.nickname=follow.getToUser().getNickname();
-        response.profileImgName=follow.getToUser().getProfileImageName();
-        response.profileImgUrl=follow.getToUser().getProfileUrl();
+        response.profileImageName =follow.getToUser().getProfileImageName();
+        response.profileImageUrl =follow.getToUser().getProfileUrl();
 
         return response;
     }

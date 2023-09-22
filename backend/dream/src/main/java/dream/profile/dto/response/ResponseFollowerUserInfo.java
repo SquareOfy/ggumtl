@@ -12,8 +12,8 @@ public class ResponseFollowerUserInfo {
 
         private Long followId;
         private Long userId;
-        private String profileImgName;
-        private String profileImgUrl;
+        private String profileImageName;
+        private String profileImageUrl;
         private String nickname;
 
         public static ResponseFollowerUserInfo from(Follow follow){
@@ -22,8 +22,8 @@ public class ResponseFollowerUserInfo {
             response.followId = follow.getFollowId();
             response.userId = follow.getFromUser().getUserId();
             response.nickname=follow.getFromUser().getNickname();
-            response.profileImgName=follow.getFromUser().getProfileImageName();
-            response.profileImgUrl=follow.getFromUser().getProfileUrl();
+            response.profileImageName=follow.getFromUser().getProfileImageName();
+            response.profileImageUrl=follow.getFromUser().getProfileUrl();
 
             return response;
         }

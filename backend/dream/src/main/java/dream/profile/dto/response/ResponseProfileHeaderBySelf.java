@@ -12,8 +12,8 @@ public class ResponseProfileHeaderBySelf {
 
     Long userId;
     String nickname;
-    String profileImgUrl;
-    String profileImgName;
+    String profileImageUrl;
+    String profileImageName;
     int point;
     Double wrigglePoint;
     int followerCount;
@@ -27,8 +27,8 @@ public class ResponseProfileHeaderBySelf {
 
         response.userId = user.getUserId();
         response.nickname = user.getNickname();
-        response.profileImgName = user.getProfileImageName();
-        response.profileImgUrl = user.getProfileUrl();
+        response.profileImageName = user.getProfileImageName();
+        response.profileImageUrl = user.getProfileUrl();
         response.followerCount = followerCount;
         response.followingCount = followingCount;
 

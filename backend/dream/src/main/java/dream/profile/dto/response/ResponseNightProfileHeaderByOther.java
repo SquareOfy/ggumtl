@@ -12,8 +12,8 @@ public class ResponseNightProfileHeaderByOther {
 
     Long userId;
     String nickname;
-    String profileImgUrl;
-    String profileImgName;
+    String profileImageUrl;
+    String profileImageName;
     double wrigglePoint;
     int dreamCardCount;
     int followerCount;
@@ -25,8 +25,8 @@ public class ResponseNightProfileHeaderByOther {
 
         response.userId = profileUser.getUserId();
         response.nickname = profileUser.getNickname();
-        response.profileImgName = profileUser.getProfileImageName();
-        response.profileImgUrl = profileUser.getProfileUrl();
+        response.profileImageName = profileUser.getProfileImageName();
+        response.profileImageUrl = profileUser.getProfileUrl();
         response.followerCount = followerCount;
         response.followingCount = followingCount;
         response.wrigglePoint = profileUser.getWrigglePoint();
