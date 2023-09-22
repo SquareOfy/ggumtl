@@ -6,6 +6,8 @@ import styled, {css} from 'styled-components'
 interface TextProps {
   children?: React.ReactNode;
   onClick ?: () => void;
+  className ?: string;
+
   $nightKeword ?: boolean;
 
   // 강조
@@ -14,15 +16,24 @@ interface TextProps {
   // 마진
   $MBHalf ?: boolean
 
+  // 수직정렬
+  $verticalAlign ?: boolean
+
   // 색상
   $nightWhite ?: boolean;
   $nightBlue ?: boolean;
   $black ?: boolean;
   $danger ?: boolean;
-  
+  $nightMoney ?: boolean;
+  $dayMoney ?: boolean;
+  $dayWhite ?: boolean;
+
   //인풋 에러 메세지
   $wrongMessage ?: boolean;
   $successMessage ?: boolean;
+
+  //챌린지 디테일 정보 박스 내부
+  $chalBoxInnerText ?: boolean;
 
 }
 const StyledText = styled.div<TextProps>`
@@ -63,8 +74,15 @@ const StyledText = styled.div<TextProps>`
       color: #198754;
     `
   }
-
-
+  /* 수직정렬 */
+  ${(props) => 
+    props.$verticalAlign &&
+    css`
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    `
+  }
   ${(props) =>
     props.$nightWhite &&
     css`
@@ -90,6 +108,35 @@ const StyledText = styled.div<TextProps>`
       color: #C70000;
     `
   }
+  ${(props) =>
+    props.$nightMoney &&
+    css`
+      color: #a5a5a5;
+    `
+  }
+  ${(props) =>
+    props.$dayMoney &&
+    css`
+      color: #424242;
+    `
+  }
+  ${(props) =>
+    props.$dayWhite &&
+    css`
+      color: #e8e8e8;
+      line-height: 1.5rem;
+      font-size: 1rem;
+      margin-top: 8rem;
+    `
+  }
+
+  ${(props) => 
+    props.$chalBoxInnerText && 
+    css`
+      line-height: 3.5rem;
+    `
+  }
+
 `
 
 const Text = (props:TextProps) => {

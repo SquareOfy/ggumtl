@@ -11,25 +11,24 @@ import Container from "style/Container";
 import Text from "style/Text";
 
 interface DreamKeywordProps {
-  keywords :string[]
+  keywords :string[] |undefined
 }
 
 
-const DreamKeywordRegion = (props:DreamKeywordProps) => {
-  const dreamKeywordDataset = props.keywords
+const DreamKeywordRegion = ({keywords}:DreamKeywordProps) => {
   return (
     <>
     <Container $baseContainer>
       <Container $nightKeyword>
-        <Box $keywordBoxNight> <Text $nightKeword $nightWhite>안녕</Text> </Box>
-        <Box $keywordBoxNight> <Text $nightKeword $nightWhite>삼전</Text> </Box>
-        <Box $keywordBoxNight> <Text $nightKeword $nightWhite>가즈아</Text> </Box>
-        <Box $keywordBoxNight> <Text $nightKeword $nightWhite>우리</Text> </Box>
-        <Box $keywordBoxNight> <Text $nightKeword $nightWhite>모두</Text> </Box>
-        <Box $keywordBoxNight> <Text $nightKeword $nightWhite>까즈아</Text> </Box>
-        <Box $keywordBoxNight> <Text $nightKeword $nightWhite>제발</Text> </Box>
-        <Box $keywordBoxNight> <Text $nightKeword $nightWhite>가는거야</Text> </Box>
-        <Box $keywordBoxNight> <Text $nightKeword $nightWhite>구뤠!!</Text> </Box>
+        {
+          Array.isArray(keywords) && keywords.map((keyword, idx)=> (
+            <Box $keywordBoxNight key={idx}> 
+              <Text $nightKeword $nightWhite>
+                {Object.values(keyword)}
+              </Text> 
+            </Box>
+          ))
+        }
       </Container>
     </Container>
     </>

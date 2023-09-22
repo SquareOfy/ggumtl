@@ -13,7 +13,7 @@ const ChalDetailPage = () => {
 
   return (
     <>
-    <NavTitleBar />
+    <NavTitleBar>챌린지</NavTitleBar>
     <ChalDetail />
     </>
   )

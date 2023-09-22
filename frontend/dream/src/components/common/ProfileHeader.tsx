@@ -21,6 +21,7 @@ import Image from "style/Image";
 import Text from "style/Text";
 import styled from "styled-components";
 import { FaStar } from "react-icons/fa6";
+import { LiaCoinsSolid } from "react-icons/lia";
 
 // progress 속성을 정의
 interface ProgressBarProps {
@@ -55,11 +56,11 @@ const ProgressBar = styled.div<ProgressBarProps>`
 `
 
 const ProfileHeader = () => {
-  const themeMode = useSelector((state: RootState) => state.themeModeReducer.themeMode);
+  const themeMode = useSelector((state: RootState) => state.themeMode.themeMode);
   const [isNight, setIsNight] = useState<boolean>(false);
   const [isStarClicked, setIsStarClicked] = useState<boolean>(true);
-  const [isMyProfile, setIsMyProfile] = useState<boolean>(false); // 내 프로필인지 유저 확인
-
+  const [isMyProfile, setIsMyProfile] = useState<boolean>(true); // 내 프로필인지 유저 확인
+  const [isFollowing, setIsFollowing] = useState<boolean>(false); // 팔로우 했는지 여부
   const [progress, setProgress] = useState<number>(70); // 꿈틀도 추후 변경하기
 
   useEffect(() => {
@@ -88,21 +89,25 @@ const ProfileHeader = () => {
         >
           <div>
             <p>나는프론트엔드</p>
-            <Button
-            $follow
-            $nightPalePurple
-            >{isMyProfile ? "팔로우" : "팔로잉"}</Button>
+            {
+              !isMyProfile &&
+              <Button
+              $follow
+              $nightPalePurple
+              >{!isFollowing ? "팔로우" : "팔로잉"}</Button>
+            }
+            {
+              isMyProfile &&
+              <Text
+              $nightMoney={isNight}
+              $dayMoney={!isNight}
+              ><LiaCoinsSolid style={{width: "1.3rem", height: "1.3rem", marginRight: "0.4rem"}}></LiaCoinsSolid> 5.5k</Text>
+            }
           </div>
           <div>
             <div>
-              {
-                isMyProfile ? <p>꿈 머니</p>
-                : <p>꿈 카드</p>
-              }
-              {
-                isMyProfile ? <p>5.5k</p>
-                : <p>5</p>
-              }
+              <p>꿈 카드</p>
+              <p>5</p>
             </div>
             <div>
               <p>팔로워</p>

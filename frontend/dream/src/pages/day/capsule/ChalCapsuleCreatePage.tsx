@@ -15,7 +15,7 @@ const ChalCapsuleCreatePage = () => {
 
   return (
     <>
-    <NavTitleBar/>
+    <NavTitleBar>타임 캡슐 담기</NavTitleBar>
     <ChalCapsuleCreate />
     </>
   )

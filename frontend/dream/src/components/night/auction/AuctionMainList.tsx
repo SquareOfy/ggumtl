@@ -13,17 +13,18 @@ import SearchBar from "components/common/SearchBar";
 import Input from "style/Input";
 
 // 외부 라이브러리
-import axios from 'axios'
+import basicHttp from "api/basicHttp";
 
 // 스타일
 import Wrap from "style/Wrap";
+import { useNavigate } from "react-router-dom";
 
 export interface AuctionMainType {
   color : string
   size: number
 }
 
-export interface AuctionItemAxiosType {
+export interface AuctionCardType {
   dreamCardId: number;
   dreamCardImageUrl: string;
   keywords: string[];
@@ -32,22 +33,21 @@ export interface AuctionItemAxiosType {
   rareGrade: string;
   endedAt: string;
   auctionStatus: string; 
+  auctionId: number;
 }
 
-export interface AuctionListType {
-  aucionList : AuctionItemAxiosType[]
-}
+export interface AuctionListType extends Array<AuctionCardType> {}
 
 const AuctionMainList = () => {
-
-  const [auctionList, setAuctionList] = useState<AuctionListType |null>(null)
-  const size = 4
+  const [auctionList, setAuctionList] = useState<AuctionListType>([])
+  const size = 10
 
   useEffect(() => {
-    // axios.get(`*/auction/list?size=${size}`)
-    // .then((res)=> {
-    //   setAuctionList(res.data.auctionList)
-    // })
+    basicHttp.get(`/auction/list?size=${size}`)
+    .then(res => {
+      setAuctionList(res.data.data.list)
+      console.log(res.data.data.list, "옥션리스트")
+    })
   }, [])
   // 무한 스크롤 부분
 
@@ -56,11 +56,11 @@ const AuctionMainList = () => {
     <>
       <SearchBar onChange={()=>console.log("짠")} />
       <Wrap $auctionCardWrap>
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
+        {
+          auctionList.map((item, idx) => (
+            <AuctionCard auctionCard={item} key={item.auctionId} />
+          ))
+        }
       </Wrap>
     </>
   )

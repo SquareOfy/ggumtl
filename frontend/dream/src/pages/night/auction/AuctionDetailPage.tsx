@@ -10,7 +10,7 @@ const AuctionDetailPage = () => {
 
   return (
     <>
-    <NavTitleBar/>
+    <NavTitleBar>꿈 경매장</NavTitleBar>
     <AuctionDetail/>
     </>
   )

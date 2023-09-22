@@ -10,6 +10,7 @@ interface ButtonProps {
     style ? : {};
     disabled?: boolean;    
     type?: 'submit' | 'button' | 'reset';
+    className ?:string;
 
     // 별개 스타일링
     // 너비
@@ -27,6 +28,8 @@ interface ButtonProps {
     $icon ?: boolean;
     $follow ?:boolean
     $halfWidthImeBuy ?:boolean;
+    $dayCreate ?: boolean;
+    $moreButton ?: boolean;
 
     // 색상 지정
     $nightPurple ?:boolean
@@ -246,11 +249,32 @@ const StyledButton = styled.button<ButtonProps>`
         props.$follow &&
         css`
             font-size: 0.75rem;
-            padding: 0 1.5rem;
+            padding: 0 1.2rem;
             /* font-weight: 400; */
             border-radius: 0.5rem;
             height: 1.5rem;
-            margin: 0 0.7rem;
+            margin-left: 0.2rem;
+        `
+    }
+
+    // 낮 생성 버튼
+    ${(props) => 
+        props.$dayCreate && 
+        css`
+            margin-top: 3rem;
+        `
+    }
+
+    ${(props)=>
+        props.$moreButton &&
+        css`
+            margin-top: 0.5rem;
+            padding: 0;
+            background-color: transparent;
+            & > p {
+                margin: 0;
+                font-size: 0.7rem;
+            }
         `
     }
 
