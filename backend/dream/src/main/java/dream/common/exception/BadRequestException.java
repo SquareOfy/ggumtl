@@ -8,6 +8,8 @@ public class BadRequestException extends RuntimeException {
 
     public static final String NOT_EXIST_USER_PROFILE = "존재하지 않는 회원입니다.";
 
+    public static final String NOT_ALLOWED_ACCESS = "잘못된 접근입니다. 조회 권한이 없습니다.";
+
 
     public BadRequestException(String message){
         super(message);

@@ -16,7 +16,7 @@ public class ResponseUser {
     private String nickname;
     private int point;
     private String profileImageName;
-    private String profileUrl;
+    private String profileImageUrl;
     private Double wrigglePoint;
     private String email;
 
@@ -28,7 +28,7 @@ public class ResponseUser {
         response.name = user.getName();
         response.nickname = user.getNickname();
         response.point = user.getPoint();
-        response.profileUrl = user.getProfileUrl();
+        response.profileImageUrl = user.getProfileUrl();
         response.profileImageName = user.getProfileImageName();
         response.wrigglePoint = user.getWrigglePoint();
         response.email = user.getEmail();
