@@ -18,4 +18,5 @@ public class RequestDreamCardDetail {
     private int rarePoint;
     private BaseCheckType isShow;
     private List<String> keywords;
+    private List<String> wordKeywords;
 }
