@@ -24,7 +24,7 @@ const DreamKeywordRegion = ({keywords}:DreamKeywordProps) => {
           Array.isArray(keywords) && keywords.map((keyword, idx)=> (
             <Box $keywordBoxNight key={idx}> 
               <Text $nightKeword $nightWhite>
-                {keyword}
+                {Object.values(keyword)}
               </Text> 
             </Box>
           ))

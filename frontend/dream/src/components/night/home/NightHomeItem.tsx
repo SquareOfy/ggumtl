@@ -104,7 +104,7 @@ const NightHomeItem = ({cardData}:NightHomeItemProps) => {
           onClick={moveUserProfile}
           >
             {/* 에러나서 주석처리 */}
-            {/* <img src={cardData?.ownerProfileUrl} alt="없음"/> */}
+            <img src={cardData?.ownerProfileUrl} alt="없음"/>
           </CustomImage>
           <Text $verticalAlign $nightWhite
           onClick={moveUserProfile}
