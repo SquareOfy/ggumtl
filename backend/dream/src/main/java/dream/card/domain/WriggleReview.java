@@ -1,6 +1,7 @@
 package dream.card.domain;
 
 
+import dream.auction.dto.request.RequestCardReview;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.BaseTimeEntity;
 import dream.user.domain.User;
@@ -37,4 +38,19 @@ public class WriggleReview extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private BaseCheckType reviewStatus;
 
+    public static WriggleReview makeReview(DreamCard dreamCard, User buyer, User seller) {
+        WriggleReview response = new WriggleReview();
+        response.dreamCard = dreamCard;
+        response.buyerId = buyer;
+        response.sellerId = seller;
+        response.reviewPoint = 0;
+        response.reviewContent = "";
+        response.reviewStatus = BaseCheckType.F;
+
+        return response;
+    }
+
+    public void updateReview(RequestCardReview request) {
+        this.reviewPoint = request.getReviewPoint();
+    }
 }

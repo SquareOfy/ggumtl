@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @ToString
 public class RefreshTokenDto {
 
-    private Long userId;
+    private String email;
 
     @Id
     private String refreshToken;

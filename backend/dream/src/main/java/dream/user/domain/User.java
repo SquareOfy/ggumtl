@@ -42,8 +42,15 @@ public class User extends BaseTimeEntity {
         this.wrigglePoint = wrigglePoint;
         this.email = email;
         this.role = role;
-
-
     }
+
+    public void updateProfileUrl(String updateProfileUrlName){
+        this.profileUrl = updateProfileUrlName;
+    }
+
+    public void purchaseDreamCard(int point){
+        this.point -= point;
+    }
+
 
 }

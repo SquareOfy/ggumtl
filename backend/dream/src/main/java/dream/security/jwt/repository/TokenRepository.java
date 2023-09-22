@@ -21,28 +21,42 @@ public class TokenRepository {
     }
 
 
-    public void saveRefreshToken(RefreshTokenDto refreshToken){
+    public void saveRefreshToken(RefreshTokenDto refreshTokenDto){
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(String.valueOf(refreshToken.getRefreshToken()), String.valueOf(refreshToken.getUserId()));
-        redisTemplate.expire(String.valueOf(refreshToken.getRefreshToken()), refreshTokenExpirationPeriod, TimeUnit.MICROSECONDS);
+        //email을 key로 refreshToken을 value로 저장
+        valueOperations.set(String. valueOf(refreshTokenDto.getEmail()),String.valueOf(refreshTokenDto.getRefreshToken()));
+        redisTemplate.expire(String.valueOf(refreshTokenDto.getRefreshToken()), refreshTokenExpirationPeriod, TimeUnit.MICROSECONDS);
+
 
     }
 
-    public Optional<RefreshTokenDto> findByRefreshToken(String refreshToken) {
+    public Optional<RefreshTokenDto> findByEmail(String email) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        Optional<String> userIdOptional = Optional.ofNullable(valueOperations.get(refreshToken));
+        Optional<String> refreshTokenOptional = Optional.ofNullable(valueOperations.get(email));
 
+        //refreshToken이 redis에 존재하지 않음
+        if(refreshTokenOptional.isEmpty()) {
+            return Optional.empty();
+        }
 
-        if(userIdOptional.isEmpty()) return Optional.empty();
-        Optional<Long> userId = Optional.ofNullable(Long.parseLong(valueOperations.get(refreshToken)));
-        return Optional.of(new RefreshTokenDto(userId.get(), refreshToken));
+        //redis에 존재하면 RefreshTokenDto 반환
+        return Optional.of(new RefreshTokenDto(email,refreshTokenOptional.get() ));
+
     }
 
-    public void deleteByRefreshToken(String refreshToken){
-        redisTemplate.delete(refreshToken);
+    public void deleteByEmail (String email){
+        redisTemplate.delete(email);
     }
 
-    public void saveBlackList(String accessToken, Long expiration){
+    public Optional<String> findByKey(String key) {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        Optional<String> valueOptional = Optional.ofNullable(valueOperations.get(key));
+
+        if (valueOptional.isEmpty()) return Optional.empty();
+        return valueOptional;
+    }
+
+        public void saveBlackList(String accessToken, Long expiration){
         redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
     }
 }
