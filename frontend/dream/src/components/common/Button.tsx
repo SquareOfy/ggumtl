@@ -30,6 +30,7 @@ interface ButtonProps {
     $halfWidthImeBuy ?:boolean;
     $dayCreate ?: boolean;
     $moreButton ?: boolean;
+    $category ?: boolean;
 
     // 색상 지정
     $nightPurple ?:boolean
@@ -278,6 +279,17 @@ const StyledButton = styled.button<ButtonProps>`
         `
     }
 
+    // 낮 카테고리 버튼
+    ${(props) => 
+        props.$category && 
+        css`
+            margin: 0.1rem;
+            border: 1px solid #D0D7DF;
+            &:not(:disabled):hover {
+                background-color: #75A8C7;
+            }
+        `
+    }
 `
 
 const Button = (props:ButtonProps) => {
