@@ -22,10 +22,11 @@ import Text from "style/Text";
 import styled from "styled-components";
 import { FaStar } from "react-icons/fa6";
 import { LiaCoinsSolid } from "react-icons/lia";
+import basicHttp from "api/basicHttp";
 
 // progress 속성을 정의
 interface ProgressBarProps {
-  progress: number;
+  progress :number;
 }
 
 const ProgressBar = styled.div<ProgressBarProps>`
@@ -55,14 +56,49 @@ const ProgressBar = styled.div<ProgressBarProps>`
   }
 `
 
+// profile 정보
+interface ProfileHeaderAxiosType {
+  dreamCardCount :number,
+  followerCount :number,
+  followingCount :number,
+  nickname :string,
+  profileImageName :string,
+  profileImageUrl :string,
+  userId :number,
+  wrigglePoint :number,
+  point ?:number,
+}
+
 const ProfileHeader = () => {
   const themeMode = useSelector((state: RootState) => state.themeMode.themeMode);
   const [isNight, setIsNight] = useState<boolean>(false);
   const [isStarClicked, setIsStarClicked] = useState<boolean>(true);
   const [isMyProfile, setIsMyProfile] = useState<boolean>(true); // 내 프로필인지 유저 확인
   const [isFollowing, setIsFollowing] = useState<boolean>(false); // 팔로우 했는지 여부
-  const [progress, setProgress] = useState<number>(70); // 꿈틀도 추후 변경하기
+  const [progress, setProgress] = useState<number>(0); // 꿈틀도 추후 변경하기
+  
+  // 프로필 axios 통신 데이터들
+  const [userData, setUserData] = useState<ProfileHeaderAxiosType>();
+  let profileUserId = 3; // 추후 바꾸기
 
+  // axios 요청
+  useEffect(() => {
+    basicHttp.get(`/profile/night/header/${profileUserId}`)
+    .then((res) => {
+      console.log(res.data.data);
+      setUserData(res.data.data);
+    })
+    .catch((err) => console.log(err))
+  }, [])
+
+  // 꿈틀도 값 변경
+  useEffect(() => {
+    if (userData) {
+      setProgress(userData?.wrigglePoint);
+    }
+  }, [userData])
+
+  // 테마 확인
   useEffect(() => {
     if (themeMode.mode === 'night') {
       setIsNight(true);
@@ -71,6 +107,7 @@ const ProfileHeader = () => {
     }
   }, [themeMode.mode])
   
+  // 꿈틀도 별 클릭
   const handleStarClicked = () => {
     setIsStarClicked(!isStarClicked)
   }
@@ -82,13 +119,13 @@ const ProfileHeader = () => {
         <Image
         $smallProfileImage
         >
-          <img src="https://mblogthumb-phinf.pstatic.net/MjAyMjAxMjVfMjAy/MDAxNjQzMTAyOTk2NjE0.gw_H_jjBM64svaftcnheR6-mHHlmGOyrr6htAuxPETsg.8JJSQNEA5HX2WmrshjZ-VjmJWqhmgE40Qm5csIud9VUg.JPEG.minziminzi128/IMG_7374.JPG?type=w800"/>
+          <img src={userData?.profileImageUrl} alt={userData?.profileImageName}/>
         </Image>
         <Text
         $nightWhite={isNight}
         >
           <div>
-            <p>나는프론트엔드</p>
+            <p>{userData?.nickname}</p>
             {
               !isMyProfile &&
               <Button
@@ -101,21 +138,22 @@ const ProfileHeader = () => {
               <Text
               $nightMoney={isNight}
               $dayMoney={!isNight}
-              ><LiaCoinsSolid style={{width: "1.3rem", height: "1.3rem", marginRight: "0.4rem"}}></LiaCoinsSolid> 5.5k</Text>
+              ><LiaCoinsSolid style={{width: "1.3rem", height: "1.3rem", marginRight: "0.4rem"}}></LiaCoinsSolid> {userData?.point && (userData?.point/100).toFixed(1)}k</Text>
+              // 포인트 출력 부분은 로그인 구현 완료 후 추가 필요
             }
           </div>
           <div>
             <div>
               <p>꿈 카드</p>
-              <p>5</p>
+              <p>{userData?.dreamCardCount}</p>
             </div>
             <div>
               <p>팔로워</p>
-              <p>1.3k</p>
+              <p>{userData?.followerCount}</p>
             </div>
             <div>
               <p>팔로잉</p>
-              <p>70</p>
+              <p>{userData?.followingCount}</p>
             </div>
           </div>
         </Text>
