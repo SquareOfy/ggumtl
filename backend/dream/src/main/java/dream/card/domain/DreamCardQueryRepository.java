@@ -30,8 +30,8 @@ public class DreamCardQueryRepository {
                 .leftJoin(dreamCard.dreamCardOwner).fetchJoin()
                 .leftJoin(dreamCard.dreamCardLikes)
                 .where(
-                        lastItemIdLt(lastItemId),
-                        dreamCard.isShow.eq(BaseCheckType.T)
+                        dreamCard.isShow.eq(BaseCheckType.T),
+                        lastItemIdLt(lastItemId)
                 )
                 .orderBy(dreamCard.dreamCardId.desc())
                 .limit(size + 1)

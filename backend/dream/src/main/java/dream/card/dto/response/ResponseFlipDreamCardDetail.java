@@ -28,8 +28,9 @@ public class ResponseFlipDreamCardDetail {
     private BaseCheckType isShow;
     private List<ResponseKeyword> keywords;
     private String dreamCardImageUrl;
+    private Long auctionId;
 
-    public static ResponseFlipDreamCardDetail from(DreamCard dreamCard){
+    public static ResponseFlipDreamCardDetail from(DreamCard dreamCard, Long auctionId){
         ResponseFlipDreamCardDetail response = new ResponseFlipDreamCardDetail();
 
         response.dreamCardId = dreamCard.getDreamCardId();
@@ -50,6 +51,7 @@ public class ResponseFlipDreamCardDetail {
         }
         response.keywords = keywords;
         response.dreamCardImageUrl = dreamCard.getDreamCardImageUrl();
+        response.auctionId = auctionId;
 
         return response;
     }

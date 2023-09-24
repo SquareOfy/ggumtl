@@ -11,4 +11,5 @@ public class RequestBidding {
     private Long auctionId;
     private int biddingMoney;
     private Long userId;
+    private int askingMoney;
 }

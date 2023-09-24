@@ -34,7 +34,7 @@ public class AuctionQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Auction> findAuctionPaging(Long lastItemId, int size, String keyword) {
+    public List<Auction> findAuctionPaging(Long lastItemId, int size) {
 
         QAuction auction = QAuction.auction;
         QDreamCard dreamCard = QDreamCard.dreamCard;
@@ -48,8 +48,7 @@ public class AuctionQueryRepository {
                 .leftJoin(cardKeyword.keyWordId).fetchJoin()
                 .where(
                         lastItemIdLt(lastItemId),
-                        dreamCard.auctionStatus.eq(BaseCheckType.T),
-                        keywordIn(keyword)
+                        dreamCard.auctionStatus.eq(BaseCheckType.T)
                 )
                 .orderBy(auction.auctionId.desc())
                 .limit(size + 1)
@@ -143,6 +142,7 @@ public class AuctionQueryRepository {
                         bidding.auction.auctionId.eq(auctionId)
                 )
                 .orderBy(bidding.biddingId.desc())
+                .limit(1)
                 .fetchOne());
     }
 

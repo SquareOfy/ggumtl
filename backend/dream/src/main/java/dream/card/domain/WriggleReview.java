@@ -38,14 +38,14 @@ public class WriggleReview extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private BaseCheckType reviewStatus;
 
-    public static WriggleReview makeReview(DreamCard dreamCard, User buyer, User seller) {
+    public static WriggleReview makeReview(DreamCard dreamCard, User buyer, User seller, int reviewPoint) {
         WriggleReview response = new WriggleReview();
         response.dreamCard = dreamCard;
         response.buyerId = buyer;
         response.sellerId = seller;
-        response.reviewPoint = 0;
-        response.reviewContent = "";
-        response.reviewStatus = BaseCheckType.F;
+        response.reviewPoint = reviewPoint;
+        response.reviewContent = "리뷰 내용..!";
+        response.reviewStatus = BaseCheckType.T;
 
         return response;
     }
