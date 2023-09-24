@@ -24,6 +24,16 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+  # mongoDB
+
+  data:
+    mongodb:
+      host: ${PUBLIC_IP}
+      port: ${MONGO_DB_PORT}
+      authentication-database: admin
+      username: ${DB_USER_NAME}
+      password: ${DB_USER_PASSWORD}
+      database: ${MONGO_DATABASE_NAME}
 
 logging.level:
   org.hibernate.SQL: debug
