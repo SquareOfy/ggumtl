@@ -4,6 +4,7 @@ package dream.card.domain;
 import dream.auction.domain.Auction;
 import dream.card.dto.request.RequestDreamCardDetail;
 import dream.card.dto.request.RequestKeyword;
+import dream.card.dto.response.ResponseDreamAnalysis;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.BaseTimeEntity;
 import dream.common.exception.DuplicateException;
@@ -73,21 +74,21 @@ public class DreamCard extends BaseTimeEntity {
     }
 
     public static DreamCard makeDreamCard(RequestDreamCardDetail request, User user,
-                                          List<DreamKeyword> dreamKeywords, String fileName){
+                                          List<DreamKeyword> dreamKeywords, String fileName,
+                                          ResponseDreamAnalysis dreamAnalysis){
 
         DreamCard dreamCard = new DreamCard();
         dreamCard.dreamCardOwner = user;
         dreamCard.dreamCardAuthor = user;
-        dreamCard.dreamCardContent = request.getDreamCardContent();
         dreamCard.dreamCardImageUrl = fileName;
         dreamCard.isShow = request.getIsShow();
         dreamCard.auctionStatus = BaseCheckType.F;
+        dreamCard.positivePoint = request.getPositivePoint();
+        dreamCard.dreamCardContent = request.getDreamCardContent();
         dreamCard.cardKeyword = dreamKeywords.stream()
                 .map(dreamKeyword -> CardKeyword.addKeyword(dreamCard, dreamKeyword))
                 .collect(Collectors.toList());
 
-
-        dreamCard.positivePoint = request.getPositivePoint();
 
         dreamCard.rarePoint = 23;
         dreamCard.grade = Grade.SS;
@@ -95,11 +96,12 @@ public class DreamCard extends BaseTimeEntity {
         dreamCard.positiveGrade = Grade.S;
         dreamCard.rareGrade = Grade.SS;
 
-//        dreamCard.rarePoint = request.getRarePoint();
-//        dreamCard.grade = request.getGrade();
-//        dreamCard.dreamTelling = request.getDreamTelling();
-//        dreamCard.positiveGrade = request.getPositiveGrade();
-//        dreamCard.rareGrade = request.getRareGrade();
+//        dreamCard.rarePoint = dreamAnalysis.getRarePoint();
+//        dreamCard.grade = dreamAnalysis.getGrade();
+//        dreamCard.dreamTelling = dreamAnalysis.getDreamTelling();
+//        dreamCard.positiveGrade = dreamAnalysis.getPositiveGrade();
+//        dreamCard.rareGrade = dreamAnalysis.getRareGrade();
+
         return dreamCard;
     }
 

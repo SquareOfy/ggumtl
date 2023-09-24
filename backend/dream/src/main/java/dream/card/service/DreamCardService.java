@@ -29,14 +29,12 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class DreamCardService {
 
-    private final DreamCardRepository dreamCardRepository;
-    private final DreamCardQueryRepository dreamCardQueryRepository;
     private final UserRepository userRepository;
+    private final DreamCardRepository dreamCardRepository;
+    private final DreamAnalysisService dreamAnalysisService;
     private final DreamKeywordRepository dreamKeywordRepository;
+    private final DreamCardQueryRepository dreamCardQueryRepository;
 
-    /**
-     * 밤 메인 화면에서 카드 리스트를 조회 하는 함수 !
-     */
     public ResultTemplate getNightMain(Long lastItemId, int size) {
 
         List<DreamCard> findCards = dreamCardQueryRepository.findDreamCardPaging(lastItemId, size);
@@ -59,7 +57,6 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(list).build();
     }
 
-    // 카드 상세 정보 가져오는 함수
     public ResultTemplate getFlipDreamCardDetail(Long id) {
 
         DreamCard findCard = dreamCardRepository.findDetailsById(id)
@@ -82,7 +79,6 @@ public class DreamCardService {
     }
 
 
-    // 카드 조회수 업데이트하는 함수
     @Transactional
     public ResultTemplate updateDreamCard(Long dreamCardId) {
 
@@ -94,7 +90,6 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
-    // 카드 좋아요 홤수
     @Transactional
     public ResultTemplate updateCardLike(Long userId, Long dreamCardId) {
 
@@ -109,7 +104,6 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
-    // 카드 좋아요 취소 함수
     @Transactional
     public ResultTemplate updateCardUnlike(Long userId, Long dreamCardId) {
 
@@ -124,7 +118,6 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
-    // 카드 전처리 후 결과 반환
     public ResultTemplate getPreProcessingForDreamCard(String dreamCardContent) {
 
         // 아마 이건 하둡이랑 연관된 함수
@@ -138,20 +131,15 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
-    // 실제 꿈카드 생성 함수
     @Transactional
     public ResultTemplate postDreamCard(User author, RequestDreamCardDetail request, String fileName) {
 
         List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
 
-        // 아마 수치로 넘어온다면 그거 0~100으로 변환해서 밑에꺼까지 싹 다 변환해서 보내야할듯
-
-        // 긍정도 수치, 부정도 수치, 긍정도 등급 판단하는 녀석하나 만들기
-
+        ResponseDreamAnalysis responseDreamAnalysis = dreamAnalysisService.processAnalysis(request);
 
         List<String> wordKeywords = request.getWordKeywords();
         // 키워드 기반으로 희귀도 판단하는 녀석 하나 만들기
-
 
         // 희귀도 기반으로 등급 추출
 
@@ -159,7 +147,14 @@ public class DreamCardService {
 
         // 꿈 해몽 내용 추출
 
-        DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords, fileName);
+        // 얘네를 넣을 DTO
+//        dreamCard.rarePoint = 23;
+//        dreamCard.grade = Grade.SS;
+//        dreamCard.dreamTelling = "아직 못 했어요 구현을";
+//        dreamCard.positiveGrade = Grade.S;
+//        dreamCard.rareGrade = Grade.SS;
+
+        DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords, fileName, responseDreamAnalysis);
         dreamCardRepository.save(makeDreamCard);
         ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard);
 
