@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
@@ -15,12 +16,20 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
             "where a.auctionId = :id")
     Optional<Auction> findAuctionDetailById(@Param("id") Long id);
 
-    @Query("select a from Auction a join fetch a.bidding b " +
+    @Query("select a from Auction a " +
+            "join fetch a.bidding b " +
             "join fetch b.user " +
-            "join fetch a.dreamCard " +
+            "join fetch a.dreamCard ad " +
+            "join fetch ad.dreamCardOwner " +
             "where a.auctionId = :id " +
-            "and a.endedAt < :now " +
-            "order by a.auctionId desc")
-    Optional<Auction> findBiddingById(@Param("id") Long id, @Param("now") LocalDateTime now);
+            "order by a.auctionId desc, b.biddingId desc")
+    Optional<Auction> findBiddingById(@Param("id") Long id);
+
+
+    @Query("select a from Auction a " +
+            "join fetch a.bidding " +
+            "where a.dreamCard.dreamCardId = :id " +
+            "order by a.auctionId desc ")
+    List<Auction> findByDreamCardId(@Param("id") Long  id);
 
 }

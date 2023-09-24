@@ -22,15 +22,14 @@ public class AuctionController {
                                       @RequestBody RequestAuction request,
                                       Long userId){
 
-        return auctionService.postAuction(dreamCardId, request, 1L);
+        return auctionService.postAuction(dreamCardId, request, 5L);
     }
 
     @GetMapping(value = "/api/auction/list")
     public ResultTemplate getAllAuctionList(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
-                                            @RequestParam("size") int size,
-                                            @RequestParam(value = "keyword", required = false) String keyword){
+                                            @RequestParam("size") int size){
 
-        return auctionService.getAllAuctionList(lastItemId, size, keyword);
+        return auctionService.getAllAuctionList(lastItemId, size);
     }
 
     @GetMapping(value = "/api/auction/list/{searchKeyword}")
@@ -46,8 +45,8 @@ public class AuctionController {
     }
 
     @MessageMapping(value = "/auction/bidding")
+//    @PostMapping("/auction/bidding")
     public void postBidding(@RequestBody RequestBidding request){
-        // 유저 받아와서 같이 넘겨주세요
         auctionService.postBidding(request);
     }
 
@@ -68,7 +67,7 @@ public class AuctionController {
     @PostMapping(value = "/api/auction/review")
     public ResultTemplate postBuyingCardReview(@RequestBody RequestCardReview request){
 
-        return auctionService.postBuyingCardReview(request);
+        return auctionService.postBuyingCardReview(request, 1L);
     }
 
 }

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +33,7 @@ public class Auction extends BaseTimeEntity{
     private LocalDateTime endedAt;
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Bidding> bidding;
+    private List<Bidding> bidding = new ArrayList<>();
 
 
     public static Auction createAuction(DreamCard dreamCard, RequestAuction request){
@@ -55,15 +56,9 @@ public class Auction extends BaseTimeEntity{
         return auction;
     }
 
-    public void addBidding(User user, int biddingMoney){
+    public void addBidding(User user, int biddingMoney, int askingMoney){
         bidding.add(Bidding.insertBidding(this, user, biddingMoney));
-        int start = biddingMoney;
-        int count = 0;
-        while (start >= 10) {
-            start /= 10;
-            count++;
-        }
-        this.askingMoney = start * (int)Math.pow(10, count - 1);
+        this.askingMoney = askingMoney;
     }
 
     public void lastBidding(User user, int biddingMoney){
