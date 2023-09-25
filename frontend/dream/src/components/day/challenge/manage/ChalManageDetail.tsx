@@ -29,6 +29,7 @@ import { ChalDetailDataType, ChalDetailInfoProps } from "../ChalDetail";
 import Wrap from "style/Wrap";
 import styled from "styled-components";
 import tokenHttp from "api/tokenHttp";
+import Text from "style/Text";
 // 스타일
 
 
@@ -38,18 +39,12 @@ interface ProgressBarProps {
 }
 
 const ProgressBar = styled.div<ProgressBarProps>`
-  height: 0.8rem;
-  margin-right: 0.75rem;
+  height: 1rem;
+  width: 100%;
   border-radius: 1rem;
   color: #997ad8;
   position: relative;
   background-color: #F9F9F9;
-
-  & > p {
-    font-size: 0.8rem;
-    z-index: 10;
-    color: black;
-  }
   
   &::before {
     content: "";
@@ -110,7 +105,7 @@ const ChalManageDetail = () => {
 
       })
       .catch((e)=>{console.log(e)})
-  })
+  },[])
 
   return (
     <Container $dayBaseContainer>
@@ -138,10 +133,11 @@ const ChalManageDetail = () => {
       </Container>
 
       {/* 성취도 바 */}
-      <ProgressBar progress={progress}>
-        {/* <BoxTitle $boxTistle>성취도</BoxTitle> */}
-        <p>{progress}</p>
-      </ProgressBar>  
+      <Box $progressBox>
+        <ProgressBar progress={progress}></ProgressBar>  
+        <BoxTitle $boxTitle>성취도</BoxTitle>
+        <Text $progressPercent>{progress}%</Text>
+      </Box>
 
     </Container>
   )

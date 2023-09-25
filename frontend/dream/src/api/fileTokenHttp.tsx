@@ -10,7 +10,7 @@ const baseURL = "http://localhost:9090/api"
 
 const fileTokenHttp = axios.create({
   baseURL,
-  withCredentials:false, //임시, 후에 지워야함
+  // withCredentials:false, //임시, 후에 지워야함
   headers: {
     "Content-Type": "multipart/form-data",
   },
