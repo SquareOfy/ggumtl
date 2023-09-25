@@ -47,7 +47,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     @Override // 이 주소로 오는 건 토큰 없어도 됨.
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        return path.startsWith("/api/oauth2/login") || path.startsWith("/login/**") || path.startsWith("/api/oauth2/**");
+        return path.startsWith("/api/login/oauth2/**") || path.startsWith("/login/**") || path.startsWith("/api/oauth2/**");
     }
 
     @Override
