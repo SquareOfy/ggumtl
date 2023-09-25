@@ -7,6 +7,11 @@ fastapi==0.103.1
 h11==0.14.0
 httptools==0.6.0
 idna==3.4
+# JPype1 @ file:///C:/Users/SSAFY/Desktop/pjt301/S09P22B301/dataend/JPype1-1.4.1-cp310-cp310-win_amd64.whl#sha256=8d94013dfed3d1c7ee193e86393b2aea756a9910d222b7167ed493f9a0b1b3d5
+konlpy==0.6.0
+lxml==4.9.3
+numpy==1.26.0
+packaging==23.1
 pydantic==2.3.0
 pydantic_core==2.6.3
 python-dotenv==1.0.0
