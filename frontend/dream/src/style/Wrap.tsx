@@ -117,7 +117,7 @@ const StyledWrap = styled.div<WrapProps>`
           /* 닉네임 + 버튼 부분 */
           & > div:nth-child(1) {
             display: grid;
-            grid-template-columns: 4fr 3fr;
+            grid-template-columns: 4fr 2fr;
             align-items: center;
 
             & > div:nth-child(2){
@@ -175,28 +175,66 @@ const StyledWrap = styled.div<WrapProps>`
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding:  0 0.5rem;
+      /* padding:  0 0.5rem; */
       position: fixed;
       top: 0;
       left: 0;
       overflow: scroll;
       background-image: url("/image/background-image/day-background.jpg");
-        
-      & > div:nth-child(1) {
-        display: grid;
-        grid-template-columns: 1fr 8fr 1fr;
-        align-items: center;
-        /* position: fixed; */
-        top: 0;
-        left: 0;
+      background-size: cover;
+      z-index: 300;
+
+      & > .story {
         width: 100%;
-      }
-      
-      & > div:nth-child(2) {
-        margin-bottom: 5rem;
         height: 100%;
+        padding: 0 0.5rem;
+
+        /* 터치 이벤트 오른쪽 영역 */
+        & > .storyRight {
+          position: absolute;
+          width: 50%;
+          height: 90%;
+          bottom: 0;
+          right: 0;
+          /* background-color: aliceblue; */
+          z-index: 999;
+        }
+
+        /* 터치 이벤트 왼쪽 영역 */
+        & > .storyLeft {
+          position: absolute;
+          width: 50%;
+          height: 90%;
+          bottom: 0;
+          left: 0;
+          /* background-color: aliceblue; */
+          z-index: 999;
+        }
+
+        /* 상단바 */
+        & > .storyBarBox {
+          height: 0.5rem;
+          width: 98%;
+          margin: 1rem auto;
+          display: flex;
+          border-radius: 1rem;
+          align-items: center;
+        }
+
+        /* contents 부분 */
+        & > div:nth-child(3) > div:nth-child(2) > .contents {
+          
+          & > img {
+            width: 100%;
+            height: 100%;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border-radius: 1rem;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+          }
+        }
       }
-      
     `
   }
 

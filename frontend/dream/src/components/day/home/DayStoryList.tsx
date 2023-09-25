@@ -13,6 +13,7 @@ import DayStoryDetail from "./DayStoryDetail";
 // 스타일
 import styled from "styled-components";
 import Image from "style/Image";
+import basicHttp from "api/basicHttp";
 
 export interface StoryDataObjType {
   challengeId :number,
@@ -30,6 +31,14 @@ const DayStoryList = () => {
   // 스크롤 내리면서 받아올 새 리스트 
   const [newStoryDataList, setNewStoryDataList] = useState<StoryDataListType>([]);
   const [lastItemId, setLastItemId] = useState<number>(0); // 마지막 아이템 번호
+  let size = 8;
+
+  // axios 연결 - 팔로우 유저 목록 조회
+  useEffect(() => {
+    basicHttp.get(`/day/challenge/story/user-list?lastItemId=${lastItemId}&size=${size}`)
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err))
+  }, [])
 
   // 샘플 데이터
   const [sampleDataList, setSampleDataList] = useState<StoryDataListType>([]);
@@ -80,7 +89,11 @@ const DayStoryList = () => {
   return (
     <>
     {
-      isOpenModal && <DayStoryDetail setIsOpenModal={setIsOpenModal}></DayStoryDetail>
+      isOpenModal && 
+      <DayStoryDetail 
+      setIsOpenModal={setIsOpenModal} 
+      isOpenModal={isOpenModal}
+      ></DayStoryDetail>
     }
     <div style={{display: "-webkit-box", overflowX: "scroll"}}>
 

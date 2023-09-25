@@ -1,63 +1,210 @@
-
-// 상단 div
-// CircleImage 
-// 닉네임 text 
-// X button
-
-// TitleBox
-// MainImage
-// WideTextBox
-
 // 리액트
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+
+// 외부 라이브러리
+import basicHttp from "api/basicHttp";
 
 // 컴포넌트
 
 // 스타일
-import Image from "style/Image";
-import Text from "style/Text";
 import Wrap from "style/Wrap";
 import { AiOutlineClose } from "react-icons/ai";
+import Text from "style/Text";
 import { Box } from "style/Box";
+import Image from "style/Image";
+import styled from "styled-components";
 
 export interface DayStoryDetailProps {
-  setIsOpenModal : Dispatch<SetStateAction<boolean>>
+  setIsOpenModal :Dispatch<SetStateAction<boolean>>,
+  isOpenModal :boolean,
 }
 
-const DayStoryDetail = ({setIsOpenModal} :DayStoryDetailProps) => {
+interface StoryType {
+  challengeDetailContent :string,
+  challengeDetailId :number,
+  challengeTitle :string,
+  nickName :string,
+  photoUrl :string,
+  userId :number
+}
 
+interface StoryBarProps {
+  storyLength :number,
+  currentIndex :number,
+  index :number,
+}
+
+const StoryBar = styled.div<StoryBarProps>`
+  width: calc(${props => 100/props.storyLength*(props.currentIndex+1)}%);
+  height: 0.4rem;
+  background-color: ${props =>
+    props.currentIndex >= props.index ? "#3D5665" : "#E4E8E7"};
+  border-radius: 1rem;
+  border: 1px solid #3D5665;
+  `
+
+// interface StoriesType extends Array<StoriesObjType> {}
+
+const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
+  // const auth = useSelector((state: RootState) => state.auth);
+  const [storyList, setStoryList] = useState<StoryType[]>([]); // axios로 새로 받아올 데이터
+  
+  // 모달을 닫음
   const handleIsOpenModal = () => {
-    setIsOpenModal(false);
+    setIsOpenModal(false); // 모달 닫음
+    setCurrentIndex(0); // 스토리 인덱스 0으로 초기화
     console.log("모달 닫기");
   }
 
+
+  // API 연결
+  // userId는 상대방의 ID를 넣어야 함
+  const userId = 3; // 임시 데이터
+
+  useEffect(() => {
+    basicHttp.get(`/day/challange/story/${userId}`)
+    .then((res) => {
+      console.log(res);
+      if (res.data.status === 200) {
+        setStoryList(res.data.data); // 데이터 저장
+      }
+      // 팔로우한 유저가 올린 글이 없을 때
+      if (res.data.status === 400) {
+        // setIsStoryData(false)
+      }
+    })
+    .catch(err => console.log(err))
+  }, [])
+
+
+  // 인덱스로 제어
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  let interval = 3000;
+
+  // 스토리 입장 -> n초 대기 -> 다음 화면 넘어가기
+  // 입장 후 n초 대기 -> 기준time 0으로 초기화 -> handleOnNext 실행
+  // 다음 클릭 -> handleOnNext 실행 -> n초 대기 -> handleOnNext 실행
+  // 이전 클릭 -> handleOnPrevious 실행 -> n초 대기 -> handleOnNext 실행
+  
+  const nextTime = (callback :() => void, time :number) => {
+    setTimeout(callback, time);
+  };
+
+  // 스토리 시작 시 실행
+  const storyStart = async () :Promise<void> => {
+    if (isOpenModal) {
+      await nextTime(() => {
+        console.log('시작');
+        setCurrentIndex(1);
+      }, interval);
+    }
+  }
+
+  // 일정시간 후 다음 페이지로 이동
+  const goToNextInterval = async () :Promise<void> => {
+    await nextTime(() => {
+      console.log('다음');
+      if (isOpenModal && currentIndex + 1 < storyList.length) {
+        setCurrentIndex(currentIndex+1);
+      } else {handleIsOpenModal()}
+      }, interval);
+  }
+
+  // 다음 페이지로 이동 (클릭)
+  const handleOnNext = () => {
+    if (currentIndex + 1 >= storyList.length) {
+      handleIsOpenModal();
+      return
+    }
+    setCurrentIndex(currentIndex + 1);
+  }
+
+  // 이전 페이지로 이동 (클릭)
+  const handleOnPrevious = () => {
+    if (currentIndex - 1 < 0) return;
+    setCurrentIndex(currentIndex - 1);
+    console.log('이전');
+  }
+
+  // 인덱스가 리스트 길이보다 작고 모달이 띄워져있을 때 실행
+  useEffect(() => {
+    if (currentIndex < storyList.length && isOpenModal) {
+      goToNextInterval();
+    };
+  }, [currentIndex, isOpenModal])
+
+  // 스토리 시작 시 setTimeOut
+  useEffect(() => {
+    if (isOpenModal) {
+      storyStart();
+    }
+  }, [storyList])
+
+  
   return (
     <>
-    <Wrap $storyWrap>
-      {/* 상단바 */}
-      <div>
-        <Image $tinyProfileImage><img /></Image>
-        <Text $isBold $nightWhite>나는프론트엔드</Text>
-        <AiOutlineClose onClick={handleIsOpenModal}></AiOutlineClose>
-      </div>
-      <div>
-        {/* 챌린지 제목 */}
-        <Box $mainTitleBox>
-          <img />
-          <Text>1일 1커밋 챌린지</Text>
-        </Box>
+    {
+      isOpenModal &&
+      storyList && 
+      currentIndex < storyList.length &&
+      currentIndex > -1 &&
+      <Wrap $storyWrap>
+        {/* 닫기 버튼 */}
+        <AiOutlineClose
+        onClick={handleIsOpenModal}
+        className="closeButton"
+        style={{position: "fixed", top: "1.5rem", right: "1rem", width: "1.5rem", height: "1.5rem", zIndex: 1, color: "white"}}  
+        ></AiOutlineClose>
 
-        {/* 사진 */}
-        <Image $signupImage><img/></Image>
+        {
+          <div className="story">
+            {/* 클릭 영역 */}
+            <div
+            className="storyRight"
+            // onClick={handleOnNext}
+            onClick={handleOnNext}
+            ></div>
+            <div
+            className="storyLeft"
+            // onClick={handleOnPrevious}
+            onClick={handleOnPrevious}
+            ></div>
 
-        {/* 내용 */}
-        <Box $storyContentsBox $day>
-          여기는 스토리 세부 내용 Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, sint nostrum? Dicta, provident maiores! Explicabo excepturi, odit ea facilis itaque neque laboriosam totam perspiciatis repellat quia aut consequatur dolorem accusantium!
-        </Box>
-      </div>
+            {/* 상단바 */}
+            <div className="storyBarBox">
+              {storyList.map((element, i) => (
+                  <StoryBar 
+                  key={i} 
+                  storyLength={storyList.length}
+                  currentIndex={currentIndex}
+                  index={i}
+                  ></StoryBar>
+              ))}
+            </div>
 
-
-    </Wrap>
+            {/* 컨텐츠 영역 */}
+            {/* 헤더 */}
+            <div className="header">
+              <Box $mainTitleBox $day>
+                <Text>{storyList[currentIndex].challengeTitle}</Text>
+              </Box>
+            </div>
+              <Image $mainImage $nightImageBorder>
+                <img src={storyList[currentIndex].photoUrl}></img>
+              </Image>
+              <Text>{storyList[currentIndex].nickName}</Text>
+              <Box $challengeContentBox
+              style={{padding: "1.5rem"}}
+              >
+                {/* <Text>{storyList[currentIndex].challengeDetailContent}</Text> */}
+                {storyList[currentIndex].challengeDetailContent}
+              </Box>
+          </div>
+          }
+      </Wrap>
+      }
     </>
   )
 }

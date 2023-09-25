@@ -6,6 +6,7 @@ import styled, {css} from 'styled-components';
 interface BoxProps {
   children ?: React.ReactNode;
   onClick ?: (e:any) => void;
+  style ?:any;
 
   // 사이즈 관련
   $fullWidth ?: boolean
@@ -170,7 +171,7 @@ const StyledBox = styled.div<BoxProps>`
       margin-bottom: 3rem;
       border-radius: 1rem;
       display:flex;
-      justify-content:center;
+      justify-content:start;
       align-items:center;
     `
   }
