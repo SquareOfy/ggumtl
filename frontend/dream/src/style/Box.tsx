@@ -28,6 +28,8 @@ interface BoxProps {
 
   // 박스에 타이틀 관련
   $boxTitle ?: boolean;
+
+  $progressBox ?: boolean;
 }
 
 const StyledBox = styled.div<BoxProps>`
@@ -214,6 +216,22 @@ const StyledBox = styled.div<BoxProps>`
       margin: 0;
       text-align: center;
     }
+    `
+  }  
+  // 챌린지 관리 박스
+  ${(props) => props.$progressBox && 
+    css`
+      margin: 0.7rem 0;
+      & :nth-child(2) {
+        padding-left: 1rem;
+      }
+      & :nth-child(3) {
+        text-align: center;
+        position: relative;
+        top: -1rem;
+      }
+
+
     `
   }  
 

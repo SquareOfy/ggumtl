@@ -10,7 +10,7 @@ const baseURL = "https://j9b301.p.ssafy.io/api";
 
 const tokenHttp = axios.create({
   baseURL,
-  withCredentials:false, //임시, 후에 지워야함
+  // withCredentials:false, //임시, 후에 지워야함
   headers: {
     "Content-Type": "application/json",
   },

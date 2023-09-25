@@ -35,6 +35,7 @@ interface TextProps {
   //챌린지 디테일 정보 박스 내부
   $chalBoxInnerText ?: boolean;
 
+  $progressPercent ?: boolean;
 }
 const StyledText = styled.div<TextProps>`
 
@@ -134,6 +135,15 @@ const StyledText = styled.div<TextProps>`
     props.$chalBoxInnerText && 
     css`
       line-height: 3.5rem;
+    `
+  }
+  // progress bar 퍼센트
+  ${(props) => 
+    props.$progressPercent && 
+    css`
+      height: 0;
+      position: relative;
+      font-size: 1rem;
     `
   }
 
