@@ -43,6 +43,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
+
+    @Override // 이 주소로 오는 건 토큰 없어도 됨.
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/api/oauth/login") || path.startsWith("/login/**") || path.startsWith("/oauth2/**");
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //jwt를 검증할 필요가 없는 url은 다음 filter호출 후 메서드 종료하기
