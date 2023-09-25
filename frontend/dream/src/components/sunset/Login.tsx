@@ -23,9 +23,7 @@ const LoginContainer = styled.div`
 
 
 const openKakaoLogin = () => {
-  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI; 
-  const CLIENT_ID = process.env.REACT_APP_KAKAO_CLIENT_ID;
-  const KakaoLoginAPI = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const KakaoLoginAPI = `http://localhost:9090/oauth2/authorization/kakao`;
 
   window.open(KakaoLoginAPI, "_self");
 }

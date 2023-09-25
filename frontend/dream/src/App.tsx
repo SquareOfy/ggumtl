@@ -37,6 +37,7 @@ import ChalCreateCertPage from 'pages/day/challenge/ChalCreateCertPage';
 import ChalCapsuleListPage from 'pages/day/capsule/ChalCapsuleListPage';
 import DayAlertPage from 'pages/alert/DayAlertPage';
 import BackgroundImage from 'style/backgroundImage';
+import DayProfilePage from 'pages/day/profile/DayProfilePage';
 
 
 function App() {
@@ -125,7 +126,7 @@ function App() {
         <Route path="/day/mychallenge/cert/create" element={<ChalCreateCertPage/>}/>        
 
         {/* 낮 프로필 */}        
-        <Route path="/day/profile/:userId" element={<NightProfilePage/>}/>
+        <Route path="/day/profile/:userId" element={<DayProfilePage/>}/>
 
         {/* 알림 */}
         <Route path="/night/alert" element={<NightAlertPage/>}/>

@@ -33,6 +33,7 @@ export const userdataReducer = createSlice({
   reducers:{
     getCurrentUserdata: (state, action) => {
       state.userdata =  action.payload;
+      console.log('유저 데이터 redux 저장', state.userdata)
     },
     logout: (state) => {
       // initialState 초기화
