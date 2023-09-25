@@ -23,13 +23,11 @@ public class UserController {
 
     private final UserService userService;
 
-//    private User user = userService.getUserForDev(20L);
-
 
     // 예시 - 지워질 코드
-    @GetMapping("/{id}")
-    public ResultTemplate getUser(@PathVariable("id") long id) {
-        return userService.getUser(id);
+    @GetMapping()
+    public ResultTemplate getUser(@UserInfo User user) {
+        return userService.getUser(user);
     }
 
     @GetMapping("/jwt-test")
@@ -60,49 +58,48 @@ public class UserController {
 
     }
 
-
-//개발용
+    //배포용
     @GetMapping("/nickname/duplication/{nickname}")
-    public ResultTemplate checkDuplicationNick( @PathVariable RequestNickname nickname){
-        User user = userService.getUserForDev(20L);
+    public ResultTemplate checkDuplicationNick(@PathVariable RequestNickname nickname){
         return userService.checkDuplicateNick(nickname);
     }
     @PutMapping("/nickname")
-    public ResultTemplate updateNickname( @RequestBody RequestNickname nickname){
-        User user = userService.getUserForDev(20L);
+    public ResultTemplate updateNickname(@UserInfo User user, @RequestBody RequestNickname nickname){
         return userService.updateNickname(user, nickname);
     }
 
     @PostMapping("/follow")
-    public ResultTemplate postFollow(@RequestBody RequestToId request){
-       User user = userService.getUserForDev(20L);
+    public ResultTemplate postFollow(@UserInfo User user, @RequestBody RequestToId request){
         return userService.follow(user, request);
     }
 
     @DeleteMapping("/unfollow/{toId}")
-    public ResultTemplate deleteFollow(@PathVariable Long toId){
-        User user = userService.getUserForDev(20L);
+    public ResultTemplate deleteFollow(@UserInfo User user, @PathVariable Long toId){
         return userService.unfollowToId(user, toId);
     }
 
 
-    //배포용
+////개발용
 //    @GetMapping("/nickname/duplication/{nickname}")
-//    public ResultTemplate checkDuplicationNick(@PathVariable RequestNickname nickname){
+//    public ResultTemplate checkDuplicationNick( @PathVariable RequestNickname nickname){
+//        User user = userService.getUserForDev(20L);
 //        return userService.checkDuplicateNick(nickname);
 //    }
 //    @PutMapping("/nickname")
-//    public ResultTemplate updateNickname(@UserInfo User user, @RequestBody RequestNickname nickname){
+//    public ResultTemplate updateNickname( @RequestBody RequestNickname nickname){
+//        User user = userService.getUserForDev(20L);
 //        return userService.updateNickname(user, nickname);
 //    }
 //
 //    @PostMapping("/follow")
-//    public ResultTemplate postFollow(@UserInfo User user, @RequestBody RequestToId request){
+//    public ResultTemplate postFollow(@RequestBody RequestToId request){
+//       User user = userService.getUserForDev(20L);
 //        return userService.follow(user, request);
 //    }
 //
 //    @DeleteMapping("/unfollow/{toId}")
-//    public ResultTemplate deleteFollow(@UserInfo User user, @PathVariable Long toId){
+//    public ResultTemplate deleteFollow(@PathVariable Long toId){
+//        User user = userService.getUserForDev(20L);
 //        return userService.unfollowToId(user, toId);
 //    }
 

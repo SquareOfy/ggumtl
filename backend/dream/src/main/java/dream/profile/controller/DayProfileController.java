@@ -2,6 +2,7 @@ package dream.profile.controller;
 
 import dream.common.domain.ResultTemplate;
 import dream.profile.service.DayProfileService;
+import dream.security.jwt.domain.UserInfo;
 import dream.user.domain.User;
 import dream.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class DayProfileController {
 
 
     @GetMapping("/header/{profileUserId}")
-    public ResultTemplate getDayHeader(@PathVariable Long profileUserId){
-        User user = userService.getUserForDev(20L);
+    public ResultTemplate getDayHeader(@PathVariable Long profileUserId, @UserInfo User user){
+//        User user = userService.getUserForDev(20L);
 
         return dayProfileService.getDayHeader(user, profileUserId);
     }
