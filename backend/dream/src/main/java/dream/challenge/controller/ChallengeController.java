@@ -5,10 +5,12 @@ import dream.challenge.dto.request.*;
 import dream.challenge.service.ChallengeService;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.NotFoundException;
+import dream.security.jwt.domain.UserInfo;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @RestController
@@ -33,10 +35,10 @@ public class ChallengeController {
 
     @GetMapping(value = "/challenge/story/user-list")
     public ResultTemplate getFollowUsers(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
-                                         @RequestParam(value = "size") int size) {
+                                         @RequestParam(value = "size") int size, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(3L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(3L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.getFollowUsers(user, lastItemId, size);
     }
@@ -57,19 +59,19 @@ public class ChallengeController {
     }
 
     @GetMapping(value = "/challenge/item/{challangeId}")
-    public ResultTemplate getChallengeInfo(@PathVariable(value = "challangeId") Long challangeId) {
+    public ResultTemplate getChallengeInfo(@PathVariable(value = "challangeId") Long challangeId, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(2L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(2L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.getChallengeInfo(user, challangeId);
     }
 
     @PostMapping(value = "/challenge")
-    public ResultTemplate postParticipateChallenge(@RequestBody RequestChallengeId request) {
+    public ResultTemplate postParticipateChallenge(@RequestBody RequestChallengeId request, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(2L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(2L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.postParicipateChallenge(user.getUserId(), request.getChallengeId());
     }
@@ -81,28 +83,28 @@ public class ChallengeController {
     }
 
     @PostMapping(value = "/challenge/timecapsule")
-    public ResultTemplate postTimeCapsule(@Valid @RequestBody RequestTimeCapsule request) {
+    public ResultTemplate postTimeCapsule(@Valid @RequestBody RequestTimeCapsule request, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(2L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(2L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.postTimeCapsule(user, request);
     }
 
     @GetMapping(value = "/challenge/writeDetailPossible/{challengeId}")
-    public ResultTemplate writeDetailPossible(@PathVariable("challengeId") Long challengeId) {
-
-        User user = userRepository.findByUserId(2L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+    public ResultTemplate writeDetailPossible(@PathVariable("challengeId") Long challengeId, @UserInfo User user) {
+//
+//        User user = userRepository.findByUserId(2L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.writeDetailPossible(user, challengeId);
     }
 
     @PostMapping(value = "/challenge/new")
-    public ResultTemplate postChallenge(@RequestBody RequestChallenge request) {
+    public ResultTemplate postChallenge(@RequestBody RequestChallenge request, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(2L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(2L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         Long challengeId = challengeService.postChallenge(user, request);
 
@@ -118,10 +120,10 @@ public class ChallengeController {
     }
 
     @PostMapping(value = "/challange/detail/comment")
-    public ResultTemplate postComments(@RequestBody RequestComment request) {
+    public ResultTemplate postComments(@RequestBody RequestComment request, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(2L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(2L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.postComment(user, request);
     }
@@ -133,19 +135,20 @@ public class ChallengeController {
     }
 
     @PostMapping(value = "/challange/detail/like")
-    public ResultTemplate postLike(@RequestBody RequestChallengeDetailId request) {
+    public ResultTemplate postLike(@RequestBody RequestChallengeDetailId request, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(2L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(2L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.postLike(user, request.getChallengeDetailId());
     }
 
     @DeleteMapping(value = "/challange/detail/{challengeDetailId}/unlike")
-    public ResultTemplate deleteLike(@PathVariable("challengeDetailId") Long challengeDetailId) {
+    public ResultTemplate deleteLike(@PathVariable("challengeDetailId") Long challengeDetailId
+            , @UserInfo User user) {
 
-        User user = userRepository.findByUserId(2L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(2L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.postUnLike(user, challengeDetailId);
     }
@@ -153,29 +156,30 @@ public class ChallengeController {
     @GetMapping(value = "/challange/detail/{challengeId}/list")
     public ResultTemplate getChallengeDetails(@PathVariable("challengeId") Long challengeId,
                                               @RequestParam(value = "lastItemId", required = false) Long lastItemId,
-                                              @RequestParam("size") int size) {
+                                              @RequestParam("size") int size, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(3L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(3L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.getChallengeDetails(user, challengeId, lastItemId, size);
     }
 
     @GetMapping(value = "/mychallange/list")
     public ResultTemplate getMyChallengeList(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
-                                             @RequestParam("size") int size){
+                                             @RequestParam("size") int size, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(3L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(3L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.getMyChallengeList(user, lastItemId, size);
     }
 
     @GetMapping(value = "/challenge/{challengeDetailId}")
-    public ResultTemplate getMyChallengeInfo(@PathVariable("challengeDetailId") Long challengeMidId){
+    public ResultTemplate getMyChallengeInfo(@PathVariable("challengeDetailId") Long challengeMidId
+            , @UserInfo User user) {
 
-        User user = userRepository.findByUserId(3L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(3L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.getMyChallengeInfo(user, challengeMidId);
     }
@@ -183,10 +187,10 @@ public class ChallengeController {
     @GetMapping(value = "/challenge/timecapsule/{challengeId}")
     public ResultTemplate getTimeCapsules(@PathVariable("challengeId") Long challengeId,
                                           @RequestParam(value = "lastItemId", required = false, defaultValue = "9999") Long lastItemId,
-                                          @RequestParam("size") int size) {
+                                          @RequestParam("size") int size, @UserInfo User user) {
 
-        User user = userRepository.findByUserId(3L).
-                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+//        User user = userRepository.findByUserId(3L).
+//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.getTimeCapsule(user, challengeId, lastItemId, size);
     }

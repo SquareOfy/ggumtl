@@ -23,13 +23,13 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler( {InvalidAccessTokenException.class} )
+    @ExceptionHandler( InvalidAccessTokenException.class )
     public ResultTemplate invalidAccessTokenException(Exception e){
 
         return ResultTemplate.builder().status(HttpStatus.FORBIDDEN.value()).data(e.getMessage()).build();
     }
 
-    @ExceptionHandler( {InvalidRefreshTokenException.class} )
+    @ExceptionHandler( InvalidRefreshTokenException.class )
     public ResultTemplate invalidRefreshTokenException(Exception e){
 
         return ResultTemplate.builder().status(HttpStatus.FORBIDDEN.value()).data(e.getMessage()).build();
