@@ -23,7 +23,7 @@ const LoginContainer = styled.div`
 
 
 const openKakaoLogin = () => {
-  const KakaoLoginAPI = `http://localhost:9090/oauth2/authorization/kakao`;
+  const KakaoLoginAPI = `https://j9b301.p.ssafy.io/oauth2/authorization/kakao`;
 
   window.open(KakaoLoginAPI, "_self");
 }

@@ -7,11 +7,13 @@ interface TextAreaProps {
     children?: React.ReactNode;
     // styles?: string;
     onChange ?: (e :any) => void;
+    onBlur ?: (e :any) => void;
     disabled?: boolean;    
     type?: 'text';
     placeholder ?: string;
     id ?: string;
     value ?: string;
+    
 
     // 별개 스타일링
     // text area

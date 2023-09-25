@@ -116,8 +116,8 @@ function App() {
         <Route path="/day/challenge/create" element={<ChalCreatePage/>}/>
         {/* 타임캡슐 */}
         {/* 모달 */}
-        {/* <Route path="/day/challenge/:challangeId/timecapsule" element={<ChalCapsuleListPage/>}/> */}
-        <Route path="/day/challenge/:challangeId/timecapsule/create" element={<ChalCapsuleCreatePage/>}/>
+        {/* <Route path="/day/challenge/:challengeId/timecapsule" element={<ChalCapsuleListPage/>}/> */}
+        <Route path="/day/challenge/:challengeId/timecapsule/create" element={<ChalCapsuleCreatePage/>}/>
         
         {/* 챌린지 매니지(내 챌린지) 관련 */}
         <Route path="/day/mychallenge/list" element={<ChalManagePage/>}/>

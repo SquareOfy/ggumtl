@@ -45,7 +45,7 @@ const SunsetMain = () => {
   const dispatch = useDispatch()
   //유저 로그인 정보 리덕스에 저장
   useEffect(()=>{
-    basicHttp.get('/user/2')
+    tokenHttp.get('/user')
       .then((response)=> {
         console.log(response.data.data)
         dispatch(getCurrentUserdata(response.data.data))
