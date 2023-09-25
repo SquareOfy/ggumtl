@@ -2,7 +2,9 @@ import { createGlobalStyle } from "styled-components";
 import "./fonts/font.css"
 const GlobalStyle = createGlobalStyle`
 * {
-	font-family: "Eulyoo1945-Regular";
+	font-family: "HakgyoansimWoojuR";
+  font-weight: 300;
+
 }
 
 article, aside, details, figcaption, figure, 

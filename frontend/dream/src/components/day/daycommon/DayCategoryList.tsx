@@ -3,9 +3,12 @@
 // <CategoryBox></CategoryBox>
 
 // 리액트
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Text from "style/Text";
 import styled from "styled-components";
+
+// 외부 라이브러리
+import tokenHttp from "api/tokenHttp";
 
 // 컴포넌트
 
@@ -24,10 +27,26 @@ const CategoryListWrap = styled.div`
   gap: 0.5rem;
 `
 
+export interface CategoryAxiosType {
+  keyword :string,
+  keywordId :number,
+}
+
 const DayCategoryList = () => {
-  let categoryList :string[] = [
-    '재물', '진로', '인간관계', '감정', '자기계발', 
-    '건강', '도전', '교양', '학습', '기타'];
+  const [categoryList, setCategoryList] = useState<CategoryAxiosType[]>([]);
+  
+  // axios 요청
+  const getCategory = () => {
+    tokenHttp.get(`/day/keyword/list`)
+    .then((res) => {
+      setCategoryList(res.data.data);
+    })
+    .catch((err) => console.log(err))
+  }
+
+  useEffect(() => {
+    getCategory();
+  }, []);
 
   return (
     <>
@@ -35,8 +54,8 @@ const DayCategoryList = () => {
       <Text $isBold>카테고리</Text>
       <CategoryListWrap>
         {
-          categoryList.map((category, i) => 
-            <Button $category key={i}>{category}</Button>
+          categoryList?.map((category, i) => 
+            <Button $category key={i}>{category.keyword}</Button>
           )
         }
       </CategoryListWrap>
