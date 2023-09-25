@@ -10,6 +10,7 @@ interface BoxProps {
 
   // 사이즈 관련
   $fullWidth ?: boolean
+  $doubleWidth ?: boolean
   $tripleWidth ?: boolean
 
   $wideTextBox ?: boolean;
@@ -19,6 +20,7 @@ interface BoxProps {
   $mainTitleBox ?: boolean;
   $storyContentsBox ?: boolean;
   $chalDetailBox ?: boolean;  // 챌린지 정보 박스
+  $chalManageBox ?: boolean;  
 
   // 모드 관련
   $night ?: boolean;
@@ -36,6 +38,13 @@ const StyledBox = styled.div<BoxProps>`
       width: 100%;
     `
   }
+  ${(props) => props.$doubleWidth &&
+    css`
+      width: 48%;
+    `
+  }
+
+
 
   ${(props) => props.$tripleWidth &&
     css`
@@ -143,8 +152,8 @@ const StyledBox = styled.div<BoxProps>`
   ${(props) => props.$mainTitleBox &&
     css`
       padding: 0.5rem 2rem;
-      margin: 1rem 3rem;
-      margin-bottom: 0;
+      margin: 1rem 2rem;
+      margin-bottom: 1.5rem;
       border-radius: 1rem;
       background-color: rgba(249, 249, 249, 0.5);
       color: black;
@@ -153,8 +162,8 @@ const StyledBox = styled.div<BoxProps>`
       align-items:center;
 
       & > img {
-        width:2.5rem;
-        height:2.5rem;
+        width:1.5rem;
+        height:1.5rem;
         border-radius: 50%;
         margin-right: 1rem;
         background-color: red;
@@ -179,13 +188,32 @@ const StyledBox = styled.div<BoxProps>`
   // 챌린지 디테일 박스
   ${(props) => props.$chalDetailBox && 
    css`
-      background-color: rgba(249, 249, 249, 0.7);
-      border-radius: 1rem;
-      margin-top: 1rem;
-      // 두번쨰 요소인 내용만 가운데 정렬
-      & :nth-child(2) {
-        text-align: center;
-      }
+    padding : 1rem;
+    margin: 0.7rem 0;
+    max-height: 5rem;
+    border-radius: 1rem;
+    background-color: rgba(249, 249, 249, 0.7);
+    // 두번쨰 요소인 내용만 가운데 정렬
+
+    & :nth-child(2) {
+      text-align: center;
+    }
+    `
+  }  
+  // 챌린지 관리 박스
+  ${(props) => props.$chalManageBox && 
+   css`
+    padding : 1rem;
+    margin: 0.7rem 0;
+    max-height: 5rem;
+    border-radius: 2rem;
+    background-color: rgba(249, 249, 249, 0.5);
+    // 두번쨰 요소인 내용만 가운데 정렬
+
+    & :nth-child(2) {
+      margin: 0;
+      text-align: center;
+    }
     `
   }  
 
@@ -198,11 +226,11 @@ const StyledTitle = styled.div<BoxProps>`
   
   ${(props) => props.$boxTitle && 
     css`
-      font-size : 0.8rem;
+      font-size : 0.9rem;
       position : relative;
       height:0; // relative가 그전 것에 영향을 안주기 위해 사용
-      padding: 0 0.7rem;
-      top: -0.4rem;
+      padding: 0;
+      top: -1.5rem;
       font-weight: 800;
     `
   }

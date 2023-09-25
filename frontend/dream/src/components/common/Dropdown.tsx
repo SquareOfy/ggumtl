@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+
+import React, {useEffect, useState, SetStateAction, Dispatch} from 'react';
 
 // 컴포넌트
 import { CiSquareChevDown } from "react-icons/ci";
@@ -9,6 +10,8 @@ import styled from 'styled-components';
 interface DropdownProps {
   children ?: string[]
   $show ?: boolean
+  $type ?: string
+  setSelectOption ?: Dispatch<SetStateAction<string>>
 }
 
 // 스타일
@@ -75,8 +78,10 @@ const Dropdown = (props:DropdownProps) => {
   const [optionArray, setOptionArray] = useState<string[]>([]) // 옵션 리스트
   
   useEffect(()=>{
-    setCurrentValue(props.children ? props.children[0] : '')
-    setOptionArray(props.children ? props.children.slice(1) : [])
+    
+    setCurrentValue(props.$type ? props.$type : '')
+
+    setOptionArray(props.children ? props.children : [])
     console.log(currentValue)
     console.log(optionArray)
   },[])
@@ -87,6 +92,7 @@ const Dropdown = (props:DropdownProps) => {
 
   const selectOption = (option:string)=>{
     setCurrentValue(option)
+    props.setSelectOption?.(option)
   }
 
   return (
@@ -99,7 +105,7 @@ const Dropdown = (props:DropdownProps) => {
             return (
             <Option 
               key={optionArray.indexOf(option)} 
-              onClick={(e)=>{selectOption(option)}}
+              onClick={()=>{selectOption(option)}}
             >
               {option}
             </Option>)

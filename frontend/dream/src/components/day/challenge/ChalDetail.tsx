@@ -31,7 +31,7 @@ export interface ChalDetailDataType {
   challengeTitle :string,
   keyword :string,
   participationCount :number,
-  // badgeUrl :string,
+  badgeUrl :string,
   period :string,
   ranking: [
     {
@@ -49,7 +49,7 @@ const initialChalDetail:ChalDetailInfoProps = {
     challengeTitle :'',
     keyword :'',
     participationCount :0,
-    // badgeUrl :'',
+    badgeUrl :'',
     period :'',
     ranking: [
       {

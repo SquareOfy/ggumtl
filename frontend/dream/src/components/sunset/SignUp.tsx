@@ -80,7 +80,7 @@ const SignUp = () => {
   
   // 닉네임 중복 체크 함수
   const checkDoubleNickname = (nickname:string):void => {
-    basicHttp.get(`/user/nickname/duplication/${nickname}`)
+    tokenHttp.get(`/user/nickname/duplication/${nickname}`)
       .then((response)=>{
         // 닉네임이 중복
         if (response.data.status === 400){
