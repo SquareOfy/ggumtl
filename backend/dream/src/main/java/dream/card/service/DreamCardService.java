@@ -6,6 +6,8 @@ import dream.card.domain.*;
 import dream.card.dto.request.RequestDreamCardDetail;
 import dream.card.dto.request.RequestDreamCardIsShow;
 import dream.card.dto.response.*;
+import dream.challenge.domain.Challenge;
+import dream.challenge.domain.ChallengeRepository;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.DeleteException;
@@ -34,6 +36,7 @@ public class DreamCardService {
     private final DreamKeywordRepository dreamKeywordRepository;
     private final AuctionRepository auctionRepository;
     private final DreamCardQueryRepository dreamCardQueryRepository;
+    private final ChallengeRepository challengeRepository;
 
 
     public ResultTemplate getNightMain(Long lastItemId, int size) {
@@ -142,16 +145,25 @@ public class DreamCardService {
         ResponseDreamAnalysis responseDreamAnalysis = dreamAnalysisService.processAnalysis(request);
 
         if(responseDreamAnalysis == null){
-            return ResultTemplate.builder().status(HttpStatus.OK.value()).data("fail").build();
+            return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data("fail").build();
         }
 
         List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
+        log.info("{}", keywords.size());
+        for (DreamKeyword keyword : keywords) {
+            log.info("{}", keyword.getKeyword());
+        }
+
+        List<Challenge> recommendChallenges = challengeRepository.findRecommendChallengeByDreamCard(request.getKeywords())
+                .stream().limit(5).collect(Collectors.toList());
+
+
 
         DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords, fileName, responseDreamAnalysis);
         dreamCardRepository.save(makeDreamCard);
 
         // 챌린지 추천할꺼 추가
-        ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard);
+        ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard, recommendChallenges);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
