@@ -1,6 +1,8 @@
 package dream.challenge.domain;
 
 
+import dream.card.domain.DreamCard;
+import dream.card.domain.DreamCardLike;
 import dream.common.domain.BaseCheckType;
 import dream.user.domain.User;
 import lombok.AccessLevel;
@@ -28,4 +30,12 @@ public class ChallengeDetailLike {
     @Enumerated(EnumType.STRING)
     private BaseCheckType isLike;
 
+    public static ChallengeDetailLike createLike(ChallengeDetail challengeDetail, User user) {
+
+        ChallengeDetailLike challengeDetailLike = new ChallengeDetailLike();
+        challengeDetailLike.challengeDetail = challengeDetail;
+        challengeDetailLike.user = user;
+
+        return challengeDetailLike;
+    }
 }

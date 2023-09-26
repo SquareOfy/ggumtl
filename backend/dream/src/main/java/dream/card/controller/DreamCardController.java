@@ -7,11 +7,13 @@ import dream.card.dto.request.RequestDreamCardId;
 import dream.card.dto.request.RequestDreamCardIsShow;
 import dream.card.service.DreamCardService;
 import dream.common.domain.ResultTemplate;
+import dream.security.jwt.domain.UserInfo;
+import dream.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/night")
+@RequestMapping("/api/night")
 @RequiredArgsConstructor
 public class DreamCardController {
 
@@ -20,6 +22,7 @@ public class DreamCardController {
     @GetMapping(value = "/")
     public ResultTemplate getNightMain(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
                                        @RequestParam("size") int size){
+                                       //@UserInfo User user){
         return dreamCardService.getNightMain(lastItemId, size);
     }
 
@@ -56,12 +59,6 @@ public class DreamCardController {
     public ResultTemplate getPreProcessingForDreamCard(@RequestBody RequestDreamCardContent request){
 
         return dreamCardService.getPreProcessingForDreamCard(request.getDreamCardContent());
-    }
-
-    @PostMapping(value = "/dream/new")
-    public ResultTemplate postDreamCard(@RequestBody RequestDreamCardDetail request){
-
-        return dreamCardService.postDreamCard(request);
     }
 
     @GetMapping(value = "/dream/{dreamCardId}/interpretation")

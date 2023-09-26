@@ -49,6 +49,14 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	//s3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	//webSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// mongodb
+	implementation ('org.springframework.boot:spring-boot-starter-data-mongodb')
 }
 
 //querydsl

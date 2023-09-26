@@ -3,6 +3,7 @@ package dream.auction.domain;
 import dream.auction.dto.request.RequestAuction;
 import dream.card.domain.DreamCard;
 import dream.common.domain.BaseTimeEntity;
+import dream.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +32,9 @@ public class Auction extends BaseTimeEntity{
 
     private LocalDateTime endedAt;
 
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bidding> bidding = new ArrayList<>();
+
 
     public static Auction createAuction(DreamCard dreamCard, RequestAuction request){
 
@@ -45,7 +51,18 @@ public class Auction extends BaseTimeEntity{
         }
         auction.askingMoney = start * (int)Math.pow(10, count - 1);
         auction.endedAt = request.getEndedAt();
+        auction.bidding.add(Bidding.insertFirstBidding(auction));
 
         return auction;
+    }
+
+    public void addBidding(User user, int biddingMoney, int askingMoney){
+        bidding.add(Bidding.insertBidding(this, user, biddingMoney));
+        this.askingMoney = askingMoney;
+    }
+
+    public void lastBidding(User user, int biddingMoney){
+        bidding.add(Bidding.insertBidding(this, user, biddingMoney));
+        dreamCard.endAuction(user);
     }
 }

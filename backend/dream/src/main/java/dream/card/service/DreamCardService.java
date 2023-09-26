@@ -1,8 +1,8 @@
 package dream.card.service;
 
-import dream.card.domain.DreamCard;
-import dream.card.domain.DreamCardQueryRepository;
-import dream.card.domain.DreamCardRepository;
+import dream.auction.domain.Auction;
+import dream.auction.domain.AuctionRepository;
+import dream.card.domain.*;
 import dream.card.dto.request.RequestDreamCardDetail;
 import dream.card.dto.request.RequestDreamCardIsShow;
 import dream.card.dto.response.*;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,13 +28,14 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class DreamCardService {
 
-    private final DreamCardRepository dreamCardRepository;
-    private final DreamCardQueryRepository dreamCardQueryRepository;
     private final UserRepository userRepository;
+    private final DreamCardRepository dreamCardRepository;
+    private final DreamAnalysisService dreamAnalysisService;
+    private final DreamKeywordRepository dreamKeywordRepository;
+    private final AuctionRepository auctionRepository;
+    private final DreamCardQueryRepository dreamCardQueryRepository;
 
-    /**
-     * 밤 메인 화면에서 카드 리스트를 조회 하는 함수 !
-     */
+
     public ResultTemplate getNightMain(Long lastItemId, int size) {
 
         List<DreamCard> findCards = dreamCardQueryRepository.findDreamCardPaging(lastItemId, size);
@@ -58,14 +58,16 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(list).build();
     }
 
-    // 카드 상세 정보 가져오는 함수
     public ResultTemplate getFlipDreamCardDetail(Long id) {
 
         DreamCard findCard = dreamCardRepository.findDetailsById(id)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
 
+        List<Auction> findAuctions = auctionRepository.findByDreamCardId(id);
+        long auctionId = -1;
+        if (!findAuctions.isEmpty()) auctionId = findAuctions.get(0).getAuctionId();
 
-        ResponseFlipDreamCardDetail response = ResponseFlipDreamCardDetail.from(findCard);
+        ResponseFlipDreamCardDetail response = ResponseFlipDreamCardDetail.from(findCard, auctionId);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
@@ -81,7 +83,6 @@ public class DreamCardService {
     }
 
 
-    // 카드 조회수 업데이트하는 함수
     @Transactional
     public ResultTemplate updateDreamCard(Long dreamCardId) {
 
@@ -93,7 +94,6 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
-    // 카드 좋아요 홤수
     @Transactional
     public ResultTemplate updateCardLike(Long userId, Long dreamCardId) {
 
@@ -108,7 +108,6 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
-    // 카드 좋아요 취소 함수
     @Transactional
     public ResultTemplate updateCardUnlike(Long userId, Long dreamCardId) {
 
@@ -123,23 +122,47 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
-    // 카드 전처리 후 결과 반환
     public ResultTemplate getPreProcessingForDreamCard(String dreamCardContent) {
 
-
-        ResponseDreamCardPreprocessing response = new ResponseDreamCardPreprocessing();
         // 아마 이건 하둡이랑 연관된 함수
+        // dreamCardContent 를 통해, keyword를 추출
+        // 해몽 내용도 조회
+        // 추출하는 과정에서 희귀도와 길몽도를 판단 -> 등급까지 설정
+        // 종합해서 전체 등급 설정
+        // ResponseDreamCardPreprocessing 안에 넣어서 응답 !
+        ResponseDreamCardPreprocessing response = ResponseDreamCardPreprocessing.from();
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
-    // 실제 꿈카드 생성 함수
-    public ResultTemplate postDreamCard(RequestDreamCardDetail request) {
+    @Transactional
+    public ResultTemplate postDreamCard(User author, RequestDreamCardDetail request, String fileName) {
 
-        ResponseDreamCardId response = new ResponseDreamCardId();
+        // 여기서 일단 키워드로 mongoDB에 있는 dream을 다 뽑아야함
+        ResponseDreamAnalysis responseDreamAnalysis = dreamAnalysisService.processAnalysis(request);
 
-        // 꿈 카드 삽입하고 PK 반환받기
+        if(responseDreamAnalysis == null){
+            return ResultTemplate.builder().status(HttpStatus.OK.value()).data("fail").build();
+        }
 
+        List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
+
+        DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords, fileName, responseDreamAnalysis);
+        dreamCardRepository.save(makeDreamCard);
+
+        // 챌린지 추천할꺼 추가
+        ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getDreamCardImage(Long dreamCardId) {
+
+        DreamCard dreamCard = dreamCardRepository.findLikeById(dreamCardId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+        ResponseDreamCardImage response = ResponseDreamCardImage.from(dreamCard);
+        
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
@@ -199,5 +222,4 @@ public class DreamCardService {
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
-
 }

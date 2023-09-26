@@ -20,6 +20,7 @@ public class ResponseDreamCard {
     private LocalDateTime createAt;
     private int likedNumber;
     private boolean isLike;
+    private String dreamCardImageUrl;
 
     public static ResponseDreamCard from(DreamCard dreamCard, boolean isLike){
 
@@ -32,6 +33,7 @@ public class ResponseDreamCard {
         response.createAt = dreamCard.getCreatedAt();
         response.likedNumber = dreamCard.getDreamCardLikes().size();
         response.isLike = isLike;
+        response.dreamCardImageUrl = dreamCard.getDreamCardImageUrl();
 
         return response;
     }

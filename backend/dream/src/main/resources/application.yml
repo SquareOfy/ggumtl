@@ -1,7 +1,7 @@
 server:
   port: 9090
   servlet:
-    context-path: /api
+#    context-path: /api
     multipart:
       enabled: true
 
@@ -9,7 +9,7 @@ server:
 spring:
   # MySQL
   datasource:
-    url: jdbc:mysql://${PUBLIC_IP}
+    url: jdbc:mysql://${PUBLIC_IP}:${DB_PORT}/${DB_NAME}
     username: ${DB_USER_NAME}
     password: ${DB_USER_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -24,9 +24,40 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+  # mongoDB
+
+  data:
+    mongodb:
+      uri: mongodb+srv://${MONGO_ID}:${MONGO_PASSWORD}@${MONGO_URI}/${MONGO_DATABASE_NAME}
+#      host: ${PUBLIC_IP}
+#      port: ${MONGO_DB_PORT}
+#      authentication-database: admin
+#      username: ${DB_USER_NAME}
+#      password: ${DB_USER_PASSWORD}
+#      database: ${MONGO_DATABASE_NAME}
 
 logging.level:
   org.hibernate.SQL: debug
   org.springframework.security: DEBUG
 
+# S3
+cloud:
+  aws:
+    s3:
+      url: ${S3_URL}
+      bucket: ${S3_BUCKET}
+    credentials:
+      access-key: ${CREDENTIALS_ACCESS_KEY}
+      secret-key: ${CREDENTIALS_SECRET_KEY}
+    region:
+      static: ${REGION_STATIC}
+      auto: false
+    stack:
+      auto: false
 
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR

@@ -23,4 +23,13 @@ public class Follow {
     @ManyToOne(fetch = FetchType.LAZY)
     private User toUser;
 
+    public static Follow createFollow(User fromUser, User toUser){
+        Follow follow = new Follow();
+        follow.fromUser = fromUser;
+        follow.toUser = toUser;
+
+        return follow;
+
+    }
+
 }

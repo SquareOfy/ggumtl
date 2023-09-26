@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestChangeOwner {
-    private long dreamCardId;
-    private long newOwnerId;
+    private Long auctionId;
+    private Long newOwnerId;
 }

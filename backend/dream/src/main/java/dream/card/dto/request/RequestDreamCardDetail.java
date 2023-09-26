@@ -13,12 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public class RequestDreamCardDetail {
     private String dreamCardContent;
-    private long dreamCardAuthor;
-    private String dreamCardImageUrl;
-    private Grade grade;
-    private String dreamTelling;
+    private Long dreamCardAuthor;
     private int positivePoint;
-    private int rarePoint;
+    private int negativePoint;
     private BaseCheckType isShow;
-    private List<RequestKeyword> keywords;
+    private List<String> keywords;
+    private List<String> wordKeywords;
 }

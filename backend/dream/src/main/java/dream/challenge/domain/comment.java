@@ -1,5 +1,6 @@
 package dream.challenge.domain;
 
+import dream.challenge.dto.request.RequestComment;
 import dream.common.domain.BaseUpdateTimeEntity;
 import dream.user.domain.User;
 import lombok.AccessLevel;
@@ -26,4 +27,14 @@ public class comment extends BaseUpdateTimeEntity {
 
     private String content;
 
+    public static comment makeComment(User user, RequestComment requestComment, ChallengeDetail challengeDetail) {
+
+        comment pComment = new comment();
+
+        pComment.challengeDetail = challengeDetail;
+        pComment.user = user;
+        pComment.content = requestComment.getContent();
+
+        return pComment;
+    }
 }

@@ -16,10 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseFlipDreamCardDetail {
-    private long dreamCardId;
-    private long dreamCardOwner;
+    private Long dreamCardId;
+    private Long dreamCardOwner;
     private String ownerNickname;
-    private long dreamCardAuthor;
+    private Long dreamCardAuthor;
     private Grade grade;
     private LocalDateTime createdAt;
     private Grade positiveGrade;
@@ -27,8 +27,10 @@ public class ResponseFlipDreamCardDetail {
     private BaseCheckType auctionStatus;
     private BaseCheckType isShow;
     private List<ResponseKeyword> keywords;
+    private String dreamCardImageUrl;
+    private Long auctionId;
 
-    public static ResponseFlipDreamCardDetail from(DreamCard dreamCard){
+    public static ResponseFlipDreamCardDetail from(DreamCard dreamCard, Long auctionId){
         ResponseFlipDreamCardDetail response = new ResponseFlipDreamCardDetail();
 
         response.dreamCardId = dreamCard.getDreamCardId();
@@ -48,6 +50,8 @@ public class ResponseFlipDreamCardDetail {
             keywords.add(ResponseKeyword.from(cardKeyword));
         }
         response.keywords = keywords;
+        response.dreamCardImageUrl = dreamCard.getDreamCardImageUrl();
+        response.auctionId = auctionId;
 
         return response;
     }

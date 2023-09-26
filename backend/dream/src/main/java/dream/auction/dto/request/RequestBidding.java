@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestBidding {
-    private long dreamCardId;
+    private Long auctionId;
     private int biddingMoney;
+    private Long userId;
+    private int askingMoney;
 }
