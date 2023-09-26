@@ -10,6 +10,7 @@ import InfiniteScroll from "components/common/InfiniteScroll";
 import { AuctionCardType } from "../auction/AuctionMainList";
 import Text from "style/Text";
 import styled from "styled-components";
+import tokenHttp from "api/tokenHttp";
 
 const NoCardMsgWrap = styled.div`
   display: flex;
@@ -21,38 +22,44 @@ const NightProfileSellingTab = () => {
 
   // axios로 데이터 받기
   // const [auctionSellingDataList, setAuctionSellingDataList] = useState<AuctionSellingAxiosType[]>();
-  const [auctionSellingDataList, setAuctionSellingDataList] = useState<AuctionCardType[]>();
+  const [auctionSellingDataList, setAuctionSellingDataList] = useState<AuctionCardType[]>([]);
   const [lastItemId, setLastItemId] = useState<number>(0);
+  const [hasNext, setHasNext] = useState<boolean>(true); 
   const [noCardMsg, setNoCardMsg] = useState<string>("");
   let size = 12;
   
+  // infinite scroll
+  const [arriveEnd, setArriveEnd] = useState<boolean>(true); // 바닥에 다다름을 알려주는 변수
+
   const getAxios = () => {
-    basicHttp.get(`/profile/night/auction/list?lastItemId=${lastItemId}&size=${size}`)
-    .then((res) => {
-      console.log("== 꿈 팔기 탭 ==", res); 
-      // 데이터가 있을 때
-      if (res.data.data.auctionList) {
-        setAuctionSellingDataList(res.data.data.auctionList);
-        // setLastItemId(auctionSellingDataList[-1][""]); // 마지막 item id 변경
-      } else {
-        setNoCardMsg("판매 중인 카드가 없습니다.");
-        console.log('여기');
-      }
-    })
-    .catch((err) => console.log("== 꿈 팔기 탭 ==", err))
+    let apiAddress :string = "";
+
+    // 처음 요청 받을 때
+    if (lastItemId === 0) {apiAddress = `/profile/night/auction/list?size=${size}`}
+    // 두번째부터 요청 할 때
+    else {apiAddress = `/profile/night/auction/list?lastItemId=${lastItemId}&size=${size}`}
+    
+    if (arriveEnd && hasNext) {  // 끝에 도달하고 다음이 있을 때 다음 데이터 호출
+      tokenHttp.get(apiAddress)
+      .then((res)=>{
+        const response = res.data.data
+        const auctionList = response.auctionList
+        setAuctionSellingDataList([...auctionSellingDataList, ...auctionList]);
+        setLastItemId(auctionList[auctionList.length - 1].dreamCardId);
+        setHasNext(response.hasNext);
+        console.log("== 꿈 팔기 탭 ==", res); 
+      })
+      .catch((err) => console.log("== 꿈 팔기 탭 ==", err))
+    }
   }
 
   useEffect(() => {
     getAxios();
   }, []);
 
-  // infinite scroll
-  const [arriveEnd, setArriveEnd] = useState<boolean>(false); // 바닥에 다다름을 알려주는 변수
-
   // 바닥에 다다랐으면 axios 요청
   useEffect(() => {
     if (arriveEnd) {
-      // axios 요청
       getAxios();
       setArriveEnd(false);
     }

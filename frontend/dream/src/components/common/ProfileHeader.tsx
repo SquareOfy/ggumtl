@@ -79,7 +79,7 @@ const ProfileHeader = () => {
   
   // 프로필 axios 통신 데이터들
   const [userData, setUserData] = useState<ProfileHeaderAxiosType>();
-  let profileUserId = 3; // 추후 바꾸기
+  let profileUserId = 20; // 추후 바꾸기
 
   // axios 요청
   useEffect(() => {
