@@ -5,7 +5,6 @@ import dream.auction.dto.request.RequestBidding;
 import dream.auction.dto.request.RequestCardReview;
 import dream.auction.dto.request.RequestChangeOwner;
 import dream.auction.service.AuctionService;
-import dream.card.dto.request.RequestDreamCardId;
 import dream.common.domain.ResultTemplate;
 import dream.security.jwt.domain.UserInfo;
 import dream.user.domain.User;
@@ -70,6 +69,11 @@ public class AuctionController {
     public ResultTemplate postBuyingCardReview(@RequestBody RequestCardReview request, @UserInfo User user){
 
         return auctionService.postBuyingCardReview(request, user.getUserId());
+    }
+
+    @GetMapping(value = "/api/auction/point/{userId}")
+    public ResultTemplate getUserPoint(@PathVariable("userId") Long userId){
+        return auctionService.getUserPoint(userId);
     }
 
 }

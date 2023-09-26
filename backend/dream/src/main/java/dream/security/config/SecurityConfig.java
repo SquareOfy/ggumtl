@@ -62,12 +62,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/api/user/jwt-test/**","/api/user/").hasRole("GUEST")
+
                 .antMatchers("/", "/css/**", "images/**", "/js/**", "/h2-console/***").permitAll()
                 .antMatchers("/ws-stomp/**", "/login/**", "/api/oauth2/**").permitAll()
+                .antMatchers("/api/s3/**").permitAll()
                 .antMatchers("/api/user/signup/extra-info").hasRole("GUEST")
                 .antMatchers("/api/**").hasRole("USER")
                 .and()
+
 
                 .oauth2Login()
 //                .loginProcessingUrl("/api/login/oauth2/code/kakao")

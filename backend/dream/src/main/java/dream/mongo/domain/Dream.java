@@ -13,10 +13,14 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class dream {
+public class Dream {
 
     @Id
     private String id;
     private String dream;
     private Analysis analysis;
+
+    public Dream(String dream){
+        this.dream = dream;
+    }
 }

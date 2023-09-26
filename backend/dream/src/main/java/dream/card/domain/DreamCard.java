@@ -88,18 +88,11 @@ public class DreamCard extends BaseTimeEntity {
                 .map(dreamKeyword -> CardKeyword.addKeyword(dreamCard, dreamKeyword))
                 .collect(Collectors.toList());
 
-
-        dreamCard.rarePoint = 23;
-        dreamCard.grade = Grade.SS;
-        dreamCard.dreamTelling = "아직 못 했어요 구현을";
-        dreamCard.positiveGrade = Grade.S;
-        dreamCard.rareGrade = Grade.SS;
-
-//        dreamCard.rarePoint = dreamAnalysis.getRarePoint();
-//        dreamCard.grade = dreamAnalysis.getGrade();
-//        dreamCard.dreamTelling = dreamAnalysis.getDreamTelling();
-//        dreamCard.positiveGrade = dreamAnalysis.getPositiveGrade();
-//        dreamCard.rareGrade = dreamAnalysis.getRareGrade();
+        dreamCard.rarePoint = dreamAnalysis.getRarePoint();
+        dreamCard.grade = dreamAnalysis.getGrade();
+        dreamCard.dreamTelling = dreamAnalysis.getDreamTelling();
+        dreamCard.positiveGrade = dreamAnalysis.getPositiveGrade();
+        dreamCard.rareGrade = dreamAnalysis.getRareGrade();
 
         return dreamCard;
     }

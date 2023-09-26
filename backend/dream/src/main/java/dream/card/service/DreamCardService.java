@@ -6,6 +6,8 @@ import dream.card.domain.*;
 import dream.card.dto.request.RequestDreamCardDetail;
 import dream.card.dto.request.RequestDreamCardIsShow;
 import dream.card.dto.response.*;
+import dream.challenge.domain.Challenge;
+import dream.challenge.domain.ChallengeRepository;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.DeleteException;
@@ -34,6 +36,7 @@ public class DreamCardService {
     private final DreamKeywordRepository dreamKeywordRepository;
     private final AuctionRepository auctionRepository;
     private final DreamCardQueryRepository dreamCardQueryRepository;
+    private final ChallengeRepository challengeRepository;
 
 
     public ResultTemplate getNightMain(Long lastItemId, int size) {
@@ -138,29 +141,29 @@ public class DreamCardService {
     @Transactional
     public ResultTemplate postDreamCard(User author, RequestDreamCardDetail request, String fileName) {
 
-        List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
-
+        // 여기서 일단 키워드로 mongoDB에 있는 dream을 다 뽑아야함
         ResponseDreamAnalysis responseDreamAnalysis = dreamAnalysisService.processAnalysis(request);
 
-        List<String> wordKeywords = request.getWordKeywords();
-        // 키워드 기반으로 희귀도 판단하는 녀석 하나 만들기
+        if(responseDreamAnalysis == null){
+            return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data("fail").build();
+        }
 
-        // 희귀도 기반으로 등급 추출
+        List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
+        log.info("{}", keywords.size());
+        for (DreamKeyword keyword : keywords) {
+            log.info("{}", keyword.getKeyword());
+        }
 
-        // 긍정도 등급이랑 희귀도 기반으로 꿈 최종 등급 추출
+        List<Challenge> recommendChallenges = challengeRepository.findRecommendChallengeByDreamCard(request.getKeywords())
+                .stream().limit(5).collect(Collectors.toList());
 
-        // 꿈 해몽 내용 추출
 
-        // 얘네를 넣을 DTO
-//        dreamCard.rarePoint = 23;
-//        dreamCard.grade = Grade.SS;
-//        dreamCard.dreamTelling = "아직 못 했어요 구현을";
-//        dreamCard.positiveGrade = Grade.S;
-//        dreamCard.rareGrade = Grade.SS;
 
         DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords, fileName, responseDreamAnalysis);
         dreamCardRepository.save(makeDreamCard);
-        ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard);
+
+        // 챌린지 추천할꺼 추가
+        ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard, recommendChallenges);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
