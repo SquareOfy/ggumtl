@@ -25,9 +25,7 @@ const LoginContainer = styled.div`
 
 const openKakaoLogin = () => {
   const KakaoLoginAPI = 'https://j9b301.p.ssafy.io/oauth2/authorization/kakao';
-  // basicHttp.get('/oauth2/authorization/kakao')
-  //   .then((response)=> {console.log(response)})
-  //   .catch((err)=>{console.log(err)})
+
   window.location.href = KakaoLoginAPI
 }
 
