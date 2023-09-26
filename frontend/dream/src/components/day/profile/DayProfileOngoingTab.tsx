@@ -39,6 +39,7 @@ const DayProfileOngoingTab = () => {
       console.log(res)
       if (typeof res.data.data.challengeList === "object") {
         setAllChalList([...allChalList, ...res.data.data.challengeList]);
+        setLastItemId(res.data.data.challengeList[res.data.data.challengeList.length - 1].challengeId)
       }
     })
     .catch(err=>console.log("===", err))
@@ -48,11 +49,11 @@ const DayProfileOngoingTab = () => {
     getAxios();
   }, [])
 
-  // lastItemId 업데이트
-  useEffect(() => {
-    allChalList[allChalList.length - 1] && 
-    setLastItemId(allChalList[allChalList.length - 1].challengeId)
-  }, [setAllChalList, allChalList])
+  // // lastItemId 업데이트
+  // useEffect(() => {
+  //   allChalList[allChalList.length - 1] && 
+  //   setLastItemId(allChalList[allChalList.length - 1].challengeId)
+  // }, [setAllChalList, allChalList])
 
   // infinite scroll
   const [arriveEnd, setArriveEnd] = useState<boolean>(false); // 바닥에 다다름을 알려주는 변수

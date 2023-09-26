@@ -24,8 +24,10 @@ export interface AuctionCardType {
   dreamCardImageUrl: string;
   keywords: string[];
   grade: string;
-  positiveGrade: string;   
-  rareGrade: string;
+  positiveGrade?: string;   
+  positivePoint?: string;
+  rareGrade?: string;
+  rarePoint?: string;
   endedAt: string;
   auctionStatus: string; 
   auctionId: number;
