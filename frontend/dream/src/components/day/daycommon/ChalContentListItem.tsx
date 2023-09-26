@@ -16,7 +16,7 @@ import { DayChallengeObjType } from "../home/DayChallengeList";
 // 스타일
 
 interface ChalContentListItemProps {
-  key: number
+  key: number,
   chal: DayChallengeObjType;
 }
 
@@ -27,7 +27,7 @@ const ChalContentListItem = ({chal}:ChalContentListItemProps) => {
       $challengeContentBox
       >
         <img></img>
-        <div><p>{chal.title}</p><p>참여자 : 1.1k</p></div>
+        <div><p>{chal.challengeTitle}</p><p>참여자 : 1.1k</p></div>
         <div><p>Day</p><p>{chal.period}</p></div>
       </Box>
     </>

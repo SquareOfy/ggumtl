@@ -45,7 +45,7 @@ const InfiniteScroll = ({
       // scrollTop과 innerHeight를 더한 값이 scrollHeight*0.95 보다 크다면, 가장 아래에 도달했다는 의미
       setArriveEnd(true);
       console.log('가장 아래에 도달')
-    }
+    } else {setArriveEnd(false)}
   }, []); // 성능 저하 시 lastItemId 넣어보기
   
   useEffect(() => {
