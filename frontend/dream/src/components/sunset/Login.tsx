@@ -23,15 +23,16 @@ const LoginContainer = styled.div`
 
 
 const openKakaoLogin = () => {
-  const KakaoLoginAPI = `https://j9b301.p.ssafy.io/oauth2/authorization/kakao`;
+  const KakaoLoginAPI = 'https://j9b301.p.ssafy.io/oauth2/authorization/kakao';
 
-  window.open(KakaoLoginAPI, "_self");
+  window.location.href = KakaoLoginAPI
 }
 
 
 const Login = () => {
 
   return (
+    <>
     <LoginContainer>
       <Button 
       $fullWidth 
@@ -39,6 +40,7 @@ const Login = () => {
       onClick={()=>{openKakaoLogin()}}
       >Login with Kakao</Button>
     </LoginContainer>
+    </>
   )
 }
 

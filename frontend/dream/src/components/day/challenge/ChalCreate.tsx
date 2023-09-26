@@ -21,6 +21,7 @@ import Container from "style/Container";
 import basicHttp from "api/basicHttp";
 import { checkWrongInput } from "utils/alert/checkInput";
 import { useNavigate } from "react-router";
+import tokenHttp from "api/tokenHttp";
 
 interface categoryListType {
   "keywordId" : number;
@@ -74,7 +75,7 @@ const ChalCreate = () => {
       "keywordId" : categoryList.indexOf(selectCategory)+1,
       "period" : selectPeriod
     }
-    basicHttp.post('/day/challenge/new', challengeData)
+    tokenHttp.post('/day/challenge/new', challengeData)
       .then((response) => {
         const challengeId = response.data.data.challengeId
         navigate(`/day/challenge/${challengeId}/timecapsule/create`)
