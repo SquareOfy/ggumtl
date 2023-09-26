@@ -22,7 +22,7 @@ import Text from "style/Text";
 import styled from "styled-components";
 import { FaStar } from "react-icons/fa6";
 import { LiaCoinsSolid } from "react-icons/lia";
-import basicHttp from "api/basicHttp";
+import tokenHttp from "api/tokenHttp";
 
 // progress 속성을 정의
 interface ProgressBarProps {
@@ -83,23 +83,27 @@ const ProfileHeader = () => {
 
   // axios 요청
   useEffect(() => {
-    basicHttp.get(`/profile/night/header/${profileUserId}`)
+    let mode :string
+    // console.log(themeMode.mode)
+    if (isNight) {mode = "night"}
+    else {mode = "day"}
+
+    tokenHttp.get(`/profile/${mode}/header/${profileUserId}`)
     .then((res) => {
-      console.log(res.data.data);
+      // console.log(res);
       setUserData(res.data.data);
     })
-    .catch((err) => console.log(err))
-  }, [])
+    .catch((err) => console.log("ProfileHeader 오류 : ", err))
+  }, [themeMode.mode])
 
   // 꿈틀도 값 변경
   useEffect(() => {
-    if (userData) {
-      setProgress(userData?.wrigglePoint);
-    }
+    if (userData) {setProgress(userData?.wrigglePoint)}
   }, [userData])
 
   // 테마 확인
   useEffect(() => {
+    console.log("테마 확인 : ", themeMode.mode)
     if (themeMode.mode === 'night') {
       setIsNight(true);
     } else {
@@ -144,7 +148,7 @@ const ProfileHeader = () => {
           </div>
           <div>
             <div>
-              <p>꿈 카드</p>
+              { isNight ? <p>꿈 카드</p> : <p>완료 챌린지</p>}
               <p>{userData?.dreamCardCount}</p>
             </div>
             <div>

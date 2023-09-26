@@ -13,7 +13,7 @@ import Button from "components/common/Button";
 import DreamCardGrade from "./DreamCardGrade";
 
 // 외부
-import basicHttp from "api/basicHttp";
+import tokenHttp from "api/tokenHttp";
 
 // 스타일
 import styled, {css} from "styled-components";
@@ -85,7 +85,7 @@ const NightFlipCard = ({reverseCardData}: ReverseCardProps) => {
 
   // 조회수 증가 (카드 클릭할 때마다 증가시킴)
   const addHits = () :void => {
-    basicHttp.put(`/night/dream/detail/hit`, dreamCardId)
+    tokenHttp.put(`/night/dream/detail/hit`, dreamCardId)
     .then(res => console.log(res, "조회수 증가"))
   }
 

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "store";
 
 // 외부 라이브러리
-import basicHttp from "api/basicHttp";
+import tokenHttp from "api/tokenHttp";
 
 // 컴포넌트
 
@@ -31,16 +31,16 @@ interface StoryType {
 }
 
 interface StoryBarProps {
-  storyLength :number,
-  currentIndex :number,
+  storylength :number,
+  currentindex :number,
   index :number,
 }
 
 const StoryBar = styled.div<StoryBarProps>`
-  width: calc(${props => 100/props.storyLength*(props.currentIndex+1)}%);
+  width: calc(${props => 100/props.storylength*(props.currentindex+1)}%);
   height: 0.4rem;
   background-color: ${props =>
-    props.currentIndex >= props.index ? "#3D5665" : "#E4E8E7"};
+    props.currentindex >= props.index ? "#3D5665" : "#E4E8E7"};
   border-radius: 1rem;
   border: 1px solid #3D5665;
   `
@@ -64,7 +64,7 @@ const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
   const userId = 3; // 임시 데이터
 
   useEffect(() => {
-    basicHttp.get(`/day/challange/story/${userId}`)
+    tokenHttp.get(`/day/challange/story/${userId}`)
     .then((res) => {
       console.log(res);
       if (res.data.status === 200) {
@@ -93,14 +93,24 @@ const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
   };
 
   // 스토리 시작 시 실행
-  const storyStart = async () :Promise<void> => {
+  const storyStart = () :NodeJS.Timeout | undefined => {
+    let timerId: NodeJS.Timeout | undefined = undefined;
     if (isOpenModal) {
-      await nextTime(() => {
+      timerId = setTimeout(() => {
         console.log('시작');
         setCurrentIndex(1);
       }, interval);
     }
+    return timerId; // 타이머가 시작되지 않으면 undefined 반환
   }
+  // const storyStart = async () :Promise<void> => {
+  //   if (isOpenModal) {
+  //     await nextTime(() => {
+  //       console.log('시작');
+  //       setCurrentIndex(1);
+  //     }, interval);
+  //   }
+  // }
 
   // 일정시간 후 다음 페이지로 이동
   const goToNextInterval = async () :Promise<void> => {
@@ -114,6 +124,7 @@ const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
 
   // 다음 페이지로 이동 (클릭)
   const handleOnNext = () => {
+    endTimer();
     if (currentIndex + 1 >= storyList.length) {
       handleIsOpenModal();
       return
@@ -124,8 +135,16 @@ const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
   // 이전 페이지로 이동 (클릭)
   const handleOnPrevious = () => {
     if (currentIndex - 1 < 0) return;
+    endTimer();
     setCurrentIndex(currentIndex - 1);
     console.log('이전');
+  }
+
+  const endTimer = () => {
+    const timerId = storyStart(); // 타이머 ID를 저장
+    if (timerId) {
+      clearTimeout(timerId); // 현재 실행 중인 타이머를 종료
+    }
   }
 
   // 인덱스가 리스트 길이보다 작고 모달이 띄워져있을 때 실행
@@ -177,8 +196,8 @@ const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
               {storyList.map((element, i) => (
                   <StoryBar 
                   key={i} 
-                  storyLength={storyList.length}
-                  currentIndex={currentIndex}
+                  storylength={storyList.length}
+                  currentindex={currentIndex}
                   index={i}
                   ></StoryBar>
               ))}
