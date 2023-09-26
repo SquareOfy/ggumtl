@@ -84,6 +84,12 @@ self.addEventListener('fetch', event => {
   const currentUrl = window.location.href
   console.log('서비스 워커', checkurl)
   console.log('현재 url', currentUrl)
+  console.log('event request', event.request)
+
+  if (currentUrl.includes('/oauth2')) {
+    event.respondWith(fetch(event.request))
+    return;
+  }
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
   if (checkurl.includes('/api') || checkurl.includes('/oauth2')) {
@@ -91,18 +97,13 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  if (currentUrl.includes('/oauth2')) {
-    event.respondWith(fetch(event.request))
-    return;
-  }
-
   // For other requests, follow the cache-then-network strategy
   event.respondWith(
     caches.match(event.request)
       .then(cachedResponse => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
+        // if (cachedResponse) {
+        //   return cachedResponse;
+        // }
         return fetch(event.request);
       })
   );
