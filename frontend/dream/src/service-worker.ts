@@ -32,9 +32,9 @@ registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }: { request: Request; url: URL }) => {
     // If this isn't a navigation, skip.
-    if (request.mode !== 'navigate') {
-      return false;
-    }
+    // if (request.mode !== 'navigate') {
+    //   return false;
+    // }
 
     // If this is a URL that starts with /_, skip.
     if (url.pathname.startsWith('/_')) {
@@ -81,7 +81,7 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('fetch', event => {
   const checkurl = event.request.url;
-  console.log(checkurl)
+  console.log('서비스 워커', checkurl)
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
   if (checkurl.includes('/api') || checkurl.includes('/oauth2')) {
