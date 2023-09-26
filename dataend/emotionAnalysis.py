@@ -53,14 +53,14 @@ def estimateScore(score):
 #     asyncio.run(analyze_text_sentiment(dream))
 
 input_path = ".\\addKeywordsMod\\addKeywordsMod2.json"
-output_path = ".\\addEmotion\\addEmotion2.json"
+output_path = ".\\addEmotion\\addEmotion2-2.json"
 with open(input_path, 'r', encoding='utf-8') as file:
     keyData = json.load(file)
 
 print(len(keyData))
 
 # exit()
-
+keyData = keyData[500:]
 idx = 0
 for data in keyData:
     idx+=1

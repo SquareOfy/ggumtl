@@ -23,6 +23,7 @@ async def request(client):
 @app.get("/data/test")
 async def testReq():
     async with httpx.AsyncClient() as client:
-        response = client.get(URL)
+        response = await client.get(URL)
+        print(response, "####")
         return response
     return response
