@@ -192,12 +192,13 @@ const StyledBox = styled.div<BoxProps>`
    css`
     padding : 1rem;
     margin: 0.7rem 0;
-    max-height: 5rem;
+    /* max-height: 5rem; */
     border-radius: 1rem;
     background-color: rgba(249, 249, 249, 0.7);
     // 두번쨰 요소인 내용만 가운데 정렬
 
     & :nth-child(2) {
+      margin: auto;
       text-align: center;
     }
     `

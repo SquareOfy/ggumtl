@@ -23,6 +23,7 @@ import Text from "style/Text";
 import { BsChevronCompactDown, BsChevronCompactUp } from "react-icons/bs";
 // 타입
 import { ChalDetailInfoProps } from "./ChalDetail";
+import Image from "style/Image";
 
 // 스타일
 
@@ -62,8 +63,10 @@ const ChalDetailInfo: React.FC<ChalDetailInfoProps> = (props) => {
           </Box>
           <Box $fullWidth $chalDetailBox>
             <BoxTitle $boxTitle>획득 뱃지</BoxTitle>
-            <Text $chalBoxInnerText>뱃지가 들어갑니다.</Text>
-            {/* <img src={`${chalDetail.badgeUrl}`} alt="뱃지 이미지" /> */}
+            <Image $badge >
+              <img src={`${process.env.PUBLIC_URL}/logo192.png`} alt="뱃지 이미지" />
+              {/* <img src={chalDetail.badgeUrl} alt="뱃지 이미지" /> */}
+            </Image>
           </Box>
           <Box $fullWidth $chalDetailBox>
             <BoxTitle $boxTitle>랭킹</BoxTitle>

@@ -1,46 +1,48 @@
 // 공통 Button 컴포넌트
 import React from 'react'
 
-import styled, {css} from "styled-components"
+import styled, { css } from "styled-components"
 
 interface ButtonProps {
-    children ?: React.ReactNode;
+    children?: React.ReactNode;
     // styles?: string;
     onClick?: () => void;
-    style ? : {};
-    disabled?: boolean;    
+    style?: {};
+    disabled?: boolean;
     type?: 'submit' | 'button' | 'reset';
-    className ?:string;
+    className?: string;
 
     // 별개 스타일링
     // 너비
-    $fullWidth ?: boolean;
-    $halfWidth ?: boolean
+    $fullWidth?: boolean;
+    $halfWidth?: boolean
 
-    $biddingBtn ?: boolean;
+    $biddingBtn?: boolean;
 
     // 폰트 굵게
-    $isBold ?: boolean
+    $isBold?: boolean
 
     // 개별 스타일링
-    $kakao ?: boolean;
-    $nightVoice ?:boolean;
-    $icon ?: boolean;
-    $follow ?:boolean
-    $halfWidthImeBuy ?:boolean;
-    $dayCreate ?: boolean;
-    $moreButton ?: boolean;
-    $category ?: boolean;
+    $kakao?: boolean;
+    $nightVoice?: boolean;
+    $icon?: boolean;
+    $follow?: boolean
+    $halfWidthImeBuy?: boolean;
+    $dayCreate?: boolean;
+    $moreButton?: boolean;
+    $category?: boolean;
+    $chalCertButton?: boolean;
+    $goHomeButton?: boolean;
 
     // 색상 지정
-    $nightPurple ?:boolean
-    $nightPalePurple ?:boolean
-    $nightMiddlePurple ?:boolean
-    $dayBlue ?: boolean
-    $dayYellow ?: boolean
-    $transparent ?: boolean
-    $sunsetPurple ?: boolean
-    $sunsetPink ?: boolean
+    $nightPurple?: boolean
+    $nightPalePurple?: boolean
+    $nightMiddlePurple?: boolean
+    $dayBlue?: boolean
+    $dayYellow?: boolean
+    $transparent?: boolean
+    $sunsetPurple?: boolean
+    $sunsetPink?: boolean
 
 }
 
@@ -63,14 +65,14 @@ const StyledButton = styled.button<ButtonProps>`
 
     // 꽉 찬 버튼
     ${(props) =>
-        props.$fullWidth && 
+        props.$fullWidth &&
         css`
             width:100%;
         `
     }
     // 절반만 차지
     ${(props) =>
-        props.$halfWidth && 
+        props.$halfWidth &&
         css`
             padding: 0.5rem;
             width:49%;
@@ -79,7 +81,7 @@ const StyledButton = styled.button<ButtonProps>`
     }
     // 절반만 차지 & 즉시구매
     ${(props) =>
-        props.$halfWidthImeBuy && 
+        props.$halfWidthImeBuy &&
         css`
             background-color: rgba(190, 169, 215, 0.5);
             color: black;
@@ -91,22 +93,24 @@ const StyledButton = styled.button<ButtonProps>`
 
     // 폰트 굵게
     ${(props) =>
-    props.$isBold &&
-    css`
+        props.$isBold &&
+        css`
         font-weight: bold;
     `}
 
     // 경매 - 참여 버튼 전용
     ${(props) =>
-    props.$biddingBtn &&
-    css`
+        props.$biddingBtn &&
+        css`
         border-radius: 1rem;
     `}
 
     //icon 전용(X, 종, 각종 아이콘)
-    ${(props) => 
+    ${(props) =>
         props.$icon &&
         css`
+        line-height: 1.5rem;
+        font-size: 1.5rem;
         padding: 0.5rem;
         margin: 0.5rem;
         border: none;
@@ -164,7 +168,7 @@ const StyledButton = styled.button<ButtonProps>`
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
-        `   
+        `
     }
 
     // 중간 보라색버튼
@@ -179,7 +183,7 @@ const StyledButton = styled.button<ButtonProps>`
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
-        `   
+        `
     }
     
     // 연한 보라색버튼
@@ -192,7 +196,7 @@ const StyledButton = styled.button<ButtonProps>`
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
-        `   
+        `
     }
 
     // 짙은 하늘색
@@ -205,7 +209,7 @@ const StyledButton = styled.button<ButtonProps>`
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
-        `   
+        `
     }
     // 타임캡슐 yellow
     ${(props) =>
@@ -217,7 +221,7 @@ const StyledButton = styled.button<ButtonProps>`
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
-        `   
+        `
     }
     // 초기 프로필사진 업로드
     ${(props) =>
@@ -229,7 +233,7 @@ const StyledButton = styled.button<ButtonProps>`
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
-        `   
+        `
     }
     // 초기 다음 버튼 
     ${(props) =>
@@ -242,11 +246,11 @@ const StyledButton = styled.button<ButtonProps>`
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
-        `   
+        `
     }
 
     //팔로우
-    ${(props) => 
+    ${(props) =>
         props.$follow &&
         css`
             font-size: 0.75rem;
@@ -259,14 +263,24 @@ const StyledButton = styled.button<ButtonProps>`
     }
 
     // 낮 생성 버튼
-    ${(props) => 
-        props.$dayCreate && 
+    ${(props) =>
+        props.$dayCreate &&
         css`
             margin-top: 3rem;
         `
     }
+    // 404 정상화 버튼
+    ${(props) =>
+        props.$goHomeButton &&
+        css`
+            background-color: #1c3658;
+            color: aliceblue;
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+        `
+    }
 
-    ${(props)=>
+    ${(props) =>
         props.$moreButton &&
         css`
             margin-top: 0.5rem;
@@ -280,8 +294,8 @@ const StyledButton = styled.button<ButtonProps>`
     }
 
     // 낮 카테고리 버튼
-    ${(props) => 
-        props.$category && 
+    ${(props) =>
+        props.$category &&
         css`
             margin: 0.1rem;
             border: 1px solid #D0D7DF;
@@ -290,9 +304,28 @@ const StyledButton = styled.button<ButtonProps>`
             }
         `
     }
+
+    // 짙은 하늘색
+    ${(props) =>
+        props.$chalCertButton &&
+        css`
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1.5rem;
+            border-radius: 8vw;
+            & > img {
+                position: absolute;
+                left: 4rem;
+                width: 3rem;
+                height: 3rem;
+                
+            }
+        `
+    }
 `
 
-const Button = (props:ButtonProps) => {
+const Button = (props: ButtonProps) => {
     return <StyledButton {...props}> {props.children} </StyledButton>
 }
 

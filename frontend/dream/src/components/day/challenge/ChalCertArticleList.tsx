@@ -24,6 +24,7 @@ import { changeDate } from "utils/dateForm";
 import { useNavigate } from "react-router-dom";
 import basicHttp from "api/basicHttp";
 import ChalCertArticleItem from "./ChalCertArticleItem";
+import tokenHttp from "api/tokenHttp";
 
 // 스타일
 
@@ -49,7 +50,7 @@ const ChalCertArticleList = () => {
   const [certArticleList, setCertArticleList] = useState<CertArticleListType>([])
 
   useEffect(()=>{
-    basicHttp.get('/day/challange/detail/2/list?lastItemId=11&size=3')
+    tokenHttp.get('/day/challange/detail/2/list?lastItemId=11&size=3')
       .then((response)=>{
         console.log(response.data.data)
         const resultList = response.data.data.resultList

@@ -36,6 +36,8 @@ interface TextProps {
   $chalBoxInnerText ?: boolean;
 
   $progressPercent ?: boolean;
+
+  $timeCapsuleText ?: boolean;
 }
 const StyledText = styled.div<TextProps>`
 
@@ -144,6 +146,14 @@ const StyledText = styled.div<TextProps>`
       height: 0;
       position: relative;
       font-size: 1rem;
+    `
+  }
+  
+  // 응원 메세지 확인 텍스트
+  ${(props) => 
+    props.$timeCapsuleText && 
+    css`
+      margin-top: 2.5rem;
     `
   }
 

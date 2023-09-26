@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 // 토큰이 필요한 인증에 사용
 
 // const baseURL = process.env.REACT_APP_SERVER_URL;
-// const baseURL = "https://j9b301.p.ssafy.io/api";
-const baseURL = "http://localhost:9090/api"
+const baseURL = "https://j9b301.p.ssafy.io/api";
+// const baseURL = "http://localhost:9090/api"
 
 const fileTokenHttp = axios.create({
   baseURL,
