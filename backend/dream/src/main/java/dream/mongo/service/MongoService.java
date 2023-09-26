@@ -1,5 +1,6 @@
 package dream.mongo.service;
 
+import dream.card.service.DreamAnalysisService;
 import dream.common.domain.ResultTemplate;
 import dream.mongo.domain.DataDream;
 import dream.mongo.domain.RequestDream;
@@ -19,6 +20,7 @@ import java.util.*;
 public class MongoService {
 
     private final MongoRepository mongoRepository;
+    private final DreamAnalysisService dreamAnalysisService;
     public List<Dream> getAllDream() {
 
         List<Dream> response = mongoRepository.findAll();
@@ -28,22 +30,31 @@ public class MongoService {
     public ResultTemplate findBest(String title) {
 
         RequestDream requestDream = new RequestDream("비둘기가 방에 들어갑니다.",
-                37, 72);
+                54, 23);
 
         String regTitle = ".*" + title + ".*";
         List<Dream> list = mongoRepository.findByDreamRegex(title);
-        log.info("list size : {}", list.size());
+        List<String> strList = new ArrayList<>();
+        strList.add("비둘기");
+        strList.add("방");
+        strList.add("들어가다");
+        List<Dream> list2 = dreamAnalysisService.findDreamsWithKeywords(strList);
+        log.info("list size2 : {}", list2.size());
         double max = Integer.MIN_VALUE;
         int idx = -1;
         for(int i = 0; i < list.size(); i++){
-            log.info(" 입력 꿈 내용 : " + requestDream.getSentence());
-            log.info(" 비교 꿈 내용 : " + list.get(i).getDream());
+            log.info("   입력 꿈 내용 : " + requestDream.getSentence());
+            log.info("   비교 꿈 내용 : " + list.get(i).getDream());
+            log.info("입력 꿈의 긍정도 : {}, 입력 꿈의 부정도 : {}"
+                    , requestDream.getPositivePoint(), requestDream.getNegativePoint());
+            log.info("비교 꿈의 긍정도 : {}, 비교 꿈의 부정도 : {}"
+                    , list.get(i).getAnalysis().getDreamPositivePoint(), list.get(i).getAnalysis().getDreamNegativePoint());
             DataDream dataDream = new DataDream();
             dataDream.setSentence(list.get(i).getDream());
             dataDream.setPositivePoint(list.get(i).getAnalysis().getDreamPositivePoint());
             dataDream.setNegativePoint(list.get(i).getAnalysis().getDreamNegativePoint());
             double analysisPoint = analysis(requestDream, dataDream);
-            log.info("두 꿈의 유사도 : " + analysisPoint);
+//            log.info("두 꿈의 유사도 : " + analysisPoint);
             log.info("--------------------------------");
             if (max < analysisPoint) {
                 max = analysisPoint;
@@ -60,21 +71,21 @@ public class MongoService {
     public static double analysis(RequestDream requestDream, DataDream dataDream) {
 
         double result = 0;
-
-
-        double sentenceSimilarity1 = levenshtein(requestDream.getSentence(), dataDream.getSentence()) * 10 * 5;
-        double sentenceSimilarity2 = cosineSimilarity(requestDream.getSentence(), dataDream.getSentence()) * 10 * 5;
+//        double sentenceSimilarity1 = levenshtein(requestDream.getSentence(), dataDream.getSentence()) * 10 * 5;
+//        double sentenceSimilarity2 = cosineSimilarity(requestDream.getSentence(), dataDream.getSentence()) * 10 * 5;
         double sentenceSimilarity3 = jaccardSimilarity(requestDream.getSentence(), dataDream.getSentence()) * 10 * 5;
 
-        log.info("Levenshtein : " + sentenceSimilarity1 * 2);
-        log.info("     Cosine : " + sentenceSimilarity2 * 2);
-        log.info("    Jaccard : " + sentenceSimilarity3 * 2);
+//        log.info("Levenshtein : " + sentenceSimilarity1 * 2);
+//        log.info("     Cosine : " + sentenceSimilarity2 * 2);
+//        log.info("    Jaccard : " + sentenceSimilarity3 * 2);
+        log.info("   문자열 유사도 : " + sentenceSimilarity3);
         double posSimilarity = (double) (positiveSimilarity(requestDream.getPositivePoint(), dataDream.getPositivePoint()) * 2.5) / 10;
-        log.info("긍정도 유사도 : " + posSimilarity * 4);
+        log.info("   긍정도 유사도 : " + posSimilarity);
         double negSimilarity = (double) (negativeSimilarity(requestDream.getNegativePoint(), dataDream.getNegativePoint()) * 2.5) / 10;
-        log.info("부정도 유사도 : " + negSimilarity * 4);
+        log.info("   부정도 유사도 : " + negSimilarity);
 
         result = sentenceSimilarity3 + posSimilarity + negSimilarity;
+        log.info("     최종 유사도 : " + result);
         return result;
     }
 

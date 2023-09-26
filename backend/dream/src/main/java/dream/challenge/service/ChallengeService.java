@@ -127,6 +127,7 @@ public class ChallengeService {
 
     public ResultTemplate getChallengeInfo(User user, Long challengeId) {
 
+
         List<ChallengeDetail> sizeOfUserParticipateInChallenge = challengeDetailQueryRepository.
                 getIsUserParticipateChallenge(user.getUserId(), challengeId);
 

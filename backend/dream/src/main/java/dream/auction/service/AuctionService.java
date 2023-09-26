@@ -8,15 +8,10 @@ import dream.auction.dto.request.RequestAuction;
 import dream.auction.dto.request.RequestBidding;
 import dream.auction.dto.request.RequestCardReview;
 import dream.auction.dto.request.RequestChangeOwner;
-import dream.auction.dto.response.ResponseAuction;
-import dream.auction.dto.response.ResponseAuctionDetail;
-import dream.auction.dto.response.ResponseAuctionList;
-import dream.auction.dto.response.ResponseBidding;
+import dream.auction.dto.response.*;
 import dream.card.domain.CardKeyword;
 import dream.card.domain.DreamCard;
 import dream.card.domain.DreamCardRepository;
-import dream.card.domain.WriggleReview;
-import dream.card.dto.request.RequestDreamCardId;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.BiddingException;
@@ -34,7 +29,6 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -237,5 +231,15 @@ public class AuctionService {
         findDreamCard.addReview(user, findDreamCard.getDreamCardAuthor(), request.getReviewPoint());
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+    public ResultTemplate getUserPoint(Long userId) {
+
+        User findUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+
+        ResponseUserPoint response = ResponseUserPoint.from(userId, findUser.getPoint());
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 }

@@ -3,6 +3,7 @@ package dream.user.service;
 import antlr.Token;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.*;
+import dream.security.jwt.domain.UserInfo;
 import dream.security.jwt.repository.TokenRepository;
 import dream.security.jwt.service.JwtService;
 import dream.s3.dto.response.ResponseImageUrl;
@@ -12,6 +13,7 @@ import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import dream.user.dto.request.RequestNickname;
 import dream.user.dto.request.RequestToId;
+import dream.user.dto.response.ResponseUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,12 +33,10 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final FollowRepository followRepository;
     // 예시 - 지워질 코드
-    public ResultTemplate getUser(long id) {
+    public ResultTemplate getUser(User user) {
+        ResponseUser responseUser = ResponseUser.from(user);
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
-
-        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(user).build();
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseUser).build();
     }
 
     public User getUserForDev(long id){

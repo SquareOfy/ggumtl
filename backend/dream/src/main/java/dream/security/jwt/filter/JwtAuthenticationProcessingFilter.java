@@ -1,11 +1,13 @@
 package dream.security.jwt.filter;
 
+import dream.common.domain.ResultTemplate;
 import dream.common.exception.InvalidRefreshTokenException;
 import dream.security.jwt.service.JwtService;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -41,8 +43,19 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
+
+    @Override // 이 주소로 오는 건 토큰 없어도 됨.
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/api/login/oauth2/code/kakao") || path.startsWith("/login/") || path.startsWith("/api/oauth2/authorization/kakao");
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+
+        log.info("Processing Request : {}", request.getRequestURI());
+
         //jwt를 검증할 필요가 없는 url은 다음 filter호출 후 메서드 종료하기
         if(request.getRequestURI().equals(NO_CHECK_URL1)||request.getRequestURI().equals(NO_CHECK_URL2)){
             filterChain.doFilter(request, response);
@@ -62,14 +75,19 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     public void checkRefreshTokenAndReIssueNewToken(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
         log.info("checkRefreshTokenAndReIsuueNewToken 동작");
-        if (jwtService.isRefreshTokenValid(refreshToken)) {
-            jwtService.removeRefreshToken(refreshToken);
-            Long userId = jwtService.extractUserIdFromRefreshToken(refreshToken).get();
+        try {
+            if (jwtService.isRefreshTokenValid(refreshToken)) {
+                jwtService.removeRefreshToken(refreshToken);
+                Long userId = jwtService.extractUserIdFromRefreshToken(refreshToken).get();
 
-            log.info("RefreshToken & AccessToken 재발급");
-            jwtService.sendTokenDto(response, jwtService.createTokenDto(userId));
-        }else {
-            throw new InvalidRefreshTokenException(InvalidRefreshTokenException.INVALID_REFRESH_TOKEN);
+                log.info("RefreshToken & AccessToken 재발급");
+                jwtService.sendTokenDto(response, jwtService.createTokenDto(userId));
+            } else {
+                throw new InvalidRefreshTokenException(InvalidRefreshTokenException.INVALID_REFRESH_TOKEN);
+            }
+        }catch (Exception e){
+
+            log.error(e.getMessage());
         }
 
     }
