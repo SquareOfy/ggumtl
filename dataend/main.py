@@ -1,24 +1,28 @@
 # main.py
 
 from fastapi import FastAPI 
+import httpx
+import asyncio
+
+from pydantic import BaseModel
 
 app = FastAPI()
+URL = "https://j9b301.p.ssafy.io/api/datatest/a"
+
+# class Item(BaseModel):
+
 
 @app.get("/data")
 def root():
     return "Hello FastAPI"
 
-# @app.get("/json")
-# def printJson():
-#     return {
-#         "Number": 12345
-#     }
+async def request(client):
+    response = await client.get(URL)
+    return response.text
 
-# class Post(BaseModel):
-#     title: str
-#     content: str
-
-# @app.post("/posts")
-# def createContents(post: Post):
-#     title: post.title
-#     content = post.content
+@app.get("/data/test")
+async def testReq():
+    async with httpx.AsyncClient() as client:
+        response = client.get(URL)
+        return response
+    return response
