@@ -81,11 +81,18 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('fetch', event => {
   const checkurl = event.request.url;
+  const currentUrl = window.location.href
   console.log('서비스 워커', checkurl)
+  console.log('현재 url', currentUrl)
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
   if (checkurl.includes('/api') || checkurl.includes('/oauth2')) {
     event.respondWith(fetch(event.request));
+    return;
+  }
+
+  if (currentUrl.includes('/oauth2')) {
+    event.respondWith(fetch(event.request))
     return;
   }
 
