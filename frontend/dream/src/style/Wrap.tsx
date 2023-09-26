@@ -21,6 +21,9 @@ interface WrapProps {
   
   // 스토리
   $storyWrap ?: boolean
+
+  // 알람
+  $alertWrap ?: boolean
   
 }
 const StyledWrap = styled.div<WrapProps>`
@@ -237,6 +240,29 @@ const StyledWrap = styled.div<WrapProps>`
       }
     `
   }
+  // 스토리
+  ${(props) =>
+    props.$alertWrap &&
+    css`
+      display: grid;
+      grid-template-columns: 1fr 4fr;
+      padding: 0 0.8rem;
+      align-items: center;
+      margin: 1rem 0.5rem;
+      border-radius: 1rem;
+      // background-color: blue;
+
+      & > .contentarea {
+        // background-color: yellow;
+        
+        & > div {
+          margin: 0.3rem;
+        }
+      }
+    `
+  }
+
+
 
 
 

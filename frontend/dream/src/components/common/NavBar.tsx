@@ -43,7 +43,11 @@ const NavBar = () => {
         <ModeToggle/>
       </div>
       <div>
-        <Button $icon><FiBell/></Button>
+        <Button $icon onClick={() => {
+          nightDayMode
+          ? navigate("/night/alert")
+          : navigate("/day/alert")
+        }}><FiBell/></Button>
       </div>
     </Bar>
     </>
