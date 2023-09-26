@@ -19,7 +19,6 @@ const GetTokenPage = () => {
       console.log('로그인 완료')
       // 메인으로 이동
       navigate('/sunset/main')
-
     }
     else if (type === 'signup') {
       console.log('회원가입으로 이동')

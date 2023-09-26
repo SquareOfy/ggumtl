@@ -23,7 +23,7 @@ import Text from "style/Text";
 import Container from "style/Container";
 import TextArea from "style/TextArea";
 import { useLocation, useNavigate, useParams } from "react-router";
-import basicHttp from "api/basicHttp";
+import tokenHttp from "api/tokenHttp";
 
 interface ChallengeIdParamType {
   challengeId: string;
@@ -47,12 +47,12 @@ const ChalCapsuleCreate = () => {
     console.log(axiosData)
     
     // 챌린지 참여 axios
-    await basicHttp.post('day/challenge', {"challengeId" : currentChallengeId})
+    await tokenHttp.post('/day/challenge', {"challengeId" : currentChallengeId})
       .then((response)=>{console.log(response, '챌린지 참여 axios')})
       .catch((e)=>{console.log(e)})
 
     // 타임 캡슐 등록 
-    await basicHttp.post('/day/challenge/timecapsule', axiosData)
+    await tokenHttp.post('/day/challenge/timecapsule', axiosData)
       .then((response) => {
         console.log(response,'타임캡슐 등록 axios')
       })

@@ -74,7 +74,7 @@ const ChalCreate = () => {
       "keywordId" : categoryList.indexOf(selectCategory)+1,
       "period" : selectPeriod
     }
-    basicHttp.post('day/challenge/new', challengeData)
+    basicHttp.post('/day/challenge/new', challengeData)
       .then((response) => {
         const challengeId = response.data.data.challengeId
         navigate(`/day/challenge/${challengeId}/timecapsule/create`)

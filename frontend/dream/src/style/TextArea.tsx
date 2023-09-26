@@ -62,11 +62,10 @@ const StyledTextArea = styled.textarea<TextAreaProps>`
     css`
       border: none;
       border-radius: 0.75rem;    
-      padding-left: 1rem;
-      padding-right: 1rem;
+      padding : 1.25rem 0.75rem;
       background-color: rgb(249, 249, 249, 50%); 
       width: 100%;
-      height: 10rem;
+      height: 8rem;
       margin-top: 0.5rem;
       margin-bottom: 0.5rem;
     `

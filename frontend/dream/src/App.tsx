@@ -38,13 +38,17 @@ import ChalCapsuleListPage from 'pages/day/capsule/ChalCapsuleListPage';
 import DayAlertPage from 'pages/alert/DayAlertPage';
 import BackgroundImage from 'style/backgroundImage';
 import DayProfilePage from 'pages/day/profile/DayProfilePage';
+import NotFoundPage from 'pages/sunset/NotFoundPage';
+import StartPage from 'pages/sunset/StartPage';
 
 
 function App() {
 
   const location = useLocation();
   const dispatch = useDispatch();
-  const hideComponent :boolean = location.pathname.startsWith("/sunset") || location.pathname.includes("comments");
+  const [hideComponent, setHideComponent] = useState<boolean>(true)
+
+  // const hideComponent :boolean = location.pathname.startsWith("/sunset") || location.pathname.includes("comments");
   
   // 라우터 이동 시에 url pathname 확인
   // const [theme,setTheme] = useState(sunsetTheme);
@@ -53,11 +57,19 @@ function App() {
   useEffect(()=>{
     if (location.pathname.includes('sunset')){
       dispatch(changeMode(sunsetTheme))
+      setHideComponent(true)
     } else if (location.pathname.includes('day')){
       dispatch(changeMode(dayTheme))
+      setHideComponent(false)
     } else if (location.pathname.includes('night')){
       dispatch(changeMode(nightTheme))
+      setHideComponent(false)
     }
+
+    if (location.pathname.includes("comments")) {
+      setHideComponent(true)
+    }
+
   })
 
   // 웹 알림
@@ -80,6 +92,7 @@ function App() {
     <GlobalStyle/>
       <Routes>
         {/* 초기 3개 화면 */}
+        <Route path="/" element={<StartPage/>}/>
         <Route path="/sunset/main" element={<SunsetMainPage/>} />
         <Route path="/sunset/login" element={<LoginPage/>}/>
         <Route path="/sunset/signup" element={<SignUpPage/>}/>
@@ -123,7 +136,7 @@ function App() {
         <Route path="/day/mychallenge/list" element={<ChalManagePage/>}/>
         <Route path="/day/mychallenge/:challengeId" element={<ChalManageDetailPage/>}/>
         {/* 인증글 올리기 */}
-        <Route path="/day/mychallenge/cert/create" element={<ChalCreateCertPage/>}/>        
+        <Route path="/day/mychallenge/:challengeId/cert/create" element={<ChalCreateCertPage/>}/>        
 
         {/* 낮 프로필 */}        
         <Route path="/day/profile/:userId" element={<DayProfilePage/>}/>
@@ -133,7 +146,7 @@ function App() {
         <Route path="/day/alert" element={<DayAlertPage/>}/>
 
         {/* 임시로 보낸 404 페이지 */}
-        <Route path="*" element={<SunsetMainPage/>}/>
+        <Route path="*" element={<NotFoundPage/>}/>
       </Routes>
       {!hideComponent && <FooterBar/> }
     {/* </ThemeProvider> */}

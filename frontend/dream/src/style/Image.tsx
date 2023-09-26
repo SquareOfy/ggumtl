@@ -35,6 +35,7 @@ interface ImageProps {
     $auctionCard ?: boolean;
 
     $signupImage ? :boolean;
+    $certImage ? :boolean;
 }
 
 const StyledImage = styled.div<ImageProps>`
@@ -93,10 +94,19 @@ const StyledImage = styled.div<ImageProps>`
     ${(props) =>
       props.$badge &&
       css`
-        width: 6rem;
-        height: 6rem;
-        margin: 1rem;
+        width: 5rem;
+        height: 5rem;
+        margin: 0.5rem;
         /* border: 0.5rem solid black; */
+        & > img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          content: "";
+          aspect-ratio: 1/1;
+          object-position: center;
+          border-radius: 1rem;
+        }
       `
     }
     
@@ -241,6 +251,34 @@ ${(props) =>
         margin: 2rem 0;
         background-color: #666666;
         
+        & > img { // 정사각형 만들기
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          aspect-ratio: 1/1;
+          object-position: center;
+          border-radius: 1rem;
+          object-fit: cover;
+        }
+      `
+    }
+${(props) =>
+      props.$certImage &&
+      css`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        aspect-ratio: 1/1;
+        background-size: cover;
+        border-radius: 1rem;
+        background-color: #666666;
+        
+        & > svg {
+          font-size: 5rem;
+          color: white;
+        }
+
         & > img { // 정사각형 만들기
           width: 100%;
           height: 100%;

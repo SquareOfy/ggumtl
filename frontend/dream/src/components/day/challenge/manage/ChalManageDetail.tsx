@@ -23,7 +23,7 @@ import React, {useEffect,useState} from "react";
 import Button from "components/common/Button";
 import Container from "style/Container";
 import { Box, BoxTitle } from "style/Box";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import basicHttp from "api/basicHttp";
 import { ChalDetailDataType, ChalDetailInfoProps } from "../ChalDetail";
 import Wrap from "style/Wrap";
@@ -87,14 +87,15 @@ const initialChalDetail:ChalDetailInfoProps = {
 
 const ChalManageDetail = () => {
   const params = useParams()
+  const navigate = useNavigate()
   const currentChallengeId = Number(params.challengeId)
-  const [chalData, setChalData] = useState<ChalDetailDataType>()
+  const [chalData, setChalData] = useState<ChalDetailDataType>(initialChalDetail.chalDetailData)
 
   const [progress, setProgress] = useState<number>(70); // 꿈틀도 추후 변경하기
   
   useEffect(()=>{
     // 렌더링되었을 때 참여
-    tokenHttp.get(`day/challenge/item/${currentChallengeId}`)
+    tokenHttp.get(`/day/challenge/item/${currentChallengeId}`)
       .then((response)=>{
         const res = response.data.data
         setChalData(res.detail)
@@ -108,7 +109,7 @@ const ChalManageDetail = () => {
   },[])
 
   return (
-    <Container $dayBaseContainer>
+    <Container $dayBaseContainer $dayCreate>
       <Box $mainTitleBox>
         {/* 뱃지 이미지 아직 안됨 */}
         <img src={`${chalData?.badgeUrl}`}></img> 
@@ -138,6 +139,21 @@ const ChalManageDetail = () => {
         <BoxTitle $boxTitle>성취도</BoxTitle>
         <Text $progressPercent>{progress}%</Text>
       </Box>
+
+      {/* 챌린지 인증하기 버튼 */}
+      <Button 
+        $fullWidth $dayBlue $chalCertButton
+        onClick={()=>{navigate(`/day/mychallenge/${currentChallengeId}/cert/create`)}}
+      >
+        <Text $isBold>챌린지 인증하기</Text>
+      </Button>
+      
+
+      <Text $dayMoney $timeCapsuleText>다른 사람들의 응원 메세지를 확인해보세요.</Text>
+      <Button $fullWidth $dayYellow $chalCertButton>
+        <img src={`${process.env.PUBLIC_URL}/image/icon/timecapsule.png`}></img>
+        <Text $isBold>타임 캡슐</Text>
+      </Button>
 
     </Container>
   )

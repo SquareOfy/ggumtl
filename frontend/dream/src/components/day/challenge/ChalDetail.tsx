@@ -17,7 +17,8 @@ import ChalDetailInfo from "./ChalDetailInfo";
 import Button from "components/common/Button";
 import ChalCertArticleList from "./ChalCertArticleList";
 import Container from "style/Container";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import tokenHttp from "api/tokenHttp";
 
 // 스타일
 
@@ -63,19 +64,21 @@ const initialChalDetail:ChalDetailInfoProps = {
 const ChalDetail = () => {
 
   const navigate = useNavigate()
+  const params = useParams()
+  const currentChallengeId = params.challangeId
 
   const [chalDetailData,setChalDetailData] = useState<ChalDetailDataType>(initialChalDetail.chalDetailData)
   const [chalParticipate, setChalParticipate] = useState<boolean>(true)
   const [chalParticipateDay,setChalParticipateDay] = useState<number>(0)
 
   useEffect(()=>{
-    basicHttp.get('/day/challenge/item/2')
+    tokenHttp.get(`/day/challenge/item/${currentChallengeId}`)
       .then((response)=>{
         const res = response.data.data
         setChalDetailData(res.detail)
         setChalParticipate(res.participate)
         setChalParticipateDay(res.participateDay)
-        // console.log(res)
+        console.log('axios결과', res)
       })
       .catch((e)=>{console.log(e)})
   },[])
@@ -87,17 +90,19 @@ const ChalDetail = () => {
 
     {/* 참여하기 버튼 */}
     {
-      chalDetailData ? (
+      chalParticipate ? (
         <Button 
           $fullWidth 
           $dayBlue 
-          onClick={()=>{navigate('/day/mychallenge/:challengeId')}}
+          // 챌린지 관리하기 페이지
+          onClick={()=>{navigate(`/day/mychallenge/${currentChallengeId}`)}}
         >관리하기</Button>
         ):(
         <Button 
           $fullWidth 
           $dayBlue 
-          onClick={()=>{navigate('/day/challenge/create')}}
+          // 챌린지 타임캡슐 만들기
+          onClick={()=>{navigate(`/day/challenge/${currentChallengeId}/timecapsule/create`)}}
         >참여하기</Button>
       )
     }
