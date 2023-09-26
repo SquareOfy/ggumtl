@@ -138,28 +138,19 @@ public class DreamCardService {
     @Transactional
     public ResultTemplate postDreamCard(User author, RequestDreamCardDetail request, String fileName) {
 
-        List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
-
+        // 여기서 일단 키워드로 mongoDB에 있는 dream을 다 뽑아야함
         ResponseDreamAnalysis responseDreamAnalysis = dreamAnalysisService.processAnalysis(request);
 
-        List<String> wordKeywords = request.getWordKeywords();
-        // 키워드 기반으로 희귀도 판단하는 녀석 하나 만들기
+        if(responseDreamAnalysis == null){
+            return ResultTemplate.builder().status(HttpStatus.OK.value()).data("fail").build();
+        }
 
-        // 희귀도 기반으로 등급 추출
-
-        // 긍정도 등급이랑 희귀도 기반으로 꿈 최종 등급 추출
-
-        // 꿈 해몽 내용 추출
-
-        // 얘네를 넣을 DTO
-//        dreamCard.rarePoint = 23;
-//        dreamCard.grade = Grade.SS;
-//        dreamCard.dreamTelling = "아직 못 했어요 구현을";
-//        dreamCard.positiveGrade = Grade.S;
-//        dreamCard.rareGrade = Grade.SS;
+        List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
 
         DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords, fileName, responseDreamAnalysis);
         dreamCardRepository.save(makeDreamCard);
+
+        // 챌린지 추천할꺼 추가
         ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();

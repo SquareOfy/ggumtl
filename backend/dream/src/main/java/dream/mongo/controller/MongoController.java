@@ -1,7 +1,7 @@
 package dream.mongo.controller;
 
 import dream.common.domain.ResultTemplate;
-import dream.mongo.domain.dream;
+import dream.mongo.domain.Dream;
 import dream.mongo.service.MongoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,8 @@ public class MongoController {
     @GetMapping(value = "")
     public ResultTemplate mongoTest() {
 
-        List<dream> response = mongoService.getAllDream();
+        List<Dream> response = mongoService.getAllDream();
+
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
@@ -32,4 +33,9 @@ public class MongoController {
 
         return mongoService.findBest("비둘기");
     }
+
+//    @GetMapping(value = "/findBestDream")
+//    public ResultTemplate findBestDream(@RequestPart Req){
+//
+//    }
 }
