@@ -65,9 +65,9 @@ const DreamCreate = () => {
   // allText: 보낼 데이터
   // isChecked가 공개 여부
   // userId
-  const userId = 1
+  // const userId:number = 1
   const sendDreamToPython = () => {
-    const dreamCardAuthor = userId
+    const dreamCardAuthor:number = 3
     const isShow = isChecked
     const dreamCardContent = allText
     const data = {dreamCardAuthor, isShow, dreamCardContent}
