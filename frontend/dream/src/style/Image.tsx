@@ -17,6 +17,7 @@ interface ImageProps {
     $tinyProfileImage ?: boolean;
     $badge ?: boolean;
     $largeBadge ?: boolean;
+    $timeCapsuleImage ?: boolean;
 
     // 뱃지 색
     $gold ?: boolean;
@@ -40,7 +41,7 @@ interface ImageProps {
 
 const StyledImage = styled.div<ImageProps>`
     cursor: pointer;
-    background-color: gray;
+    /* background-color: gray; */
     border-radius: 50%;
     
     // disabled가 아닐때(활성화), hover
@@ -262,6 +263,29 @@ ${(props) =>
         }
       `
     }
+
+// 타임 캡슐 이미지
+${(props) =>
+      props.$timeCapsuleImage &&
+      css`
+        width: 8rem;
+        aspect-ratio: 1/1;
+        background-size: cover;
+        border-radius: 1rem;
+        background-color: none;
+        margin-top: 2rem;
+        & > img { // 정사각형 만들기
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          aspect-ratio: 1/1;
+          object-position: center;
+          border-radius: 1rem;
+          object-fit: cover;
+        }
+      `
+    }
+
 ${(props) =>
       props.$certImage &&
       css`

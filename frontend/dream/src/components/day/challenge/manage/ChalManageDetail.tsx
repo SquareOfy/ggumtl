@@ -150,7 +150,10 @@ const ChalManageDetail = () => {
       
 
       <Text $dayMoney $timeCapsuleText>다른 사람들의 응원 메세지를 확인해보세요.</Text>
-      <Button $fullWidth $dayYellow $chalCertButton>
+      <Button 
+        $fullWidth $dayYellow $chalCertButton
+        onClick={()=>{{navigate(`/day/challenge/${currentChallengeId}/timecapsule/loading`)}}}
+      >
         <img src={`${process.env.PUBLIC_URL}/image/icon/timecapsule.png`}></img>
         <Text $isBold>타임 캡슐</Text>
       </Button>

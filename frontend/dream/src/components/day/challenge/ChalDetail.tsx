@@ -80,7 +80,7 @@ const ChalDetail = () => {
         setChalParticipateDay(res.participateDay)
         console.log('axios결과', res)
       })
-      .catch((e)=>{console.log(e)})
+      .catch((err)=>{console.log(err)})
   },[])
 
   return (
