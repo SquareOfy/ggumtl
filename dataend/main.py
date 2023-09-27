@@ -3,7 +3,6 @@
 from fastapi import FastAPI 
 from fastapi.middleware.cors import CORSMiddleware
 
-
 from typing import List
 import httpx 
 import asyncio # 비동기 통신
@@ -66,7 +65,10 @@ async def dreamProcessing(data: DreamModel):
             "wordKeywords": ["돈", "부자", "공부"]
         }
     }
-    response = requests.post('{URL}/s3/dream/new', toJavaData, files=None)
-    return {"message": "성공했어!! 옹예!"}
+    response1 = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', toJavaData, files=None)
+    response2 = requests.post('{URL}/s3/dream/new', toJavaData, files=None)
+    response3 = requests.post('/s3/dream/new', toJavaData, files=None)
+    # return {"message": "성공했어!! 옹예!"}
+    return response1
 
 
