@@ -107,10 +107,10 @@ function App() {
         {/* 경매장 */}
         <Route path="/night/auction/list" element={<AuctionMainPage/>}/>
 
-        <Route path="/night/auction/detail/:dreamCardId" element={<AuctionDetailPage/>}/>
+        <Route path="/night/auction/detail/:auctionId" element={<AuctionDetailPage/>}/>
          {/* 라우터 경로만 */}
         <Route path="/night/auction/detail/:dreamCardId/create" element={<AuctionCreatePage/>}/> 
-        <Route path="/night/auction/bidding/:dreamCardId" element={<AuctionDetailPage/>}/> 
+        <Route path="/night/auction/bidding/:auctionId" element={<AuctionDetailPage/>}/> 
 
         <Route path="/night/auction/bidding/review" element={<AuctionBuyingSuccessPage/>}/> 
 

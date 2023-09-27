@@ -10,6 +10,7 @@ import Input from "style/Input";
 import tokenHttp from "api/tokenHttp";
 
 // 스타일
+import styled from "styled-components";
 import Wrap from "style/Wrap";
 import { useNavigate } from "react-router-dom";
 import InfiniteScroll from "components/common/InfiniteScroll";
@@ -34,6 +35,10 @@ export interface AuctionCardType {
 }
 
 export interface AuctionListType extends Array<AuctionCardType> {}
+
+const MT5 = styled.div`
+  margin-top: 1rem;
+`
 
 const AuctionMainList = () => {
   const [auctionList, setAuctionList] = useState<AuctionListType>([]);
@@ -85,7 +90,8 @@ const AuctionMainList = () => {
 
   return (
     <>
-      <SearchBar onChange={()=>console.log("짠")} />
+      {/* <SearchBar onChange={()=>console.log("짠")} /> */}
+      <MT5/>
       <Wrap $auctionCardWrap>
         {
           auctionList &&
