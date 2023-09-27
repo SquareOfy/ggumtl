@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -32,6 +36,18 @@ public class MongoController {
     public ResultTemplate findBest(){
 
         return mongoService.findBest("비둘기");
+    }
+    
+    @GetMapping(value = "/savetest")
+    public ResultTemplate saveTest(){
+
+        List<Dream> dreams = new ArrayList<>();
+        
+        // 파일 읽어서 꿈 객체로 변환
+
+        
+
+        return mongoService.saveDream(dreams);
     }
 
 //    @GetMapping(value = "/findBestDream")
