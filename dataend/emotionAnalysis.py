@@ -52,21 +52,25 @@ def estimateScore(score):
 # if __name__ == "__main__":
 #     asyncio.run(analyze_text_sentiment(dream))
 
-input_path = ".\\addKeywordsMod\\addKeywordsMod2.json"
-output_path = ".\\addEmotion\\addEmotion2-2.json"
+input_path = ".\\addKeywordsMod\\addKeywordsMod4.json"
+output_path = ".\\addEmotion\\addEmotion4.json"
 with open(input_path, 'r', encoding='utf-8') as file:
     keyData = json.load(file)
 
 print(len(keyData))
 
+# print(keyData[6807])
+# print(keyData[6808])
+# print(keyData[6809])
+
 # exit()
-keyData = keyData[500:]
+# keyData = keyData[6800:]
 idx = 0
 for data in keyData:
     idx+=1
     # if idx<5600: continue
-    dreamOriginScore = asyncio.run(analyze_text_sentiment(data["dream"]))
-    tellingOriginScore = asyncio.run(analyze_text_sentiment(data["analysis"]["dreamTelling"]))
+    dreamOriginScore = asyncio.run(analyze_text_sentiment(data["dream"][:500]))
+    tellingOriginScore = asyncio.run(analyze_text_sentiment(data["analysis"]["dreamTelling"][:500]))
 
     dreamPositivePoint, dreamNegativePoint = estimateScore(dreamOriginScore)
     dreamTellingPositivePoint, dreamTellingNegativePoint = estimateScore(tellingOriginScore)

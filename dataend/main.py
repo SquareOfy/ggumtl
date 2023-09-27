@@ -16,6 +16,11 @@ URL = "https://j9b301.p.ssafy.io/api/datatest/a"
 def root():
     return "Hello FastAPI"
 
+# res = requests.get(URL)
+# res.text
+
+exit()
+
 async def request(client):
     response = await client.get(URL)
     return response.text
