@@ -51,7 +51,7 @@ async def request(client):
 async def dreamProcessing(data: DreamModel):
     # 받은 데이터 처리
     dreamCardContent = data.dreamCardContent
-    dreamCardAuthor: data.dreamCardAuthor
+    dreamCardAuthor = data.dreamCardAuthor
     isShow = "T" if data.isShow else "F"
     print("ㅋㅋㅋㅋ")
     toJavaData = {
@@ -64,11 +64,13 @@ async def dreamProcessing(data: DreamModel):
             "keywords": ["학업", "재물"],
             "wordKeywords": ["돈", "부자", "공부"]
         }
+        ,
     }
     response1 = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', toJavaData, files=None)
     response2 = requests.post('{URL}/s3/dream/new', toJavaData, files=None)
     response3 = requests.post('/s3/dream/new', toJavaData, files=None)
     # return {"message": "성공했어!! 옹예!"}
+    
     return response1
 
 
