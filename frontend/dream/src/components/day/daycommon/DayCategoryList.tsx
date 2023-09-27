@@ -3,7 +3,7 @@
 // <CategoryBox></CategoryBox>
 
 // 리액트
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, Dispatch, useEffect, useState } from "react";
 import Text from "style/Text";
 import styled from "styled-components";
 
@@ -32,9 +32,13 @@ export interface CategoryAxiosType {
   keywordId :number,
 }
 
-const DayCategoryList = () => {
+export interface CategoryPropsType {
+  setCategoryProps :Dispatch<SetStateAction<CategoryAxiosType>>
+}
+
+const DayCategoryList = (props :CategoryPropsType) => {
   const [categoryList, setCategoryList] = useState<CategoryAxiosType[]>([]);
-  
+
   // axios 요청
   const getCategory = () => {
     tokenHttp.get(`/day/keyword/list`)
@@ -55,7 +59,9 @@ const DayCategoryList = () => {
       <CategoryListWrap>
         {
           categoryList?.map((category, i) => 
-            <Button $category key={i}>{category.keyword}</Button>
+            <Button 
+            onClick={() => props.setCategoryProps(category)}
+            $category key={i}>{category.keyword}</Button>
           )
         }
       </CategoryListWrap>
