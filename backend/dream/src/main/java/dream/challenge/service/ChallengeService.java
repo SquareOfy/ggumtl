@@ -396,16 +396,27 @@ public class ChallengeService {
 
         ArrayList<ResponseTimeCapsule> timeCapsules = new ArrayList<>();
 
-
-
         int count = 0;
-        for(ChallengeParticipation challengeParticipation : list){
-            if (challengeParticipation.getChallengeParticipationId() < lastItemId && !challengeParticipation.getTimeCapsuleContent().equals(" ")) {
-                ResponseTimeCapsule tmp = ResponseTimeCapsule.from(challengeParticipation);
-                timeCapsules.add(tmp);
-                if(++count == size) break;
+        boolean flag = lastItemId != null;
+        if(flag){
+            for(ChallengeParticipation challengeParticipation : list){
+                if (challengeParticipation.getChallengeParticipationId() > lastItemId && !challengeParticipation.getTimeCapsuleContent().equals(" ")) {
+                    ResponseTimeCapsule tmp = ResponseTimeCapsule.from(challengeParticipation);
+                    timeCapsules.add(tmp);
+                    if(++count == size) break;
+                }
             }
         }
+        else{
+            for(ChallengeParticipation challengeParticipation : list){
+                if (!challengeParticipation.getTimeCapsuleContent().equals(" ")) {
+                    ResponseTimeCapsule tmp = ResponseTimeCapsule.from(challengeParticipation);
+                    timeCapsules.add(tmp);
+                    if(++count == size) break;
+                }
+            }
+        }
+
 
         boolean hasNext = (list.size() > size);
         ResponseTimeCapsuleResult response = ResponseTimeCapsuleResult.from(challenge, timeCapsules, hasNext);

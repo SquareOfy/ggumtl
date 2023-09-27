@@ -186,10 +186,11 @@ public class ChallengeController {
 
     @GetMapping(value = "/challenge/timecapsule/{challengeId}")
     public ResultTemplate getTimeCapsules(@PathVariable("challengeId") Long challengeId,
-                                          @RequestParam(value = "lastItemId", required = false, defaultValue = "9999") Long lastItemId,
-                                          @RequestParam("size") int size, @UserInfo User user) {
+                                          @RequestParam(value = "lastItemId", required = false) Long lastItemId,
+                                          @RequestParam(value = "size") int size
+                                        , @UserInfo User user) {
 
-//        User user = userRepository.findByUserId(3L).
+//        User user = userRepository.findByUserId(30L).
 //                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         return challengeService.getTimeCapsule(user, challengeId, lastItemId, size);

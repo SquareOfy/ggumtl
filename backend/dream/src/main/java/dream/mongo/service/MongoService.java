@@ -27,6 +27,13 @@ public class MongoService {
         return response;
     }
 
+    public ResultTemplate saveDream(List<Dream> dreams){
+
+        mongoRepository.saveAll(dreams);
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
     public ResultTemplate findBest(String title) {
 
         RequestDream requestDream = new RequestDream("비둘기가 방에 들어갑니다.",
