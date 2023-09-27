@@ -32,9 +32,9 @@ registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }: { request: Request; url: URL }) => {
     // If this isn't a navigation, skip.
-    // if (request.mode !== 'navigate') {
-    //   return false;
-    // }
+    if (request.mode !== 'navigate') {
+      return false;
+    }
 
     // If this is a URL that starts with /_, skip.
     if (url.pathname.startsWith('/_')) {
@@ -81,9 +81,9 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('fetch', event => {
   const checkurl = event.request.url;
-  const currentUrl = window.location.href
+  // const currentUrl = window.location.href
   console.log('서비스 워커', checkurl)
-  console.log('현재 url', currentUrl)
+  // console.log('현재 url', currentUrl)
   console.log('event request', event.request)
 
   // if (currentUrl.includes('/oauth2')) {
