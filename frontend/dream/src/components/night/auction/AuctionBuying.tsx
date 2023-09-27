@@ -88,7 +88,7 @@ const AuctionBuying = ({biddingMoney, askingMoney} :AuctionBuyingProps) => {
   }
   
   const addBiddingMoney = () => {
-    setMyBiddingMoney(() => myBiddingMoney+currentAskingMoney)
+    setMyBiddingMoney(() => Number(myBiddingMoney)+Number(currentAskingMoney))
   }
 
   // push 알림 확인
