@@ -71,7 +71,7 @@ const DreamCreate = () => {
     const isShow = isChecked
     const dreamCardContent = allText
     const data = {dreamCardAuthor, isShow, dreamCardContent}
-
+    console.log(data, "보낼 데이터!")
     dataHttp.post("/night/dream/create", data)
     .then(res => {
       console.log(res, "생성!")
@@ -111,6 +111,7 @@ const DreamCreate = () => {
           <Button $nightPalePurple>취소</Button>
           <Button 
           $nightPurple
+          onClick={sendDreamToPython}
           // onClick={} // Karlo 백 서버 API 연결 - 보낼 데이터 : allText
           >등록</Button>
         </div>
