@@ -22,8 +22,9 @@ spring:
         format_sql: true
         default_batch_fetch_size: 1000 # 최적화 옵션
   redis:
-    host: 127.0.0.1
-    port: 6379
+    host: ${PUBLIC_IP}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
   # mongoDB
 
   data:
@@ -39,6 +40,7 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.springframework.security: DEBUG
+  org.springframework.web.client.RestTemplate: DEBUG
 
 # S3
 cloud:

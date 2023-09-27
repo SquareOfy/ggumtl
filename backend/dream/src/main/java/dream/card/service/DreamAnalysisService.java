@@ -51,6 +51,7 @@ public class DreamAnalysisService {
 
         // 동적 쿼리 날려서 Mongo에서 해당 ROW 다 가져오기
         List<Dream> list = findDreamsWithKeywords(requestDream.getWordKeywords());
+        log.info("findDreamsWithKeywordsListSize : {}", list.size());
 
         Dream simillarDream = findBestSimillarDream(requestDream, list);
 

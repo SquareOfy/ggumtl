@@ -13,6 +13,7 @@ public class ResponseProfileChallengeBadge {
     private Long badgeId;
     private Long challengeId;
     private String completedDays;
+    private String badgeUrl;
 
     public static ResponseProfileChallengeBadge from(Badge badge){
         ResponseProfileChallengeBadge response = new ResponseProfileChallengeBadge();
@@ -20,6 +21,7 @@ public class ResponseProfileChallengeBadge {
         response.badgeId = badge.getBadgeId();
         response.challengeId = badge.getChallenge().getChallengeId();
         response.completedDays = badge.getCompleteDays()+"일";
+        response.badgeUrl = badge.getChallenge().getBadgeUrl();
 
         return response;
     }

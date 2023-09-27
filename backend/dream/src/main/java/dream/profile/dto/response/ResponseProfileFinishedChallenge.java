@@ -12,19 +12,20 @@ import lombok.NoArgsConstructor;
 public class ResponseProfileFinishedChallenge {
 
     private Long challengeParticipateId;
-    private Long challlengeId;
+    private Long challengeId;
     private String challengeTitle;
     private String period;
-
+    private String badgeUrl;
     private int participationCount;
 
 
     public static ResponseProfileFinishedChallenge from(ChallengeParticipation challengeParticipation){
         ResponseProfileFinishedChallenge response = new ResponseProfileFinishedChallenge();
         response.challengeParticipateId = challengeParticipation.getChallengeParticipationId();
-        response.challlengeId = challengeParticipation.getChallenge().getChallengeId();
+        response.challengeId = challengeParticipation.getChallenge().getChallengeId();
         response.challengeTitle = challengeParticipation.getChallenge().getChallengeTitle();
         response.period = challengeParticipation.getChallenge().getPeriod();
+        response.badgeUrl = challengeParticipation.getChallenge().getBadgeUrl();
         response.participationCount = challengeParticipation.getChallenge().getChallengeParticipations().size();
         return response;
 

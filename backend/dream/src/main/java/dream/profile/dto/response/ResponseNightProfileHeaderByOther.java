@@ -15,9 +15,10 @@ public class ResponseNightProfileHeaderByOther {
     String profileImageUrl;
     String profileImageName;
     double wrigglePoint;
-    int dreamCardCount;
+//    int dreamCardCount;
     int followerCount;
     int followingCount;
+    int dreamCardCount;
 
 
     public static ResponseNightProfileHeaderByOther from(User profileUser, int dreamCardCount, int followerCount, int followingCount){

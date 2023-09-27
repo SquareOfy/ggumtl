@@ -127,6 +127,7 @@ public class ChallengeService {
 
     public ResultTemplate getChallengeInfo(User user, Long challengeId) {
 
+
         List<ChallengeDetail> sizeOfUserParticipateInChallenge = challengeDetailQueryRepository.
                 getIsUserParticipateChallenge(user.getUserId(), challengeId);
 
@@ -395,16 +396,28 @@ public class ChallengeService {
 
         ArrayList<ResponseTimeCapsule> timeCapsules = new ArrayList<>();
 
-
-
         int count = 0;
-        for(ChallengeParticipation challengeParticipation : list){
-            if (challengeParticipation.getChallengeParticipationId() < lastItemId && !challengeParticipation.getTimeCapsuleContent().equals(" ")) {
-                ResponseTimeCapsule tmp = ResponseTimeCapsule.from(challengeParticipation);
-                timeCapsules.add(tmp);
-                if(++count == size) break;
+        boolean flag = lastItemId != null;
+        if(flag){
+            for(ChallengeParticipation challengeParticipation : list){
+                if (challengeParticipation.getChallengeParticipationId() > lastItemId && !challengeParticipation.getTimeCapsuleContent().equals(" ")) {
+                    ResponseTimeCapsule tmp = ResponseTimeCapsule.from(challengeParticipation);
+                    timeCapsules.add(tmp);
+                    if(++count == size) break;
+                }
             }
         }
+        else{
+            for(ChallengeParticipation challengeParticipation : list){
+                if (!challengeParticipation.getTimeCapsuleContent().equals(" ")) {
+                    ResponseTimeCapsule tmp = ResponseTimeCapsule.from(challengeParticipation);
+                    timeCapsules.add(tmp);
+                    if(++count == size) break;
+                }
+            }
+        }
+        
+        // 리스트에는 지금 담겨있는 로직이 쿼리로 날릴때랑 달라서 처리하기가 힘듦
 
         boolean hasNext = (list.size() > size);
         ResponseTimeCapsuleResult response = ResponseTimeCapsuleResult.from(challenge, timeCapsules, hasNext);
