@@ -13,6 +13,7 @@ public class ResponseMyChallengeInfo {
     private String challengeTitle;
     private String period;
     private int participationCount;
+    private String badgeUrl;
 
     public static ResponseMyChallengeInfo from(Challenge challenge) {
 
@@ -22,7 +23,7 @@ public class ResponseMyChallengeInfo {
         response.challengeTitle = challenge.getChallengeTitle();
         response.period = challenge.getPeriod();
         response.participationCount = challenge.getChallengeParticipations().size();
-
+        response.badgeUrl = challenge.getBadgeUrl();
         return response;
     }
 }
