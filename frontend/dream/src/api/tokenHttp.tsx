@@ -2,7 +2,7 @@ import axios from "axios";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import dayjs from "dayjs";
 
-import { token } from "ignore/token";
+// import { token } from "ignore/token";
 
 // 토큰이 필요한 인증에 사용
 
@@ -21,8 +21,8 @@ const tokenHttp = axios.create({
 
 // 요청 인터셉터 설정 (요청 보내기 전에 수행되는 함수)
 tokenHttp.interceptors.request.use(async (req) => {
-  // const accessToken = sessionStorage.getItem("accessToken");
-  const accessToken = token;
+  const accessToken = sessionStorage.getItem("accessToken");
+  // const accessToken = token;
   if (!accessToken) {
     console.log("token 이 존재하지 않습니다.");
     throw new Error("expire token");
@@ -46,8 +46,8 @@ tokenHttp.interceptors.request.use(async (req) => {
       {},
       {
         headers: {
-          // Authorization: sessionStorage.getItem("refreshToken"),
-          Authorization: token,
+          Authorization: sessionStorage.getItem("refreshToken"),
+          // Authorization: token,
         },
       }
     )
@@ -63,8 +63,8 @@ tokenHttp.interceptors.request.use(async (req) => {
       throw new Error("expire token");
     });
 
-  // req.headers["Authorization"] = sessionStorage.getItem("accessToken");
-  req.headers["Authorization"] = token;
+  req.headers["Authorization"] = sessionStorage.getItem("accessToken");
+  // req.headers["Authorization"] = token;
   return req;
 });
 
