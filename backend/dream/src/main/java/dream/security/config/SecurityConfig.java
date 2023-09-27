@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 
                 .antMatchers("/", "/css/**", "images/**", "/js/**", "/h2-console/***").permitAll()
-                .antMatchers("/ws-stomp/**", "/login/**", "/api/oauth2/**").permitAll()
+                .antMatchers("/ws-stomp/**", "/login/**", "/api/oauth2/**", "/oauth2/**").permitAll()
                 .antMatchers("/api/s3/**").permitAll()
                 .antMatchers("/api/mongo/**").permitAll()
                 .antMatchers("/api/user/signup/extra-info").hasRole("GUEST")
