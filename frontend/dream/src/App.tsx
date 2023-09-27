@@ -148,7 +148,7 @@ function App() {
         <Route path="/day/alert" element={<DayAlertPage/>}/>
 
         {/* 임시로 보낸 404 페이지 */}
-        {/* <Route path="*" element={<NotFoundPage/>}/> */}
+        {/* <Route path="/error404" element={<NotFoundPage/>}/> */}
       </Routes>
       {!hideComponent && <FooterBar/> }
     {/* </ThemeProvider> */}
