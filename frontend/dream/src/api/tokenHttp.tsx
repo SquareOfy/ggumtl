@@ -18,6 +18,7 @@ const tokenHttp = axios.create({
   },
 });
 
+
 // 요청 인터셉터 설정 (요청 보내기 전에 수행되는 함수)
 tokenHttp.interceptors.request.use(async (req) => {
   // const accessToken = sessionStorage.getItem("accessToken");

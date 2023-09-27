@@ -44,7 +44,9 @@ const IconBook = styled(FiBook)`
 
 const FooterBar = () => {
   const navigate = useNavigate()
-  
+
+  const currentUserId = useSelector((state:RootState) => state.auth.userdata.userId)
+
   //true : night, false : day
   const [nightDayMode, setNightDayMode] = useState<boolean>(true);
 
@@ -65,7 +67,9 @@ const FooterBar = () => {
           ):(
           <IconBook onClick={()=>{navigate("/day/main")}}/>
         )}
-        <IconUser onClick={()=>{navigate(nightDayMode ? "/night/profile/:userId":"/day/profile/:userId")}}/>
+        <IconUser onClick={()=>{
+          navigate(nightDayMode ? `/night/profile/${currentUserId}`:`/day/profile/${currentUserId}`)
+          }}/>
       </Bar>
     </>
   )
