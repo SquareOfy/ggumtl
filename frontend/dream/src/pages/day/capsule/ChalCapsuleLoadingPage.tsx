@@ -13,7 +13,6 @@ const ChalCapsuleLoadingPage = () => {
 
   return (
     <>
-    <NavTitleBar/>
     <ChalCapsuleLoading/>
     </>
   )

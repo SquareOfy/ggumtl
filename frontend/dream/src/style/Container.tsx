@@ -48,11 +48,11 @@ const StyledContainer = styled.div<ContainerProps>`
   ${(props) =>
     props.$columnCenterContainer &&
     css`
+    
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-content: center;
-      margin: 1rem auto;
+      align-items: center;
     `
   }
   

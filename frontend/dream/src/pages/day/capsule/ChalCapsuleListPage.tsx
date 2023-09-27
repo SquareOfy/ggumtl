@@ -13,7 +13,7 @@ const ChalCapsuleListPage = () => {
 
   return (
     <>
-    <NavTitleBar/>
+    <NavTitleBar>타임 캡슐</NavTitleBar>
     <ChalCapsuleList/>
     </>
   )

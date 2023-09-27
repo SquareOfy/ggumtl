@@ -24,6 +24,7 @@ import Container from "style/Container";
 import TextArea from "style/TextArea";
 import { useLocation, useNavigate, useParams } from "react-router";
 import tokenHttp from "api/tokenHttp";
+import { checkCertInput } from "utils/alert/checkInput";
 
 interface ChallengeIdParamType {
   challengeId: string;
@@ -39,6 +40,8 @@ const ChalCapsuleCreate = () => {
 
   const [timeCapsuleContent,setTimeCapsuleContent] = useState<string>('')
 
+
+
   const addTimecapsule= async()=>{
     const axiosData = {
       "challengeId" : currentChallengeId,
@@ -46,20 +49,24 @@ const ChalCapsuleCreate = () => {
     }
     console.log(axiosData)
     
-    // 챌린지 참여 axios
-    await tokenHttp.post('/day/challenge', {"challengeId" : currentChallengeId})
-      .then((response)=>{console.log(response, '챌린지 참여 axios')})
-      .catch((e)=>{console.log(e)})
+    if (checkCertInput(timeCapsuleContent)){
+      // 챌린지 참여 axios
+      await tokenHttp.post('/day/challenge', {"challengeId" : currentChallengeId})
+        .then((response)=>{console.log(response, '챌린지 참여 axios')})
+        .catch((e)=>{console.log(e)})
 
-    // 타임 캡슐 등록 
-    await tokenHttp.post('/day/challenge/timecapsule', axiosData)
-      .then((response) => {
-        console.log(response,'타임캡슐 등록 axios')
-      })
-      .catch((e)=>{console.log(e)})
-    
-    // 후에 이동
-    navigate(`/day/mychallenge/${currentChallengeId}`)
+      // 타임 캡슐 등록 
+      await tokenHttp.post('/day/challenge/timecapsule', axiosData)
+        .then((response) => {
+          console.log(response,'타임캡슐 등록 axios')
+        })
+        .catch((e)=>{console.log(e)})
+      
+      // 후에 이동
+      navigate(`/day/mychallenge/${currentChallengeId}`)
+    } else {
+      alert('타임 캡슐에 내용을 적어보세요.')
+    }
   }
 
   return (

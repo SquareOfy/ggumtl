@@ -21,6 +21,8 @@ interface BoxProps {
   $storyContentsBox ?: boolean;
   $chalDetailBox ?: boolean;  // 챌린지 정보 박스
   $chalManageBox ?: boolean;  
+  $timeCapsuleContentBox ?: boolean;
+  $tiemCapsuleChalTitleBox ?: boolean;
 
   // 모드 관련
   $night ?: boolean;
@@ -219,7 +221,7 @@ const StyledBox = styled.div<BoxProps>`
     }
     `
   }  
-  // 챌린지 관리 박스
+  // progress Bar
   ${(props) => props.$progressBox && 
     css`
       margin: 0.7rem 0;
@@ -231,10 +233,35 @@ const StyledBox = styled.div<BoxProps>`
         position: relative;
         top: -1rem;
       }
-
-
     `
-  }  
+  }
+  
+  
+// 타임캡슐 타이틀 박스
+${(props) => props.$tiemCapsuleChalTitleBox &&
+  css`
+    padding: 1rem;
+    margin: 1.5rem 0;
+    width: 70vw;
+    text-align: center;
+    border-radius: 2rem;
+    background-color: #FFE177;
+    font-weight: bold;
+    font-size: 1.3rem;
+  `
+}
+
+// 타임캡슐 내용 박스
+${(props) => props.$timeCapsuleContentBox &&
+  css`
+    padding: 1rem;
+    margin: 0.5rem 0;
+    width: 100%;
+    text-align: center;
+    border-radius: 1rem;
+    background-color: rgb(249, 249, 249, 50%); 
+  `
+}
 
 `;
 
@@ -274,7 +301,6 @@ const GradeWrapping = styled.div<BoxProps>`
     }
   }
 `
-
 
 
 const Box = (props:BoxProps) => {

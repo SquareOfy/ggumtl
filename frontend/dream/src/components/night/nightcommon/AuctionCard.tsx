@@ -51,7 +51,7 @@ const AuctionCard = ({auctionCard} : AuctionCardProps) => {
     <>
     {/* 옥션 카드에 존재하는 키워드박스 클릭할 때도 경매장 가는 거 막아야 함. */}
     <div className="auction-card"
-    onClick={() => navigation(`/night/auction/detail/${auctionCard?.dreamCardId}`)}    
+    onClick={() => navigation(`/night/auction/detail/${auctionCard?.auctionId}`)}    
     >
       <div className="auction-end-time"> 
       {diffHour() < 3 ? ( diffHour() > 0 ? `마감 ${diffHour()}시간 전` : "종료 임박") : "경매장 입장"}

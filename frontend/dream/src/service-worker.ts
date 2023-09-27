@@ -86,10 +86,10 @@ self.addEventListener('fetch', event => {
   console.log('현재 url', currentUrl)
   console.log('event request', event.request)
 
-  if (currentUrl.includes('/oauth2')) {
-    event.respondWith(fetch(event.request))
-    return;
-  }
+  // if (currentUrl.includes('/oauth2')) {
+  //   event.respondWith(fetch(event.request))
+  //   return;
+  // }
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
   if (checkurl.includes('/api') || checkurl.includes('/oauth2')) {
@@ -101,9 +101,9 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(cachedResponse => {
-        // if (cachedResponse) {
-        //   return cachedResponse;
-        // }
+        if (cachedResponse) {
+          return cachedResponse;
+        }
         return fetch(event.request);
       })
   );
