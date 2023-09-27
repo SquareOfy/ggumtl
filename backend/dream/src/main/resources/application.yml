@@ -40,6 +40,7 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.springframework.security: DEBUG
+  org.springframework.web.client.RestTemplate: DEBUG
 
 # S3
 cloud:
