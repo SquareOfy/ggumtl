@@ -44,13 +44,15 @@ public class NightProfileService {
 
         int followingCount = followRepository.findByFromId(profileUser.getUserId()).size();
         int followerCount = followRepository.findByToId(profileUser.getUserId()).size();
-
+        int dreamCardCount = dreamCardRepository.findByDreamCardOwnerId(profileUserId).size();
         //내 프로필 헤더 조회
         if (user.getUserId() == profileUserId) {
-            return profileService.getHeaderBySelf(profileUser);
+            ResponseNightProfileHeaderBySelf response = ResponseNightProfileHeaderBySelf.from(profileUser, dreamCardCount, followerCount, followingCount);
+
+            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
 
         } else {
-            int dreamCardCount = dreamCardRepository.findByDreamCardOwnerId(profileUserId).size();
+
             ResponseNightProfileHeaderByOther response = ResponseNightProfileHeaderByOther.from(profileUser, dreamCardCount, followerCount, followingCount);
             return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
         }

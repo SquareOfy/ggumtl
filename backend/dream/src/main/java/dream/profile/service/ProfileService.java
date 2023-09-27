@@ -74,18 +74,7 @@ public class ProfileService {
 
     }
 
-    public ResultTemplate getHeaderBySelf(User profileUser) {
 
-
-        int followingCount = followRepository.findByFromId(profileUser.getUserId()).size();
-        int followerCount = followRepository.findByToId(profileUser.getUserId()).size();
-
-
-        ResponseProfileHeaderBySelf response = ResponseProfileHeaderBySelf.from(profileUser, followerCount, followingCount);
-
-        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
-
-    }
 
 
 }

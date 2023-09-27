@@ -15,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.transform.Result;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -43,14 +41,18 @@ public class DayProfileService {
 
         int followingCount = followRepository.findByFromId(profileUser.getUserId()).size();
         int followerCount = followRepository.findByToId(profileUser.getUserId()).size();
+        int finishedChallengeCount  = challengeParticipationQueryRepository.getFinishedChallengeListByUserId(profileUserId).size();
 
         //내 프로필 헤더 조회
         if(user.getUserId()==profileUserId){
-           return profileService.getHeaderBySelf(profileUser);
+            ResponseDayProfileHeaderBySelf response = ResponseDayProfileHeaderBySelf.from(profileUser, finishedChallengeCount, followerCount, followingCount);
+
+            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
         }else{
 
-            int finishedChallengeCount  =  challengeParticipationRepository.getChallengeParticipationListByUserAndStatus(profileUser.getUserId(), ChallengeStatus.S).size();
-            ResponseNightProfileHeaderByOther response = ResponseNightProfileHeaderByOther.from(profileUser, finishedChallengeCount, followerCount, followingCount);
+
+//                    challengeParticipationRepository.getChallengeParticipationListByUserAndStatus(profileUser.getUserId(), ChallengeStatus.S).size();
+            ResponseDayProfileHeaderByOther response = ResponseDayProfileHeaderByOther.from(profileUser, finishedChallengeCount, followerCount, followingCount);
             return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
         }
 
@@ -90,7 +92,7 @@ public class DayProfileService {
 
     public ResultTemplate getFinishedChallengeListByProfileUser(Long profileUserId, Long lastItemId, int size){
 
-        List<ChallengeParticipation> challenges = challengeParticipationQueryRepository.getFinishedChallengeListByUserId(profileUserId, lastItemId, size);
+        List<ChallengeParticipation> challenges = challengeParticipationQueryRepository.getFinishedChallengeListByUserIdPaging(profileUserId, lastItemId, size);
 
         boolean hasNext = challenges.size()>size;
 

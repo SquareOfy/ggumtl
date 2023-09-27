@@ -21,7 +21,7 @@ public class ChallengeController {
     private final ChallengeService challengeService;
     private final UserRepository userRepository;
 
-    @GetMapping(value = "/")
+    @GetMapping()
     public ResultTemplate getDayMain(@RequestParam(value = "keywordId", required = false) Long keywordId,
                                      @RequestParam(value = "lastItemId", required = false) Long lastItemId,
                                      @RequestParam("size") int size) {
@@ -111,7 +111,7 @@ public class ChallengeController {
         return challengeService.postChallengeKeyword(challengeId, request);
     }
 
-    @GetMapping(value = "/challange/detail/{detailId}/comment")
+    @GetMapping(value = "/challenge/detail/{detailId}/comment")
     public ResultTemplate getComments(@PathVariable("detailId") Long detailId,
                                       @RequestParam(value = "lastItemId", required = false) Long lastItemId,
                                       @RequestParam("size") int size) {
@@ -119,7 +119,7 @@ public class ChallengeController {
         return challengeService.getComments(detailId, lastItemId, size);
     }
 
-    @PostMapping(value = "/challange/detail/comment")
+    @PostMapping(value = "/challenge/detail/comment")
     public ResultTemplate postComments(@RequestBody RequestComment request, @UserInfo User user) {
 
 //        User user = userRepository.findByUserId(2L).
@@ -128,13 +128,13 @@ public class ChallengeController {
         return challengeService.postComment(user, request);
     }
 
-    @DeleteMapping(value = "/challange/detail/comment/{commentId}")
+    @DeleteMapping(value = "/challenge/detail/comment/{commentId}")
     public ResultTemplate deleteComment(@PathVariable("commentId") Long commentId) {
 
         return challengeService.deleteComment(commentId);
     }
 
-    @PostMapping(value = "/challange/detail/like")
+    @PostMapping(value = "/challenge/detail/like")
     public ResultTemplate postLike(@RequestBody RequestChallengeDetailId request, @UserInfo User user) {
 
 //        User user = userRepository.findByUserId(2L).
@@ -143,7 +143,7 @@ public class ChallengeController {
         return challengeService.postLike(user, request.getChallengeDetailId());
     }
 
-    @DeleteMapping(value = "/challange/detail/{challengeDetailId}/unlike")
+    @DeleteMapping(value = "/challenge/detail/{challengeDetailId}/unlike")
     public ResultTemplate deleteLike(@PathVariable("challengeDetailId") Long challengeDetailId
             , @UserInfo User user) {
 
@@ -153,7 +153,7 @@ public class ChallengeController {
         return challengeService.postUnLike(user, challengeDetailId);
     }
 
-    @GetMapping(value = "/challange/detail/{challengeId}/list")
+    @GetMapping(value = "/challenge/detail/{challengeId}/list")
     public ResultTemplate getChallengeDetails(@PathVariable("challengeId") Long challengeId,
                                               @RequestParam(value = "lastItemId", required = false) Long lastItemId,
                                               @RequestParam("size") int size, @UserInfo User user) {
@@ -164,7 +164,7 @@ public class ChallengeController {
         return challengeService.getChallengeDetails(user, challengeId, lastItemId, size);
     }
 
-    @GetMapping(value = "/mychallange/list")
+    @GetMapping(value = "/mychallenge/list")
     public ResultTemplate getMyChallengeList(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
                                              @RequestParam("size") int size, @UserInfo User user) {
 
