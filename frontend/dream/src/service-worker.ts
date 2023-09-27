@@ -95,7 +95,9 @@ self.addEventListener('fetch', event => {
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
   if (checkurl.includes('/api') || checkurl.includes('/oauth2')) {
     console.log(' checkurl에 api oauth2 들어있음')
-    event.respondWith(fetch(event.request));
+    // event.respondWith(fetch(event.request));
+    const newRequest = new Request(event.request, {referrer: 'your-new-referrer-url'});
+    event.respondWith(fetch(newRequest));
     return;
   }
 
