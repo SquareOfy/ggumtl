@@ -63,17 +63,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
 
-                .antMatchers("/", "/css/**", "images/**", "/js/**", "/h2-console/***").permitAll()
-                .antMatchers("/ws-stomp/**", "/login/**", "/api/oauth2/**", "/oauth2/**").permitAll()
-                .antMatchers("/api/s3/**").permitAll()
-                .antMatchers("/api/mongo/**").permitAll()
+                .antMatchers("/ws-stomp/**", "/login/**",  "/oauth2/**", "/login/oauth2/code/kakao",
+                "/api/mongo/**", "/api/s3/**", "/css/**", "/images/**", "/js/**", "/h2-console/**")
+                .permitAll()
                 .antMatchers("/api/user/signup/extra-info").hasRole("GUEST")
                 .antMatchers("/api/**").hasRole("USER")
                 .and()
 
 
                 .oauth2Login()
-//                .loginProcessingUrl("/api/login/oauth2/code/kakao")
                 .successHandler(socialLoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
 //                .failureHandler(socialLoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
                 .userInfoEndpoint().userService(socialLoginService); // customUserService 설정
