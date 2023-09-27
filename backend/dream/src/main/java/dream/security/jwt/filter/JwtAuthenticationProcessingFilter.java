@@ -36,6 +36,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     private static final String NO_CHECK_URL1 = "/login/oauth2/code/kakao";
     private static final String NO_CHECK_URL2 = "/login";
+    private static final String NO_CHECK_URL3 = "/api/s3";
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
@@ -57,7 +58,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         log.info("Processing Request : {}", request.getRequestURI());
 
         //jwt를 검증할 필요가 없는 url은 다음 filter호출 후 메서드 종료하기
-        if(request.getRequestURI().equals(NO_CHECK_URL1)||request.getRequestURI().equals(NO_CHECK_URL2)){
+        if(request.getRequestURI().equals(NO_CHECK_URL1)||request.getRequestURI().equals(NO_CHECK_URL2)||request.getRequestURI().equals(NO_CHECK_URL3)){
             filterChain.doFilter(request, response);
             return;
         }
