@@ -65,7 +65,7 @@ const ChalDetail = () => {
 
   const navigate = useNavigate()
   const params = useParams()
-  const currentChallengeId = params.challangeId
+  const currentChallengeId = params.challengeId
 
   const [chalDetailData,setChalDetailData] = useState<ChalDetailDataType>(initialChalDetail.chalDetailData)
   const [chalParticipate, setChalParticipate] = useState<boolean>(true)
@@ -78,10 +78,10 @@ const ChalDetail = () => {
         setChalDetailData(res.detail)
         setChalParticipate(res.participate)
         setChalParticipateDay(res.participateDay)
-        console.log('axios결과', res)
+        console.log('디테일 성공', res)
       })
-      .catch((err)=>{console.log(err)})
-  },[])
+      .catch((err)=>{console.log('디테일 에러',err)})
+  },[currentChallengeId])
 
   return (
     <Container $dayBaseContainer>

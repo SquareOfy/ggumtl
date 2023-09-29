@@ -156,7 +156,7 @@ const StyledText = styled.div<TextProps>`
       margin-top: 2.5rem;
     `
   }
-
+  
 `
 
 const Text = (props:TextProps) => {

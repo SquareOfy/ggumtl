@@ -35,6 +35,15 @@ const ChalCapsuleList = () => {
   const [lastItemId, setLastItemId] = useState<number>(0); // db엔 0번이 없음
   const [hasNext, setHasNext] = useState<boolean>(true); 
   const [chalTitle, setChalTitle] = useState<string>('');
+  const [timeCapsuleOpenSignal, setTimeCapsuleOpenSignal] = useState<boolean>(false)
+
+  const timeCapsuleOpen = () => {
+    setTimeCapsuleOpenSignal(true)
+  }
+
+  useEffect(()=>{
+    setTimeout(timeCapsuleOpen,2500)
+  },[])
 
   useEffect(()=>{
     let axiosUrl :string = ''
@@ -70,20 +79,28 @@ const ChalCapsuleList = () => {
 
   return (
     <Container $columnCenterContainer $dayBaseContainer>
-      <Image $timeCapsuleImage>
-        <img src={`${process.env.PUBLIC_URL}/image/icon/timecapsule.png`}></img>
-      </Image>
-      <Box $tiemCapsuleChalTitleBox>{chalTitle}</Box>
-      <InfiniteScroll 
+      {timeCapsuleOpenSignal ? (
+        <>
+          <Image $timeCapsuleImage>
+            <img src={`${process.env.PUBLIC_URL}/image/icon/timecapsule.png`}></img>
+          </Image>
+          <Box $tiemCapsuleChalTitleBox>{chalTitle}</Box>
+          <InfiniteScroll 
           setArriveEnd={setArriveEnd} 
           component = {
             timeCapsuleList.map((item: TimeCapsuleItemType, idx: number)=>(
               <Box $timeCapsuleContentBox key={idx}>{item.timeCapsuleContent}</Box>
-            )) 
-          }
-        >
-        </InfiniteScroll>
-    </Container>
+              )) 
+            }
+          >
+          </InfiniteScroll>
+        </>
+      ) : (
+        <Image $timeCapsuleLoading>  
+          <img src={`${process.env.PUBLIC_URL}/image/timecapsule-loading.gif`}></img>
+        </Image>
+      )}
+  </Container>
   )
 }
 export default ChalCapsuleList

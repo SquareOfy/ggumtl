@@ -24,6 +24,9 @@ interface WrapProps {
 
   // 알람
   $alertWrap ?: boolean
+
+  // 댓글
+  $commentWrap ?: boolean
   
 }
 const StyledWrap = styled.div<WrapProps>`
@@ -254,6 +257,28 @@ const StyledWrap = styled.div<WrapProps>`
 
       & > .contentarea {
         // background-color: yellow;
+        
+        & > div {
+          margin: 0.3rem;
+        }
+      }
+    `
+  }
+  // 댓글
+  ${(props) =>
+    props.$commentWrap &&
+    css`
+      display: grid;
+      grid-template-columns: 1fr 4fr;
+      /* align-items: center; */
+      border-radius: 1rem;
+      margin-left: 1rem;
+      /* background-color: blue; */
+
+      & > .contentarea {
+        margin-top: 0.2rem;
+        margin-bottom: 1rem;
+        /* background-color: yellow; */
         
         & > div {
           margin: 0.3rem;

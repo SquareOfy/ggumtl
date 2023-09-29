@@ -33,6 +33,7 @@ interface ButtonProps {
     $category?: boolean;
     $chalCertButton?: boolean;
     $goHomeButton?: boolean;
+    $addCommentButton ?: boolean;
 
     // 색상 지정
     $nightPurple?: boolean
@@ -323,6 +324,20 @@ const StyledButton = styled.button<ButtonProps>`
             }
         `
     }
+
+     // 댓글 게시 버튼
+    ${(props) => 
+        props.$addCommentButton && 
+        css`
+            position: absolute;
+            right: 1rem;
+            height: 3rem;
+            color: blue;
+            font-weight: bold;
+            background-color: transparent;
+        `
+    }
+
 `
 
 const Button = (props: ButtonProps) => {
