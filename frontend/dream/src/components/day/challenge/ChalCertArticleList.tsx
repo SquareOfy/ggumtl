@@ -26,7 +26,6 @@ import basicHttp from "api/basicHttp";
 import ChalCertArticleItem from "./ChalCertArticleItem";
 import tokenHttp from "api/tokenHttp";
 import InfiniteScroll from "components/common/InfiniteScroll";
-import ChalCommentModal from "pages/day/challenge/ChalCommentModal";
 
 // 스타일
 

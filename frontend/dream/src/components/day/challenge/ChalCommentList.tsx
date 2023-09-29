@@ -25,7 +25,12 @@ export interface ChalCommentAxiosType {
   content :string,
 }
 
-const ChalCommentList = () => {
+interface ChalCommentListProps {
+  newCommentSignal : boolean
+  setNewCommentSignal: Dispatch<SetStateAction<boolean>>
+}
+
+const ChalCommentList = ({newCommentSignal, setNewCommentSignal}:ChalCommentListProps) => {
 
   const params = useParams()
   const challengeId = params.challengeId
@@ -53,6 +58,10 @@ const ChalCommentList = () => {
       tokenHttp.get(apiAddress)
         .then((response) => {
           const res = response.data.data
+          // 댓글리스트에 댓글이 존재할 때는 아래 api, 없을 땐 위의 api
+          if (commentList[commentList.length-1]) {
+            setLastItemId(Number(commentList[commentList.length-1].commentId))
+          }
           setCommentList([...commentList,...res.resultList])
           setHasNext(res.hasNext)
           console.log("댓글 무한스크롤 성공",res)
@@ -61,11 +70,20 @@ const ChalCommentList = () => {
     }
   }
 
+  // 댓글 바로 추가 되게 하는 부분
   useEffect(()=>{
-    if (commentList[commentList.length-1]) {
-      setLastItemId(Number(commentList[commentList.length-1].commentId))
-    }
-  },[setCommentList,commentList])
+    tokenHttp.get(`/day/challenge/detail/${challengeDetailId}/comment?size=1`)
+      .then((response)=>{
+        const res = response.data.data.resultList
+        // 시그널 바뀔 때마다 호출되어서 true일때만 호출
+        if (newCommentSignal){
+          setCommentList([...res, ...commentList])
+          setNewCommentSignal(false)
+        }
+        console.log("댓글 한개 추가",res)
+      })
+      .catch((err)=>{console.log("댓글 한개 추가 실패",err)})
+  },[newCommentSignal])
 
   useEffect(() => {
     if (arriveEnd) {

@@ -17,13 +17,18 @@ const ChalCommentPage = () => {
 
   const params = useParams()
   const currentDetailId = Number(params.challengeDetailId)
-
+  const [newCommentSignal,setNewCommentSignal] = useState<boolean>(false) 
+  
   return (
     <Container $commentContainer>
       <NavCommentBar>댓글</NavCommentBar>
-      <ChalCommentList />
+      <ChalCommentList 
+        newCommentSignal={newCommentSignal}
+        setNewCommentSignal={setNewCommentSignal}
+      />
       <FooterCommentBar 
         currentDetailId = {currentDetailId} 
+        setNewCommentSignal={setNewCommentSignal}
       ></FooterCommentBar>
     </Container>
   )

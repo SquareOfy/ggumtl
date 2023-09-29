@@ -19,9 +19,10 @@ import { async } from "q";
 
 interface FooterCommentBarProps {
   currentDetailId :number
+  setNewCommentSignal: Dispatch<SetStateAction<boolean>>
 }
 
-const FooterCommentBar = ({currentDetailId}:FooterCommentBarProps) => {
+const FooterCommentBar = ({currentDetailId, setNewCommentSignal}:FooterCommentBarProps) => {
 
   const [comment, setComment] = useState<string>('')
   const userdata = useSelector((state: RootState) => state.auth.userdata);
@@ -39,7 +40,8 @@ const FooterCommentBar = ({currentDetailId}:FooterCommentBarProps) => {
         .then((response) => {
           console.log("댓글 생성 성공", response)
           setComment('')
-          location.reload(); // 이거 같이 고민좀
+          setNewCommentSignal(true)
+          // location.reload(); // 이거 같이 고민좀
         })
         .catch((e)=>{console.log("댓글 생성 실패", e)})
     }
