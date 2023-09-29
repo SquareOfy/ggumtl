@@ -9,22 +9,42 @@ import React, { useEffect, useState } from "react";
 import dataHttp from "api/dataHttp";
 
 // 컴포넌트
+import SoundToText from "./SoundToText";
 
 // 스타일
 import Button from "components/common/Button";
 import TextArea from "style/TextArea";
 import styled from "styled-components";
-import { IoMicOutline } from "react-icons/io5"
-import SoundToText from "./SoundToText";
+import { IoMicOutline, IoMicSharp } from "react-icons/io5"
 import Wrap from "style/Wrap";
 import "components/night/dream/DreamCreate.css"
 import Text from "style/Text";
 
 const DreamCreateContainer = styled.div`
-  margin: 6rem 0.5rem;
+  margin: 1.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+`;
+
+interface DreamTextAreaWrapperProps {
+  height :number;
+} 
+
+const DreamTextAreaWrapper = styled.div<DreamTextAreaWrapperProps>`
+  width: 100%;
+  height: calc(${props => props.height/16 > 22 ? props.height/16 : 22}rem);
+  // min-height: 22rem;
+  margin-bottom: 2rem;
+  transition: height 0.3s ease;
 `;
 
 const IconRecord = styled(IoMicOutline)`
+  width: 2rem;
+  height: 2rem;
+`
+
+const IconRecording = styled(IoMicSharp)`
   width: 2rem;
   height: 2rem;
 `
@@ -39,8 +59,8 @@ const DreamCreate = () => {
   // const [accentScript, setAccentScript] = useState<string>("");
   // const [accentClickable, setAccentClickable] = useState<boolean>(false);
   // const [accentText, setAccentText] = useState<string>("");
-
   
+
   // 녹음 시작 & 종료
   useEffect(() => {
     if (recordStart) {
@@ -79,6 +99,13 @@ const DreamCreate = () => {
     .catch(err => console.log(err))
   }
 
+  // TextArea 높이 감지
+  const [textAreaHeight, setTextAreaHeight] = useState<number>(0);
+
+  useEffect(() => {
+    setTextAreaHeight(window.document.querySelector('#textarea')?.scrollHeight ?? 0)
+  }, [allText])
+
   return (
     <>
     <DreamCreateContainer>
@@ -90,14 +117,23 @@ const DreamCreate = () => {
         setRecordStart(!recordStart); // 녹음 시작, 종료
         accenting(); // 텍스트로 변환
       }}
+      $isRecording={recordStart}
       >
-        <IconRecord/>
+        {
+          recordStart
+          ? <IconRecording/>
+          : <IconRecord/>
+        }
+        
       </Button>
-      <TextArea
-      $nightDreamInput
-      value={allText}
-      onChange={(e) => setAllText(e.target.value)}
-      />
+      <DreamTextAreaWrapper height={textAreaHeight}>
+        <TextArea
+        $nightDreamInput
+        id="textarea"
+        value={allText}
+        onChange={(e) => setAllText(e.target.value)}
+        />
+      </DreamTextAreaWrapper>
 
       <Wrap $nightBotButtonWrap $nightButtonCheckWrap>
         <div>

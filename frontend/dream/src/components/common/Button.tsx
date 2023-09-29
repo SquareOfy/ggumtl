@@ -25,6 +25,7 @@ interface ButtonProps {
     // 개별 스타일링
     $kakao?: boolean;
     $nightVoice?: boolean;
+    $isRecording?: boolean;
     $icon?: boolean;
     $follow?: boolean
     $halfWidthImeBuy?: boolean;
@@ -142,9 +143,17 @@ const StyledButton = styled.button<ButtonProps>`
             border: 1px solid rgb(190, 169, 215, 0.5);
             border-radius: 1rem;
             height: 5rem;
-            &:not(:disabled):hover {
-                background-color: rgba(190, 169, 215, 0.8);
+            &:not(:disabled):active {
+                background-color: rgba(190, 169, 215);
             }
+        `
+    }
+
+    // 음성 기록 중일 때
+    ${(props) =>
+        props.$isRecording &&
+        css`
+            background-color: rgba(190, 169, 215, 0.8);
         `
     }
 
