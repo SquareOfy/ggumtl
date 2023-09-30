@@ -29,6 +29,7 @@ import { checkCertInput } from "utils/alert/checkInput";
 import Image from "style/Image";
 import { RiImageAddLine } from "react-icons/ri";
 import basicHttp from "api/basicHttp";
+import fileTokenHttp from "api/fileTokenHttp";
 
 // 스타일
 
@@ -117,24 +118,27 @@ const ChalCreateCert = () => {
 
   const createCert = () => {
     const axiosData = new FormData()
+    const axiosJsonData = {
+      "challengeId" : currentChallengeId,
+      "challengeDetailTitle" : '',
+      "challengeDetailContent" : challengeContent,
+    }
 
     if (imageFile){
       axiosData.append('file', imageFile)
     }
-    axiosData.append("challengeDetail", JSON.stringify({
-      "challengeId" : currentChallengeId,
-      "challengeDetailTitle" : '',
-      "challengeDetailContent" : challengeContent,
-    }))
+    axiosData.append(
+      "challengeDetail", 
+      new Blob([JSON.stringify(axiosJsonData)], {type: 'application/json'})
+    )
+    console.log(axiosData)
 
-    tokenHttp.post('/s3/challenge/detail/new', axiosData)
+    fileTokenHttp.post('/s3/challenge/detail/new', axiosData)
       .then((response) => {
         console.log("인증 글 생성 완료",response)
         navigate(`/day/mychallenge/${currentChallengeId}`)
       })
       .catch((err)=>{console.log("인증글 생성 에러",err)})
-
-
   }
 
   return (
@@ -142,8 +146,7 @@ const ChalCreateCert = () => {
       <Box $mainTitleBox>
         {/* 뱃지 이미지 아직 안됨 */}
         <img src={`${chalData?.badgeUrl}`}></img>
-        {/* {chalData?.challengeTitle} */}
-        이런 아무말도 가능
+        {chalData?.challengeTitle}
       </Box>
 
       {profileImageURL ? (

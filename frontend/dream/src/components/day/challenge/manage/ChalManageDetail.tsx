@@ -30,12 +30,13 @@ import Wrap from "style/Wrap";
 import styled from "styled-components";
 import tokenHttp from "api/tokenHttp";
 import Text from "style/Text";
+import { extractNumber } from "utils/calc/extractNumber";
 // 스타일
 
 
 // progress 속성을 정의
 interface ProgressBarProps {
-  progress :number;
+  achievement :number;
 }
 
 const ProgressBar = styled.div<ProgressBarProps>`
@@ -49,7 +50,7 @@ const ProgressBar = styled.div<ProgressBarProps>`
   &::before {
     content: "";
     position: absolute;
-    inset: 0 calc(${props => 100 -props.progress}%) 0 0;
+    inset: 0 calc(${props => 100 -props.achievement}%) 0 0;
     border-radius: inherit;
     background: currentColor;
     animation: p6 2s;
@@ -60,7 +61,7 @@ const ProgressBar = styled.div<ProgressBarProps>`
       width: 0;
     }
     100% {
-      width: ${props => props.progress}%; // 원하는 최대 너비
+      width: ${props => props.achievement}%; // 원하는 최대 너비
     }
   }
 `
@@ -91,22 +92,57 @@ const ChalManageDetail = () => {
   const currentChallengeId = Number(params.challengeId)
   const [chalData, setChalData] = useState<ChalDetailDataType>(initialChalDetail.chalDetailData)
 
-  const [progress, setProgress] = useState<number>(70); // 꿈틀도 추후 변경하기
-  
+  // false 면 인증 이미 완료, true 면 인증 가능
+  const [possibleCert, setPossibleCert] = useState<boolean>(true) 
+
+  // 성취도
+  const [achievement, setAchievement] = useState<number>(0)
+  const [possibleTimecapsule, setPossibleTimecapsule] = useState<boolean>(false)
+
   useEffect(()=>{
     // 렌더링되었을 때 참여
     tokenHttp.get(`/day/challenge/item/${currentChallengeId}`)
       .then((response)=>{
-        const res = response.data.data
-        setChalData(res.detail)
-        console.log(chalData)
-        // 성취도 계산
+        const res = response.data
+        setChalData(res.data.detail)
+        console.log("챌린지 데이터",res.data.detail)
+
+        console.log("현재 참여한 일수",res.data.participateDay)
+        const passDays:number = res.data.participateDay
         
+        const chalPeriodDays:number = extractNumber(res.data.detail.period)
+        console.log("참여할 기간 일수",res.data.detail.period)
+        console.log("참여할 기간 숫자", extractNumber(res.data.detail.period))
+        
+        // 성취도 계산
+        setAchievement(Math.floor((passDays/chalPeriodDays)*100))
+        console.log('성취도', Math.floor((passDays/chalPeriodDays)*100))
+
+        // 타임 캡슐 확인 가능 여부
+        if (Math.floor((passDays/chalPeriodDays)*100) >= 50) {
+          setPossibleTimecapsule(true)
+        }
+
         // 현재 시작 후 몇일인지 계산
 
       })
       .catch((e)=>{console.log(e)})
+    
+    tokenHttp.get(`day/challenge/writeDetailPossible/${currentChallengeId}`)
+      .then((response)=>{
+        const res = response.data
+        if (res.status === 200) {
+          setPossibleCert(true)
+        }
+        else if (res.status === 400){
+          setPossibleCert(false)
+        }
+        console.log("인증 완료 여부 = ",res)
+      })
+      .catch((err)=>{console.log(err)})
+  
   },[])
+
 
   return (
     <Container $dayBaseContainer $dayCreate>
@@ -135,23 +171,35 @@ const ChalManageDetail = () => {
 
       {/* 성취도 바 */}
       <Box $progressBox>
-        <ProgressBar progress={progress}></ProgressBar>  
+        <ProgressBar achievement={achievement}></ProgressBar>  
         <BoxTitle $boxTitle>성취도</BoxTitle>
-        <Text $progressPercent>{progress}%</Text>
+        <Text $progressPercent>{achievement}%</Text>
       </Box>
 
       {/* 챌린지 인증하기 버튼 */}
       <Button 
-        $fullWidth $dayBlue $chalCertButton
+        $fullWidth $chalCertButton
+        $dayBlue={possibleCert}
+        $dayGrey={!possibleCert}
+        // true면 활성 false면 비활성
+        disabled={!possibleCert}
+        
         onClick={()=>{navigate(`/day/mychallenge/${currentChallengeId}/cert/create`)}}
-      >
-        <Text $isBold>챌린지 인증하기</Text>
+        >
+        {possibleCert ? (
+          <Text $isBold>챌린지 인증하기</Text>
+        ):(
+          <Text $isBold>인증을 완료하셨습니다</Text>
+        )}
       </Button>
-      
 
       <Text $dayMoney $timeCapsuleText>다른 사람들의 응원 메세지를 확인해보세요.</Text>
+      
       <Button 
-        $fullWidth $dayYellow $chalCertButton
+        $fullWidth $chalCertButton
+        $dayYellow={possibleTimecapsule}
+        $dayGrey={!possibleTimecapsule}
+        disabled={!possibleTimecapsule}
         onClick={()=>{{navigate(`/day/challenge/${currentChallengeId}/timecapsule`)}}}
       >
         <img src={`${process.env.PUBLIC_URL}/image/icon/timecapsule.png`}></img>

@@ -42,6 +42,7 @@ interface ButtonProps {
     $nightPalePurple?: boolean
     $nightMiddlePurple?: boolean
     $dayBlue?: boolean
+    $dayGrey?: boolean
     $dayYellow?: boolean
     $transparent?: boolean
     $sunsetPurple?: boolean
@@ -222,6 +223,19 @@ const StyledButton = styled.button<ButtonProps>`
             }
         `
     }
+    // 짙은 하늘색
+    ${(props) =>
+        props.$dayGrey &&
+        css`
+            background-color: rgb(164, 164, 164, 0.8);
+            border: 1px solid rgb(164, 164, 164, 0.8);
+            color: #000000;
+            &:not(:disabled):hover {
+                opacity: 0.8;
+            }
+        `
+    }
+
     // 타임캡슐 yellow
     ${(props) =>
         props.$dayYellow &&
