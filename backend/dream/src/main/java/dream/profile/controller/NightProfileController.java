@@ -19,14 +19,12 @@ public class NightProfileController {
 
 
 
-
-    //개발용
-    @GetMapping("/header/{profileUserId}")
-    public ResultTemplate getNightHeader( @PathVariable Long profileUserId, @UserInfo User user){
-//        User user = userService.getUserForDev(1L);
-
-        return nightProfileService.getNightHeader(user, profileUserId);
-    }
+//통합됨
+//    @GetMapping("/header/{profileUserId}")
+//    public ResultTemplate getNightHeader( @PathVariable Long profileUserId, @UserInfo User user){
+//
+//        return nightProfileService.getNightHeader(user, profileUserId);
+//    }
 
     @GetMapping("/card/{profileId}")
     public ResultTemplate getProfileCardTabList(@PathVariable Long profileId,

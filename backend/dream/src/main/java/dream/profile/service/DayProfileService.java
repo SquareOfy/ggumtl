@@ -32,31 +32,32 @@ public class DayProfileService {
     private final BadgeRepository badgeRepository;
     private final ChallengeParticipationQueryRepository challengeParticipationQueryRepository;
 
-    public ResultTemplate getDayHeader(User user, Long profileUserId) {
-
-        User profileUser = userRepository.findByUserId(profileUserId).orElseThrow(()->{
-            throw new BadRequestException(BadRequestException.NOT_EXIST_USER_PROFILE);
-        });
-
-
-        int followingCount = followRepository.findByFromId(profileUser.getUserId()).size();
-        int followerCount = followRepository.findByToId(profileUser.getUserId()).size();
-        int finishedChallengeCount  = challengeParticipationQueryRepository.getFinishedChallengeListByUserId(profileUserId).size();
-
-        //내 프로필 헤더 조회
-        if(user.getUserId()==profileUserId){
-            ResponseDayProfileHeaderBySelf response = ResponseDayProfileHeaderBySelf.from(profileUser, finishedChallengeCount, followerCount, followingCount);
-
-            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
-        }else{
-
-
-//                    challengeParticipationRepository.getChallengeParticipationListByUserAndStatus(profileUser.getUserId(), ChallengeStatus.S).size();
-            ResponseDayProfileHeaderByOther response = ResponseDayProfileHeaderByOther.from(profileUser, finishedChallengeCount, followerCount, followingCount);
-            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
-        }
-
-    }
+    //통합됨
+//    public ResultTemplate getDayHeader(User user, Long profileUserId) {
+//
+//        User profileUser = userRepository.findByUserId(profileUserId).orElseThrow(()->{
+//            throw new BadRequestException(BadRequestException.NOT_EXIST_USER_PROFILE);
+//        });
+//
+//
+//        int followingCount = followRepository.findByFromId(profileUser.getUserId()).size();
+//        int followerCount = followRepository.findByToId(profileUser.getUserId()).size();
+//        int finishedChallengeCount  = challengeParticipationQueryRepository.getFinishedChallengeListByUserId(profileUserId).size();
+//
+//        //내 프로필 헤더 조회
+//        if(user.getUserId()==profileUserId){
+//            ResponseProfileHeaderBySelf response = ResponseProfileHeaderBySelf.from(profileUser, finishedChallengeCount, followerCount, followingCount);
+//
+//            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+//        }else{
+//
+//
+////                    challengeParticipationRepository.getChallengeParticipationListByUserAndStatus(profileUser.getUserId(), ChallengeStatus.S).size();
+//            ResponseProfileHeaderByOther response = ResponseProfileHeaderByOther.from(profileUser, finishedChallengeCount, followerCount, followingCount);
+//            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+//        }
+//
+//    }
 
     public ResultTemplate getProfileBadgeList(Long profileUserId, Long lastItemId, int size){
 
