@@ -38,6 +38,7 @@ export interface CategoryPropsType {
 
 const DayCategoryList = (props :CategoryPropsType) => {
   const [categoryList, setCategoryList] = useState<CategoryAxiosType[]>([]);
+  const [select, setSelect] = useState<number>(-1);
 
   // axios 요청
   const getCategory = () => {
@@ -52,6 +53,15 @@ const DayCategoryList = (props :CategoryPropsType) => {
     getCategory();
   }, []);
 
+  useEffect(() => {
+    if (select === 0) {
+      props.setCategoryProps({
+        keyword: "",
+        keywordId: 0,
+      })
+    }
+  }, [select, setSelect])
+
   return (
     <>
     <CategoryWrap>
@@ -60,8 +70,16 @@ const DayCategoryList = (props :CategoryPropsType) => {
         {
           categoryList?.map((category, i) => 
             <Button 
-            onClick={() => props.setCategoryProps(category)}
-            $category key={i}>{category.keyword}</Button>
+            onClick={() => {
+              props.setCategoryProps(category);
+              // 눌렀던 버튼 다시 눌렀을 때 : 키워드 지정 취소
+              if (select === category.keywordId) {setSelect(0)}
+              else {setSelect(category.keywordId);}
+            }}
+            $category 
+            $isSelected={select === category.keywordId ? true : false}
+            key={i}
+            >{category.keyword}</Button>
           )
         }
       </CategoryListWrap>

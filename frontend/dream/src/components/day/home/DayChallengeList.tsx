@@ -19,7 +19,8 @@ export interface DayChallengeObjType {
   challengeId :number,
   challengeTitle ?:string,
   challengeParticipateId ?:number,
-  participateCount ?:number
+  participateCount ?:number,
+  dreamKeywordId ?:number, // 나중에 chal keywordId로 바꾸기
 }
 
 export interface DayChallengeListType extends Array<DayChallengeObjType> {}
@@ -90,7 +91,13 @@ const DayChallengeList = (props :CategoryToChalProps) => {
       // lastItemId={lastItemId}
       component={
         allChalList
-        // .filter((keyword) => (keyword))
+        .filter((chal: DayChallengeObjType) => {
+          if (props.categoryProps.keywordId !== 0) {
+            chal.dreamKeywordId === props.categoryProps.keywordId
+          } else {
+            return true
+          }
+        })
         .map((chal :DayChallengeObjType) => (
           <ChalContentListItem key={chal.challengeId} chal={chal} />))
         }
