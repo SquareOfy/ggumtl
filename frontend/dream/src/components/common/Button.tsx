@@ -40,6 +40,7 @@ interface ButtonProps {
     // 색상 지정
     $nightPurple?: boolean
     $nightPalePurple?: boolean
+    $nightPalePurpleSelected?: boolean
     $nightMiddlePurple?: boolean
     $dayBlue?: boolean
     $dayGrey?: boolean
@@ -205,9 +206,21 @@ const StyledButton = styled.button<ButtonProps>`
             background-color: #BEA9D7;
             // border: 1px solid #BEA9D7;
             color: #FFFFFF;
-            &:not(:disabled):hover {
-                opacity: 0.8;
+            // &:not(:disabled):hover {
+            //     opacity: 0.7;
+            // }
+            &:not(:disabled):active {
+                opacity: 0.5;
             }
+        `
+    }
+    
+    // 연한 보라색버튼 선택
+    ${(props) =>
+        props.$nightPalePurpleSelected &&
+        css`
+            background-color: #BEA9D7;
+            opacity: 0.8;
         `
     }
 
@@ -284,6 +297,10 @@ const StyledButton = styled.button<ButtonProps>`
             border-radius: 0.5rem;
             height: 1.5rem;
             margin-left: 0.2rem;
+
+            &:not(:disabled):active {
+                opacity: 0.5;
+            }
         `
     }
 

@@ -5,6 +5,7 @@
 // 리액트
 import React, { useEffect, useState } from "react";
 import tokenHttp from "api/tokenHttp";
+import { useSelector } from "react-redux";
 
 // 컴포넌트
 import InfiniteScroll from "components/common/InfiniteScroll";
@@ -14,6 +15,8 @@ import Button from "components/common/Button";
 import Image from "style/Image";
 import styled from "styled-components";
 import Text from "style/Text";
+import { useParams } from "react-router-dom";
+import { RootState } from "store";
 
 const ProfileCardButtonWrap = styled.div`
   margin: 1rem 0.5rem;
@@ -35,15 +38,24 @@ export interface ProfileDreamCardAxiosType {
   dreamCardId :number,
   dreamCardImageUrl :string,
   dreamCardAuthorId :number,
-  isShow :string
+  isShow :string,
+  purchase :boolean,
 }
 
 const NightProfileCardTab = () => {
+  const params = useParams();
+  const userId = useSelector((state: RootState) => state.auth.userdata.userId); // 내 아이디
+  const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
+
   // axios로 보내야 할 데이터
-  const [profileId, setProfileId] = useState<number>(1);
-  const [lastItemId, setLastItemId] = useState<number>(-1);
+  const profileId :number = Number(params.userId);
+  const [lastItemId, setLastItemId] = useState<number>(0);
   const [noCardMsg, setNoCardMsg] = useState<string>("");
+  const [hasNext, setHasNext] = useState<boolean>(true); 
   let size = 6;
+  
+  // Infinite scroll
+  const [arriveEnd, setArriveEnd] = useState<boolean>(true);
   
   // axios로 받아서 업데이트 할 데이터
   const [dreamCardList, setDreamCardList] = useState<ProfileDreamCardAxiosType[]>([]);
@@ -52,38 +64,55 @@ const NightProfileCardTab = () => {
     let apiAddress :string = "";
 
     // 처음 요청 받을 때 : lastItemId 없음
-    if (lastItemId === -1) {apiAddress = `/profile/night/card/${profileId}?size=${size}`}
+    if (lastItemId === 0) {apiAddress = `/profile/night/card/${profileId}?size=${size}`}
     // 두번째부터 요청 할 때
     else {apiAddress = `/profile/night/card/${profileId}?lastItemId=${lastItemId}&size=${size}`}
     
-    tokenHttp.get(apiAddress)
-    .then((res) => {
-      console.log("밤 꿈 카드 탭 : ", res.data)
-      
-      // 생성된 꿈카드가 있을 때
-      if (res.data.status === 200) {
-        // let newData = res.data.data.dreamCardList
-        setDreamCardList([...dreamCardList, ...res.data.data.dreamCardList]);
-        setLastItemId(res.data.data.dreamCardList[res.data.data.dreamCardList.length - 1].dreamCardId) 
-      } 
-      // 생성된 꿈카드가 없을 때
-      if (res.data.status === 400) {
-        setNoCardMsg(res.data.data);
-      }
-    })
-    .catch((err) => console.log(err))
+    if (arriveEnd && hasNext) {  // 끝에 도달하고 다음이 있을 때 다음 데이터 호출
+      tokenHttp.get(apiAddress)
+      .then((res) => {
+        console.log("밤 꿈 카드 탭 : ", res.data)
+        const response = res.data
+        const data = response.data
+
+        // 생성된 꿈카드가 있을 때
+        if (response.status === 200) {
+          const dreamCardList = data.dreamCardList
+          setDreamCardList([...dreamCardList, ...dreamCardList]);
+          setLastItemId(dreamCardList[dreamCardList.length - 1].dreamCardId) 
+        } 
+        // 생성된 꿈카드가 없을 때
+        if (response.status === 400) {
+          setNoCardMsg(data);
+        }
+      })
+      .catch((err) => console.log("밤 꿈 카드 탭 에러 : ", err))
+    }
   }
 
   useEffect(() => {
     getAxios();  
   }, [])
 
+
   // 공개 카드만 보이도록 
   const [isShowAllCard, setIsShowAllCard] = useState<boolean>(false);
-
+  
   const handleShowCard = () => {
-    setIsShowAllCard(!isShowAllCard)
-    console.log(isShowAllCard)
+    // 공개카드만 -> 비공개 카드 포함해서 보여주기
+    if (isShowAllCard) {setIsShowAllCard(false)}
+    // 비공개 카드 포함 전체 -> 공개카드만 보여주기
+    else {setIsShowAllCard(true)}
+  }
+  
+  // 구매 카드만 보이도록
+  const [isBuyCard, setIsBuyCard] = useState<boolean>(false);
+  
+  const handleBuyCard = () => {
+    // 구매카드만 -> 구매 안한 카드 포함해서 보여주기
+    if (isBuyCard) {setIsBuyCard(false)}
+    // 구매 안한 카드 포함 전체 -> 구매카드만 보여주기
+    else {setIsBuyCard(true)}
   }
 
   // 로딩 중
@@ -95,60 +124,71 @@ const NightProfileCardTab = () => {
   }, [dreamCardList]);
 
 
-  // Infinite scroll
-  const [arriveEnd, setArriveEnd] = useState<boolean>(false); // 바닥에 다다름을 알려주는 변수
-  
   // 바닥에 다다랐으면 axios 요청
   useEffect(() => {
     if (arriveEnd) {
-      // axios 요청
       getAxios();
       setArriveEnd(false);
     }
   }, [arriveEnd])
 
+  // 내 프로필인지 확인
+  useEffect(() => {
+    if (params && userId === Number(params.userId)) {
+      setIsMyProfile(true)
+      // console.log(isMyProfile, "=====")
+    }
+  }, [userId, params])
+
   return (
     <>
     {/* 프로필 유저 === 본인 일치 시 버튼 보이도록 */}
     {/* 공개, 구매 버튼 */}
-    <ProfileCardButtonWrap>
-      <Button 
-      $follow $nightPalePurple
-      onClick={handleShowCard}
-      >공개</Button>
-      <Button $follow $nightPalePurple>구매</Button>
-    </ProfileCardButtonWrap>
+    {
+      isMyProfile && 
+      <ProfileCardButtonWrap>
+        <Button 
+        $follow 
+        $nightPalePurple 
+        $nightPalePurpleSelected={isShowAllCard}
+        onClick={handleShowCard}
+        >공개</Button>
+        <Button 
+        $follow 
+        $nightPalePurple
+        $nightPalePurpleSelected={isBuyCard}
+        onClick={handleBuyCard}
+        >구매</Button>
+      </ProfileCardButtonWrap>
+    }
 
     {/* 로딩 중일 때 로딩 메시지 표시 */}
     {isLoading && <div>Loading...</div>}
 
     {/* 데이터 로딩이 완료된 후에 꿈 카드를 표시 */}
-    {!isLoading && (
-      <ProfileDreamCardWrap>
-        {
-          dreamCardList &&
+    {!isLoading && 
+      dreamCardList.length === 0
+      ? <NoCardMsgWrap>
+          <Text $nightWhite>{noCardMsg}</Text>
+        </NoCardMsgWrap>
+      : <ProfileDreamCardWrap>
           <InfiniteScroll
           setArriveEnd={setArriveEnd} 
           // lastItemId={lastItemId}
           component={
             dreamCardList
             .filter((card) => (isShowAllCard ? card.isShow === "T" : true))
+            .filter((card) => (isBuyCard ? card.purchase === true : true))
             .map((card, i) => (
-                  <Image $profileCard $nightImageBorder key={i}>
-                    <img src={card.dreamCardImageUrl} alt="dreamCard"></img>
-                  </Image>
+              <Image $profileCard $nightImageBorder key={i}>
+                <img src={card.dreamCardImageUrl} alt="dreamCard"></img>
+              </Image>
             ))
             }
           > 
           </InfiniteScroll>
-        }
-      </ProfileDreamCardWrap>
-    )}
-    {/* 꿈 카드가 없을 때 */}
-    <NoCardMsgWrap>
-      <Text $nightWhite>{noCardMsg}</Text>
-    </NoCardMsgWrap>
-    
+        </ProfileDreamCardWrap>    
+    }
     </>
   )
 }

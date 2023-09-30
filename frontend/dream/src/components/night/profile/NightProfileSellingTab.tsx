@@ -21,11 +21,10 @@ const NoCardMsgWrap = styled.div`
 const NightProfileSellingTab = () => {
 
   // axios로 데이터 받기
-  // const [auctionSellingDataList, setAuctionSellingDataList] = useState<AuctionSellingAxiosType[]>();
   const [auctionSellingDataList, setAuctionSellingDataList] = useState<AuctionCardType[]>([]);
   const [lastItemId, setLastItemId] = useState<number>(0);
   const [hasNext, setHasNext] = useState<boolean>(true); 
-  const [noCardMsg, setNoCardMsg] = useState<string>("");
+  const [noAuctionMsg, setNoAuctionMsg] = useState<string>("참여 중인 경매가 없습니다.");
   let size = 12;
   
   // infinite scroll
@@ -45,7 +44,7 @@ const NightProfileSellingTab = () => {
         const response = res.data.data
         const auctionList = response.auctionList
         setAuctionSellingDataList([...auctionSellingDataList, ...auctionList]);
-        setLastItemId(auctionList[auctionList.length - 1].dreamCardId);
+        setLastItemId(auctionList[auctionList.length - 1]?.dreamCardId);
         setHasNext(response.hasNext);
         console.log("== 꿈 팔기 탭 ==", res); 
       })
@@ -68,22 +67,20 @@ const NightProfileSellingTab = () => {
   return (
     <>
     {
-      auctionSellingDataList &&
-      <InfiniteScroll 
-      setArriveEnd={setArriveEnd} 
-      // lastItemId={lastItemId}
-      component={
-        auctionSellingDataList?.map((data, i) => (
-          <AuctionCard auctionCard={data} key={i}/>
-          ))
-        }
-      />
+      auctionSellingDataList.length === 0
+      ? <NoCardMsgWrap>
+          <Text $nightWhite>{noAuctionMsg}</Text>
+        </NoCardMsgWrap>
+      : <InfiniteScroll 
+        setArriveEnd={setArriveEnd} 
+        // lastItemId={lastItemId}
+        component={
+          auctionSellingDataList?.map((data, i) => (
+            <AuctionCard auctionCard={data} key={i}/>
+            ))
+          }
+        />
     }
-
-    {/* 꿈 카드가 없을 때 */}
-    <NoCardMsgWrap>
-      <Text $nightWhite>{noCardMsg}</Text>
-    </NoCardMsgWrap>
     </>
   )
 }

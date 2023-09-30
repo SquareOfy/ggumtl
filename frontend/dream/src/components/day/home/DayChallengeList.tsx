@@ -21,6 +21,7 @@ export interface DayChallengeObjType {
   challengeParticipateId ?:number,
   participateCount ?:number,
   dreamKeywordId ?:number, // 나중에 chal keywordId로 바꾸기
+  badgeUrl ?:string,
 }
 
 export interface DayChallengeListType extends Array<DayChallengeObjType> {}
