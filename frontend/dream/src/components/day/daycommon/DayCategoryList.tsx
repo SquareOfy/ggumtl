@@ -16,7 +16,7 @@ import tokenHttp from "api/tokenHttp";
 import Button from "components/common/Button";
 
 const CategoryWrap = styled.div`
-  margin: 0.5rem;
+  /* margin: 0.5rem; */
 `
 
 const CategoryListWrap = styled.div`
@@ -45,6 +45,7 @@ const DayCategoryList = (props :CategoryPropsType) => {
     tokenHttp.get(`/day/keyword/list`)
     .then((res) => {
       setCategoryList(res.data.data);
+      console.log('키워드 리스트', res.data.data)
     })
     .catch((err) => console.log(err))
   }
@@ -65,7 +66,6 @@ const DayCategoryList = (props :CategoryPropsType) => {
   return (
     <>
     <CategoryWrap>
-      <Text $isBold>카테고리</Text>
       <CategoryListWrap>
         {
           categoryList?.map((category, i) => 

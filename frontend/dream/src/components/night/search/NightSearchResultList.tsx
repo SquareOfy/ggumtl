@@ -8,10 +8,16 @@ import React from "react";
 
 // 스타일
 
-const NightSearchResultList = () => {
+// 타입
+interface SearchResultProps {
+  searchWord : string
+}
+
+const NightSearchResultList = ({searchWord}:SearchResultProps) => {
 
   return (
     <>
+    {/* 검색 결과 리스트 */}
     </>
   )
 }

@@ -56,7 +56,7 @@ const DayChallengeList = (props :CategoryToChalProps) => {
         setAllChalList([...allChalList, ...challengeList]);
         setLastItemId(challengeList[challengeList.length - 1].challengeId);
         setHasNext(response.hasNext);
-        console.log("== 메인 챌린지 컴포넌트 ==", res); 
+        console.log("== 메인 챌린지 컴포넌트 ==", response); 
       })
       .catch((err) => console.log("== 메인 챌린지 컴포넌트 ==", err))
     }
@@ -82,28 +82,28 @@ const DayChallengeList = (props :CategoryToChalProps) => {
 
   return (
     <>
-    <div style={{margin: "0.5rem"}}>
+    {/* <div style={{margin: "0.5rem"}}>
       <Text $isBold>Hot Challenge</Text>
-    </div>
+    </div> */}
     {
       allChalList &&
       <InfiniteScroll 
-      setArriveEnd={setArriveEnd} 
-      // lastItemId={lastItemId}
-      component={
-        allChalList
-        .filter((chal: DayChallengeObjType) => {
-          if (props.categoryProps.keywordId !== 0) {
-            chal.dreamKeywordId === props.categoryProps.keywordId
-          } else {
-            return true
-          }
-        })
-        .map((chal :DayChallengeObjType) => (
-          <ChalContentListItem key={chal.challengeId} chal={chal} />))
+        setArriveEnd={setArriveEnd} 
+        // lastItemId={lastItemId}
+        component={
+          allChalList
+          // 카테고리
+          .filter((chal: DayChallengeObjType) => {
+            if (props.categoryProps.keywordId !== 0) {
+              return chal.dreamKeywordId === props.categoryProps.keywordId
+            } else {
+              return true
+            }
+          })
+          .map((chal :DayChallengeObjType) => (
+            <ChalContentListItem key={chal.challengeId} chal={chal} />))
         }
-        >
-      </InfiniteScroll>
+      ></InfiniteScroll>
     }
     </>
   )

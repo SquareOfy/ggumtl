@@ -21,6 +21,7 @@ const BarContainer = styled.div<NavProps>`
   width: 100vw;
   height:3rem;
   position: fixed;
+  z-index: 100;
   
   // footer
   ${(props) => props.$footer &&

@@ -5,20 +5,31 @@
 {/* <NightSearchResultList></NightSearchResultList> */}
 
 // 리액트
-import React from "react";
+import React, {useState} from "react";
 
 // 컴포넌트
 import SearchBar from "components/common/SearchBar";
 import NightSearchMain from "components/night/search/NightSearchMain";
 import NightSearchResultList from "components/night/search/NightSearchResultList";
+import Container from "style/Container";
 
 // 스타일
 
 const NightSearchPage = () => {
 
+  const [searchWord, setSearchWord] = useState<string>('')
+
   return (
     <>
-    <SearchBar />
+     <>
+    <Container $dayBaseContainer>
+      {searchWord==='' ? (<NightSearchMain/>):(null)}
+      <SearchBar setSearchWord={setSearchWord}/>
+    </Container>
+    {searchWord==='' ? (null):(<NightSearchResultList searchWord={searchWord}/>)}
+    
+
+    </>
     </>
   )
 }
