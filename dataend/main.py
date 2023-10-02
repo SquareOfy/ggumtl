@@ -67,14 +67,17 @@ def dreamProcessing(data: DreamModel):
     files = {'file': ("karloImage.png", open(img_path, 'rb'), "image/png")}
 
     toJavaData = {
-        "dreamCardContent": dreamCardContent,
-        "dreamCardAuthor": dreamCardAuthor,
-        "isShow": isShow,
-        "positivePoint": positivePoint,
-        "negativePoint": negativePoint,
-        "keywords": ["학업", "재물"],
-        "wordKeywords": wordKeywords
+        "dreamCardDetail": {        
+            "dreamCardContent": dreamCardContent,
+            "dreamCardAuthor": dreamCardAuthor,
+            "isShow": isShow,
+            "positivePoint": positivePoint,
+            "negativePoint": negativePoint,
+            "keywords": ["학업", "재물"],
+            "wordKeywords": wordKeywords
+        },
+        "file": files
     }
-    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData, files=files)
+    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData)
     print(response)
     return response
