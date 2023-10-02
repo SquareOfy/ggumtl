@@ -16,9 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseDreamCardDetailByUser {
-    private long dreamCardId;
-    private long dreamCardAuthor;
-    private long dreamOwner;
+    private Long dreamCardId;
+    private Long dreamCardAuthor;
+    private Long dreamOwner;
     private String dreamCardContent;
     private String dreamTelling;
     private String dreamCardImageUrl;
@@ -31,6 +31,7 @@ public class ResponseDreamCardDetailByUser {
     private List<ResponseKeyword> keywords;
     private int likeCount;
     private BaseCheckType reviewStatus;
+    private String ownerNickname;
 
     public static ResponseDreamCardDetailByUser from(DreamCard dreamCard, BaseCheckType reviewStatus){
 
@@ -56,6 +57,7 @@ public class ResponseDreamCardDetailByUser {
         response.keywords = keywords;
         response.likeCount = dreamCard.getDreamCardLikes().size();
         response.reviewStatus = reviewStatus;
+        response.ownerNickname = dreamCard.getDreamCardOwner().getNickname();
 
         return response;
     }
