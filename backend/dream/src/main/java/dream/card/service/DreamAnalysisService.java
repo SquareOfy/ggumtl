@@ -35,6 +35,15 @@ public class DreamAnalysisService {
         return mongoTemplate.find(query, Dream.class);
     }
 
+    public List<Dream> findDreamsByKeyword(String keyword) {
+
+        String regexKeyword = ".*" + keyword + ".*";
+        Criteria criteria = Criteria.where("dream").regex(regexKeyword, "i");
+
+        Query query = new Query(criteria).limit(100);
+        return mongoTemplate.find(query, Dream.class);
+    }
+
     public ResponseDreamAnalysis processAnalysis(RequestDreamCardDetail requestDream) {
 
         for(int i = 0; i < requestDream.getWordKeywords().size(); i++){

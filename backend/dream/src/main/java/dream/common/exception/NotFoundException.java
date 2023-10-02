@@ -14,6 +14,7 @@ public class NotFoundException extends RuntimeException {
     public static final String AUCTION_NOT_FOUND = "존재하는 경매가 없습니다.";
     public static final String BIDDING_NOT_FOUND = "존재하는 입찰이 없습니다.";
     public static final String REVIEW_NOT_FOUND = "존재하는 리뷰가 없습니다.";
+    public static final String DREAM_NOT_FOUND = "해몽 내용이 없습니다.";
 
 
     public NotFoundException(String message) {

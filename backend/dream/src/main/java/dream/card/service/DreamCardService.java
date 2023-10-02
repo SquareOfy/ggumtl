@@ -13,6 +13,7 @@ import dream.common.domain.ResultTemplate;
 import dream.common.exception.DeleteException;
 import dream.common.exception.NotFoundException;
 import dream.common.exception.NotMatchException;
+import dream.mongo.domain.Dream;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -226,11 +228,16 @@ public class DreamCardService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
-    // 검색창에서 해몽 검색했을때 해몽결과 찾아주는 함수
-    // 여기서 아마 해몽 결과 찾는 알고리즘, HDFS에서 데이터 꺼내야할꺼임
+
     public ResultTemplate getInterpretationResult(String keyword) {
 
-        ResponseInterpretationResult response = new ResponseInterpretationResult();
+        List<Dream> findDreams = dreamAnalysisService.findDreamsByKeyword(keyword);
+        if (findDreams.isEmpty()) throw new NotFoundException(NotFoundException.DREAM_NOT_FOUND);
+
+        List<ResponseDreamAndDreamTelling> response = new ArrayList<>();
+        for (Dream findDream : findDreams) {
+            response.add(ResponseDreamAndDreamTelling.from(findDream));
+        }
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
