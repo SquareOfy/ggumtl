@@ -37,7 +37,13 @@ public class ResponseAuction {
         response.rareGrade = auction.getDreamCard().getRareGrade();
 
         List<ResponseKeyword> keywords = new ArrayList<>();
-        List<CardKeyword> cardKeywords = auction.getDreamCard().getCardKeyword();
+        List<CardKeyword> cardKeywords = new ArrayList<>();
+
+        List<CardKeyword> temp = auction.getDreamCard().getCardKeyword();
+        for (CardKeyword cardKeyword : temp) {
+            if (!cardKeywords.contains(cardKeyword)) cardKeywords.add(cardKeyword);
+        }
+
         for (CardKeyword cardKeyword : cardKeywords) {
             keywords.add(ResponseKeyword.from(cardKeyword));
         }
