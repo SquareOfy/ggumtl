@@ -54,6 +54,8 @@ public class ChallengeService {
 
         int count = 0;
         for (Challenge challenge : challenges) {
+            log.info("challengeId :{}", challenge.getChallengeId());`
+            log.info("challenge : {}", challenge.getKeywords().toString());
             responseChallengeList.add(ResponseChallenge.from(challenge));
 
             if (++count == size) break;
