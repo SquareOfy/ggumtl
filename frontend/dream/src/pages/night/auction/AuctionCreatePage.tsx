@@ -11,7 +11,7 @@ const AuctionCreatePage = () => {
 
   return (
     <>
-    <NavTitleBar />
+    <NavTitleBar>꿈 경매</NavTitleBar>
     <AuctionCreate/>
     </>
   )

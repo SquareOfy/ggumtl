@@ -8,7 +8,7 @@ const DreamCreatePage = () => {
 
   return (
     <>
-    <NavTitleBar/>
+    <NavTitleBar>꿈 기록하기</NavTitleBar>
     <DreamCreate/>
     </>
   )

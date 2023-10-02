@@ -34,7 +34,7 @@ const ChalCreate = () => {
 
   const [challengeTitle, setChallengeTitle] = useState<string>('')
   const [challengeContent, setChallengeContent] = useState<string>('')
-  const [categoryList,setCategoryList] = useState<string[]>(['Keyword 1','Keyword 2','Keyword 3','Keyword 4','Keyword 5'])
+  const [categoryList,setCategoryList] = useState<string[]>([])
   const [periodList,setPeriodList] = useState<string[]>(['7일','30일','100일','365일'])
  
   const [selectCategory, setSelectCategory] = useState<string>('');
@@ -79,13 +79,14 @@ const ChalCreate = () => {
       .then((response) => {
         const challengeId = response.data.data.challengeId
         navigate(`/day/challenge/${challengeId}/timecapsule/create`)
+        console.log('== 챌린지 생성 성공 ==', response)
       })
-      .catch((e)=>{console.log(e)})
+      .catch((err)=>{console.log("== 챌린지 생성 실패 ==",err)})
   }
 
   // 챌린지 카테고리 데이터 조회 
   useEffect(()=>{
-    basicHttp.get('/day/keyword/list')
+    tokenHttp.get('/day/keyword/list')
       .then((response)=>{
         const res = response.data.data
         
@@ -93,10 +94,10 @@ const ChalCreate = () => {
         res.map((keywordObj:categoryListType)=>{
           keywordList = [...keywordList, keywordObj.keyword]
         })
-
+        console.log('카테고리 조회할래!',keywordList)
         setCategoryList(keywordList)
       })
-      .catch((e)=>{console.log(e)})
+      .catch((err)=>{console.log(err)})
   },[])
 
 
@@ -134,12 +135,12 @@ const ChalCreate = () => {
 
     {/* 카테고리 드롭다운 */}
     <div onClick={()=>{setShowCategoryDropdown(!showCategoryDropdown)}}>
-      <Dropdown $show={showCategoryDropdown} $type={'category'} setSelectOption={setSelectCategory}>{categoryList}</Dropdown>
+      <Dropdown $show={showCategoryDropdown} $type={'category'} setSelectOption={setSelectCategory} optionData={categoryList}></Dropdown>
     </div>
 
     {/* 기간 드롭다운 */}
     <div onClick={()=>{setShowPeriodDropdown(!showPeriodDropdown)}}>
-      <Dropdown $show={showPeriodDropdown} $type={'period'} setSelectOption={setSelectPeriod}>{periodList}</Dropdown>
+      <Dropdown $show={showPeriodDropdown} $type={'period'} setSelectOption={setSelectPeriod} optionData={periodList}></Dropdown>
     </div>
 
     {/* 등록하기 버튼 */}

@@ -18,7 +18,11 @@ interface ContainerProps {
   $dayBaseContainer ?: boolean
   // 챌린지 디테일 내용 컨테이너
   $chalDetail ?: boolean
+  $auctionDetailMargin ?: boolean
   
+  // 댓글 모달 컨테이너
+  $commentContainer ?: boolean
+  $commentListContainer ?: boolean
 }
 const StyledContainer = styled.div<ContainerProps>`
 
@@ -113,6 +117,38 @@ const StyledContainer = styled.div<ContainerProps>`
       border-radius: 1rem;
       display: flex;
       flex-direction: column;
+    `
+  }
+
+  // 댓글 모달창 컨테이너
+  ${(props) =>
+    props.$commentContainer &&
+    css`
+      background-color: white;
+      position: fixed;
+      overflow: auto;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      z-index: 100;
+      // 트랜지션으로 올라오게하면 좋지 않을까..?
+    `
+  }
+  // 댓글 내용 리스트 컨테이너
+  ${(props) =>
+    props.$commentListContainer &&
+    css`
+      margin-top: 3rem;
+      margin-bottom: 4rem;
+      // 트랜지션으로 올라오게하면 좋지 않을까..?
+    `
+  }
+  // 경매 디테일 페이지 아래쪽 margin
+  ${(props) =>
+    props.$auctionDetailMargin &&
+    css`
+      margin-bottom: 1rem;
     `
   }
 

@@ -47,7 +47,10 @@ export interface InputProps {
     $thinTextInput ?: boolean;
 
     // 챌린지 내용 input
-    $chalContentInput ? :boolean;
+    $chalContentInput ?: boolean;
+
+    // 댓글 input
+    $commentInput ?:boolean
 }
 
 const StyledInput = styled.input<InputProps>`   
@@ -132,7 +135,6 @@ const StyledInput = styled.input<InputProps>`
         color: #374151;
       `
     }
-
 
     // chalCategoryValue
     ${(props) =>
@@ -243,6 +245,22 @@ const StyledInput = styled.input<InputProps>`
         margin-bottom: 0.5rem;
       `
     }
+
+    // CommentInput
+    ${(props) =>
+      props.$commentInput &&
+      css`
+        border: 1px solid gray;
+        border-radius: 3rem;
+        padding-left: 1rem;
+        height: 2.5rem;
+        width: 80vw;
+        
+      `
+    }
+
+
+
 `
 
 const Input = (props:InputProps) => {

@@ -1,6 +1,6 @@
 
 
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 
 import { changeDate } from "utils/dateForm";
 
@@ -13,8 +13,8 @@ import { FaRegCommentDots } from "react-icons/fa6";
 import { CertArticleItemType } from "./ChalCertArticleList";
 import Image from "style/Image";
 import styled from "styled-components";
-import Container from "style/Container";
 import { Box } from "style/Box";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProfileDateWrap = styled.div`
   display: flex;
@@ -104,74 +104,83 @@ const ProgressBar = styled.div<ProgressBarProps>`
   }
 `
 
-
 interface CertArticleItemProps {
   certData : CertArticleItemType
 }
 
-// 유저 프로필로 이동
-const moveUserProfile = () => {
-
-}
-
 // 메인 리턴 부분
 const ChalCertArticleItem = ({certData}:CertArticleItemProps) => {
+  
+  const navigate = useNavigate()
+  const params = useParams()
+  const challengeId = params.challengeId // 현재 챌린지 id
+  const challengeDetailId = certData.challengeDetailId // 챌린지 인증글 id
+
   const [progress, setProgress] = useState<number>(70);
 
+  // 유저 프로필로 이동
+  const moveUserProfile = () => {
+    navigate(`/day/challenge/${challengeId}/comments/${challengeDetailId}`)
+  }
+
   return (
+    
     <>
-    <ProfileDateWrap>
-    {/* 상단바 */ }
-    <ProfileWrap>
-    <ProfileImage
-    // 여기에 이동하는 곳
-    onClick={moveUserProfile}
-    >
-    <img src={certData?.photoUrl} alt="없음"/>
-    </ProfileImage>
-    <Text $verticalAlign $nightWhite
-    onClick={moveUserProfile}
-    >{certData?.nickname} </Text>
-    </ProfileWrap>
-
-    <Text $verticalAlign $nightWhite>{changeDate(certData?.createdAt)}</Text>
-
-    </ProfileDateWrap >
-    
-    {/* 인증 이미지 */ }
-    <Image $mainImage $dayImageBorder>
+      <ProfileDateWrap>
+      {/* 상단바 */ }
+      <ProfileWrap>
+      <ProfileImage
+      // 여기에 이동하는 곳
+      onClick={moveUserProfile}
+      >
       <img src={certData?.photoUrl} alt="없음"/>
-    </Image>
-    
-    
-    {/* 인증 글 하단바 */}
-    <BottomContainer>
+      </ProfileImage>
+      <Text $verticalAlign $nightWhite
+      onClick={moveUserProfile}
+      >{certData?.nickname} </Text>
+      </ProfileWrap>
 
-      {/* 왼쪽 파트 (좋아요 댓글) */ }
-      <HeartCommentContainer>
-        <Heart
-        isLike={certData.like}
-        likedNumber={certData.likeCount}
-        /> 
-      </HeartCommentContainer>
+      <Text $verticalAlign $nightWhite>{changeDate(certData?.createdAt)}</Text>
 
-      <HeartCommentContainer>
-        <FaRegCommentDots/>
-        <Text>{certData?.commentCount}</Text>
-      </HeartCommentContainer>
+      </ProfileDateWrap >
+      
+      {/* 인증 이미지 */ }
+      <Image $mainImage $dayImageBorder>
+        <img src={certData?.photoUrl} alt="없음"/>
+      </Image>
+      
+      
+      {/* 인증 글 하단바 */}
+      <BottomContainer>
 
-      {/* 오른쪽 파트 */}
-      <ProgressBar progress={progress}>
-        
-      </ProgressBar>
-    </BottomContainer>
+        {/* 왼쪽 파트 (좋아요 댓글) */ }
+        {/* 좋아요 */}
+        <HeartCommentContainer>
+          <Heart
+          isLike={certData.like}
+          likedNumber={certData.likeCount}
+          /> 
+        </HeartCommentContainer>
+        {/* 댓글 */}
+        <HeartCommentContainer
+          onClick={moveUserProfile}
+        >
+          <FaRegCommentDots/>
+          <Text>{certData?.commentCount}</Text>
+        </HeartCommentContainer>
 
-    {/* 게시글 내용 */}
-    <Box $day $wideTextBox>
-      {certData?.challengeDetailContent}
-    </Box>
+        {/* 오른쪽 파트 */}
+        <ProgressBar progress={progress}>
+          
+        </ProgressBar>
+      </BottomContainer>
 
-    <MarginBot/>   
+      {/* 게시글 내용 */}
+      <Box $day $wideTextBox>
+        {certData?.challengeDetailContent}
+      </Box>
+
+      <MarginBot/>   
     </>
   )
 }

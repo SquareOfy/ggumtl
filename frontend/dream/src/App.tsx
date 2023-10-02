@@ -40,18 +40,6 @@ import BackgroundImage from 'style/backgroundImage';
 import DayProfilePage from 'pages/day/profile/DayProfilePage';
 import NotFoundPage from 'pages/sunset/NotFoundPage';
 import StartPage from 'pages/sunset/StartPage';
-import ChalCapsuleLoadingPage from 'pages/day/capsule/ChalCapsuleLoadingPage';
-
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("/sw.js")
-    .then(function (registration) {
-      console.log("Service Worker registered with scope:", registration.scope);
-    })
-    .catch(function (err) {
-      console.log("Service Worker registration failed", err);
-    });
-}
 
 function App() {
 
@@ -135,12 +123,11 @@ function App() {
 
         {/* 챌린지 관련 */}
         {/* 챌린지 상세조회 */}
-        <Route path="/day/challenge/:challangeId" element={<ChalDetailPage/>}/>
-        <Route path="/day/challenge/:challangeId/comments" element={<ChalCommentPage/>}/>
+        <Route path="/day/challenge/:challengeId" element={<ChalDetailPage/>}/>
+        <Route path="/day/challenge/:challengeId/comments/:challengeDetailId" element={<ChalCommentPage/>}/>
         <Route path="/day/challenge/create" element={<ChalCreatePage/>}/>
         {/* 타임캡슐 */}
         {/* 모달 */}
-        <Route path="/day/challenge/:challengeId/timecapsule/loading" element={<ChalCapsuleLoadingPage/>}/>
         <Route path="/day/challenge/:challengeId/timecapsule" element={<ChalCapsuleListPage/>}/>
         <Route path="/day/challenge/:challengeId/timecapsule/create" element={<ChalCapsuleCreatePage/>}/>
         

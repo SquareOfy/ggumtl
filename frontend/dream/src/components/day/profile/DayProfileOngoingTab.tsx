@@ -8,9 +8,13 @@ import React, { useEffect, useState } from "react";
 import ChalContentListItem from "../daycommon/ChalContentListItem";
 import tokenHttp from "api/tokenHttp";
 import InfiniteScroll from "components/common/InfiniteScroll";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import Text from "style/Text";
 
 // 스타일
 export interface DayChallengeObjType {
+  badgeUrl ?:string,
   challengeTitle :string,
   period :string,
   challengeId :number,
@@ -18,45 +22,58 @@ export interface DayChallengeObjType {
   participationCount ?:number
 }
 
+export const NoChalMsgWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+`
+
 export interface DayChallengeListType extends Array<DayChallengeObjType> {}
 
 const DayProfileOngoingTab = () => {
+  const params = useParams();
+
   const [allChalList, setAllChalList] = useState<DayChallengeListType>([]);
-  const [lastItemId, setLastItemId] = useState<number>(-1); // 마지막 아이템 번호
+  const [lastItemId, setLastItemId] = useState<number>(0); // 마지막 아이템 번호
+  const [hasNext, setHasNext] = useState<boolean>(true); 
+  const [noChalMsg, setNoChalMsg] = useState<string>("");
   let size :number = 6;
+
+  // infinite scroll
+  const [arriveEnd, setArriveEnd] = useState<boolean>(true); // 바닥에 다다름을 알려주는 변수
   
   // api 요청
   const getAxios = () => {
     let apiAddress :string = "";
 
     // 처음 요청 받을 때 : lastItemId 없음
-    if (lastItemId === -1) {apiAddress = `/day/mychallange/list?size=${size}`}
+    if (lastItemId === 0) {apiAddress = `/day/mychallenge/list?size=${size}`}
     // 두번째부터 요청 할 때
-    else {apiAddress = `/day/mychallange/list?lastItemId=${lastItemId}&size=${size}`}
+    else {apiAddress = `/day/mychallenge/list?lastItemId=${lastItemId}&size=${size}`}
     
-    tokenHttp.get(apiAddress)
-    .then((res)=> {
-      console.log(res)
-      if (typeof res.data.data.challengeList === "object") {
-        setAllChalList([...allChalList, ...res.data.data.challengeList]);
-        setLastItemId(res.data.data.challengeList[res.data.data.challengeList.length - 1].challengeId)
-      }
-    })
-    .catch(err=>console.log("===", err))
+    if (arriveEnd && hasNext) {
+      tokenHttp.get(apiAddress)
+      .then((res)=> {
+        const response = res.data
+
+        if (response.status === 400) {
+          setNoChalMsg(response.data)
+        } else {
+          const challengeList = response.challengeList
+          setAllChalList([...allChalList, ...challengeList]);
+          setLastItemId(challengeList[challengeList.length - 1]?.challengeId);
+          setHasNext(response.data.hasNext);
+        }
+
+        console.log("진행 중 탭 : ", res)
+      })
+      .catch(err=>console.log("===", err))
+    }
   };
 
   useEffect(() => {
     getAxios();
   }, [])
-
-  // // lastItemId 업데이트
-  // useEffect(() => {
-  //   allChalList[allChalList.length - 1] && 
-  //   setLastItemId(allChalList[allChalList.length - 1].challengeId)
-  // }, [setAllChalList, allChalList])
-
-  // infinite scroll
-  const [arriveEnd, setArriveEnd] = useState<boolean>(false); // 바닥에 다다름을 알려주는 변수
 
   useEffect(() => {
     // 바닥에 다다랐으면 axios 요청
@@ -70,16 +87,21 @@ const DayProfileOngoingTab = () => {
   return (
     <>
     {
-      allChalList &&
-      <InfiniteScroll
-      setArriveEnd={setArriveEnd} 
-      // lastItemId={lastItemId}
-      component={
-        allChalList?.map((chal :DayChallengeObjType) => (
-          <ChalContentListItem key={chal.challengeId} chal={chal} />))
-        }
-        >
-      </InfiniteScroll>
+      allChalList.length === 0
+      ?
+      <NoChalMsgWrap>
+        <Text $black>{noChalMsg}</Text>
+      </NoChalMsgWrap>
+      :
+        <InfiniteScroll
+        setArriveEnd={setArriveEnd} 
+        // lastItemId={lastItemId}
+        component={
+          allChalList?.map((chal :DayChallengeObjType) => (
+            <ChalContentListItem key={chal.challengeId} chal={chal} />))
+          }
+          >
+        </InfiniteScroll>
     }
     </>
   )

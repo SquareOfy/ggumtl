@@ -12,6 +12,8 @@ interface NavProps {
   $footer ? : boolean;
   $nav ? : boolean;
   $navTitle ? : boolean;
+  $navCommentTitle ? : boolean;
+  $footerCommentBar ?: boolean;
 
 }
 
@@ -19,6 +21,7 @@ const BarContainer = styled.div<NavProps>`
   width: 100vw;
   height:3rem;
   position: fixed;
+  z-index: 100;
   
   // footer
   ${(props) => props.$footer &&
@@ -74,9 +77,56 @@ const BarContainer = styled.div<NavProps>`
       right: 0;
   
     }
-
     `
   }
+  // 댓글 제목 바
+  ${(props) => props.$navCommentTitle && 
+    css`
+      background-color: white;
+      left: 0;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid gray;
+    // 타이틀
+    & > div {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    // 아이콘
+    & > Button {
+      position: absolute;
+      right: 0;
+    }
+    `
+  }
+  // 댓글 하단 바
+  ${(props) => props.$footerCommentBar && 
+    css`
+      height: 4rem;
+      left: 0;
+      bottom: -1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid gray;
+      background-color: white;
+    // 프로필 사진
+    & > img {
+
+    }
+    & > div {
+  
+    }
+    & > Button {
+
+    }
+    `
+  }
+
+
 
   // 낮 모드
   ${(props) => props.$day &&

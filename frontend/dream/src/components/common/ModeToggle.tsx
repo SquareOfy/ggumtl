@@ -16,6 +16,7 @@ const ModeToggle = () => {
   );
 
   const themeMode = useSelector((state: RootState) => state.themeMode.themeMode);
+  const currentUserId = useSelector((state:RootState) => state.auth.userdata.userId)
 
   const changeNightDay = () => {
     console.log(location)
@@ -24,7 +25,7 @@ const ModeToggle = () => {
         navigate('/night/main')
       }
       else if (location.pathname.includes('profile')) {
-        navigate('/night/profile/:userId')
+        navigate(`/night/profile/${currentUserId}`)
       }
 
       // return location.pathname.includes('main') ? navigate('/night/main'):navigate('/night/profile/:userId')  
@@ -35,7 +36,7 @@ const ModeToggle = () => {
         navigate('/day/main')
       }
       else if (location.pathname.includes('profile')) {
-        navigate('/day/profile/:userId')
+        navigate(`/day/profile/${currentUserId}`)
       }
       // return location.pathname.includes('main') ? navigate('/day/main'):navigate('/day/profile/:userId') 
     }

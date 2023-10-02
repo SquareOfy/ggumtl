@@ -40,9 +40,11 @@ const StyledTextArea = styled.textarea<TextAreaProps>`
       color: #F9FAFB;
       background-color: rgb(190, 169, 215, 50%);
       width: 100%;
-      height: 30rem;
+      min-height: 20rem;
       border-radius: 2rem;   
       margin: 1rem 0;
+      display: flex;
+      height: inherit;
     `
   }
 

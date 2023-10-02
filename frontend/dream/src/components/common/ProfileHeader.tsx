@@ -23,6 +23,7 @@ import styled from "styled-components";
 import { FaStar } from "react-icons/fa6";
 import { LiaCoinsSolid } from "react-icons/lia";
 import tokenHttp from "api/tokenHttp";
+import { useParams } from "react-router-dom";
 
 // progress 속성을 정의
 interface ProgressBarProps {
@@ -67,30 +68,28 @@ interface ProfileHeaderAxiosType {
   userId :number,
   wrigglePoint :number,
   point ?:number,
+  finishChallengeCount :number,
 }
 
 const ProfileHeader = () => {
   const themeMode = useSelector((state: RootState) => state.themeMode.themeMode);
+  const auth = useSelector((state: RootState) => state.auth.userdata);
+
   const [isNight, setIsNight] = useState<boolean>(false);
   const [isStarClicked, setIsStarClicked] = useState<boolean>(true);
-  const [isMyProfile, setIsMyProfile] = useState<boolean>(true); // 내 프로필인지 유저 확인
+  const [isMyProfile, setIsMyProfile] = useState<boolean>(false); // 내 프로필인지 유저 확인
   const [isFollowing, setIsFollowing] = useState<boolean>(false); // 팔로우 했는지 여부
-  const [progress, setProgress] = useState<number>(0); // 꿈틀도 추후 변경하기
-  
+  const [progress, setProgress] = useState<number>(auth.wrigglePoint); // 꿈틀도 추후 변경하기
+
   // 프로필 axios 통신 데이터들
   const [userData, setUserData] = useState<ProfileHeaderAxiosType>();
-  let profileUserId = 20; // 추후 바꾸기
+  const params = useParams();
 
   // axios 요청
   useEffect(() => {
-    let mode :string
-    // console.log(themeMode.mode)
-    if (isNight) {mode = "night"}
-    else {mode = "day"}
-
-    tokenHttp.get(`/profile/${mode}/header/${profileUserId}`)
+    tokenHttp.get(`/profile/common/header/${params.userId}`)
     .then((res) => {
-      // console.log(res);
+      // console.log("프로필 헤더 : ", res);
       setUserData(res.data.data);
     })
     .catch((err) => console.log("ProfileHeader 오류 : ", err))
@@ -116,6 +115,13 @@ const ProfileHeader = () => {
     setIsStarClicked(!isStarClicked)
   }
 
+  // 내 프로필인지 확인
+  useEffect(() => {
+    if (params && auth.userId === Number(params.userId)) {
+      setIsMyProfile(true)
+    }
+  }, [auth.userId, params])
+
   return (
     <>
     <Wrap $profileHeaderWrap>
@@ -131,19 +137,17 @@ const ProfileHeader = () => {
           <div>
             <p>{userData?.nickname}</p>
             {
-              !isMyProfile &&
-              <Button
-              $follow
-              $nightPalePurple
-              >{!isFollowing ? "팔로우" : "팔로잉"}</Button>
-            }
-            {
-              isMyProfile &&
+              isMyProfile
+              ? 
               <Text
               $nightMoney={isNight}
               $dayMoney={!isNight}
               ><LiaCoinsSolid style={{width: "1.3rem", height: "1.3rem", marginRight: "0.4rem"}}></LiaCoinsSolid> {userData?.point && (userData?.point/100).toFixed(1)}k</Text>
-              // 포인트 출력 부분은 로그인 구현 완료 후 추가 필요
+              :
+              <Button
+              $follow
+              $nightPalePurple
+              >{!isFollowing ? "팔로우" : "팔로잉"}</Button>
             }
           </div>
           <div>

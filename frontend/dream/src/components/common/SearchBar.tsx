@@ -15,9 +15,9 @@ import { boolean } from "yargs";
 
 // 외부 라이브러리
 
-export interface colorProps {
+export interface searchBarProps {
   color ?: string;
-  onChange ?: (e:any) => void
+  setSearchWord : (e:string) => void
   disabled?: boolean;    
   type?: 'text';
   placeholder ?: string;
@@ -43,24 +43,24 @@ export interface SearchBar {
   isSearch: boolean
 }
 
-const SearchBar = (props: colorProps) => {
+const SearchBar = (props: searchBarProps) => {
   useEffect(()=> {
 
   }, [])
   return (
     <>
-    <Wrap $baseWrap>
-    <SearchBarContainer >
-      <Input $searchBar
-      $nightColor={false}
-      $dayColor={true}
-      onChange={props.onChange}
-      placeholder="검색"
-      type="text"
-      />
-    <IconSearch/>
-    </SearchBarContainer>
-    </Wrap>
+      <SearchBarContainer >
+        <Input $searchBar
+          $nightColor={false}
+          $dayColor={true}
+          onChange={(e)=>{
+            props.setSearchWord(e.target.value)
+          }}
+          placeholder="검색"
+          type="text"
+        />
+        <IconSearch/>
+      </SearchBarContainer>
     </>
   )
 }

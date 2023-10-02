@@ -7,6 +7,8 @@ import basicHttp from "api/basicHttp";
 import InfiniteScroll from "components/common/InfiniteScroll";
 import { AuctionCardType } from "../auction/AuctionMainList";
 import tokenHttp from "api/tokenHttp";
+import Text from "style/Text";
+import styled from "styled-components";
 
 // 스타일
 // export interface AuctionBuyingAxiosType {
@@ -19,13 +21,19 @@ import tokenHttp from "api/tokenHttp";
 //   rarePoint :string,
 // }
 
+const NoAuctionMsgWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+`
+
 
 const NightProfileBuyingTab = () => {
 
   // axios로 데이터 받기
-  // const [auctionBuyingDataList, setAuctionBuyingDataList] = useState<AuctionBuyingAxiosType[]>();
   const [auctionBuyingDataList, setAuctionBuyingDataList] = useState<AuctionCardType[]>([]);
   const [lastItemId, setLastItemId] = useState<number>(0);
+  const [noAuctionMsg, setNoAuctionMsg] = useState<string>("참여 중인 경매가 없습니다.");
   const [hasNext, setHasNext] = useState<boolean>(true); 
   let size = 12;
 
@@ -45,12 +53,14 @@ const NightProfileBuyingTab = () => {
       .then((res)=>{
         const response = res.data.data
         const auctionList = response.auctionList
+
         setAuctionBuyingDataList([...auctionBuyingDataList, ...auctionList]);
-        setLastItemId(auctionList[auctionList.length - 1].dreamCardId);
+        setLastItemId(auctionList[auctionList.length - 1]?.dreamCardId);
         setHasNext(response.hasNext);
+        
         console.log("== 꿈 받기 탭 ==", res); 
       })
-      .catch((err) => console.log("== 꿈 받기 탭 ==", err))
+      .catch((err) => console.log("== 꿈 받기 탭 에러 ==", err))
     }
   }
 
@@ -70,16 +80,19 @@ const NightProfileBuyingTab = () => {
   return (
     <>
     {
-      auctionBuyingDataList &&
-      <InfiniteScroll 
-      setArriveEnd={setArriveEnd} 
-      // lastItemId={lastItemId}
-      component={
-        auctionBuyingDataList?.map((data, i) => (
-          <AuctionCard auctionCard={data} key={i}/>
-        ))
-      }
-      />
+      auctionBuyingDataList.length === 0
+      ? <NoAuctionMsgWrap>
+          <Text $nightWhite>{noAuctionMsg}</Text>
+        </NoAuctionMsgWrap>
+      : <InfiniteScroll 
+        setArriveEnd={setArriveEnd} 
+        // lastItemId={lastItemId}
+        component={
+          auctionBuyingDataList?.map((data, i) => (
+            <AuctionCard auctionCard={data} key={i}/>
+          ))
+        }
+        />
     }
     </>
   )

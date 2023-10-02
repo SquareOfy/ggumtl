@@ -16,7 +16,7 @@ import tokenHttp from "api/tokenHttp";
 import Button from "components/common/Button";
 
 const CategoryWrap = styled.div`
-  margin: 0.5rem;
+  /* margin: 0.5rem; */
 `
 
 const CategoryListWrap = styled.div`
@@ -38,12 +38,14 @@ export interface CategoryPropsType {
 
 const DayCategoryList = (props :CategoryPropsType) => {
   const [categoryList, setCategoryList] = useState<CategoryAxiosType[]>([]);
+  const [select, setSelect] = useState<number>(-1);
 
   // axios 요청
   const getCategory = () => {
     tokenHttp.get(`/day/keyword/list`)
     .then((res) => {
       setCategoryList(res.data.data);
+      console.log('키워드 리스트', res.data.data)
     })
     .catch((err) => console.log(err))
   }
@@ -52,16 +54,32 @@ const DayCategoryList = (props :CategoryPropsType) => {
     getCategory();
   }, []);
 
+  useEffect(() => {
+    if (select === 0) {
+      props.setCategoryProps({
+        keyword: "",
+        keywordId: 0,
+      })
+    }
+  }, [select, setSelect])
+
   return (
     <>
     <CategoryWrap>
-      <Text $isBold>카테고리</Text>
       <CategoryListWrap>
         {
           categoryList?.map((category, i) => 
             <Button 
-            onClick={() => props.setCategoryProps(category)}
-            $category key={i}>{category.keyword}</Button>
+            onClick={() => {
+              props.setCategoryProps(category);
+              // 눌렀던 버튼 다시 눌렀을 때 : 키워드 지정 취소
+              if (select === category.keywordId) {setSelect(0)}
+              else {setSelect(category.keywordId);}
+            }}
+            $category 
+            $isSelected={select === category.keywordId ? true : false}
+            key={i}
+            >{category.keyword}</Button>
           )
         }
       </CategoryListWrap>

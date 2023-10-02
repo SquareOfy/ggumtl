@@ -25,6 +25,7 @@ interface ButtonProps {
     // 개별 스타일링
     $kakao?: boolean;
     $nightVoice?: boolean;
+    $isRecording?: boolean;
     $icon?: boolean;
     $follow?: boolean
     $halfWidthImeBuy?: boolean;
@@ -33,12 +34,16 @@ interface ButtonProps {
     $category?: boolean;
     $chalCertButton?: boolean;
     $goHomeButton?: boolean;
+    $isSelected?: boolean;
+    $addCommentButton ?: boolean;
 
     // 색상 지정
     $nightPurple?: boolean
     $nightPalePurple?: boolean
+    $nightPalePurpleSelected?: boolean
     $nightMiddlePurple?: boolean
     $dayBlue?: boolean
+    $dayGrey?: boolean
     $dayYellow?: boolean
     $transparent?: boolean
     $sunsetPurple?: boolean
@@ -88,6 +93,9 @@ const StyledButton = styled.button<ButtonProps>`
             padding: 0.5rem;
             width:49%;
             height: 15vw;
+            &:active {
+                opacity: 0.5;
+            }
         `
     }
 
@@ -141,9 +149,17 @@ const StyledButton = styled.button<ButtonProps>`
             border: 1px solid rgb(190, 169, 215, 0.5);
             border-radius: 1rem;
             height: 5rem;
-            &:not(:disabled):hover {
-                background-color: rgba(190, 169, 215, 0.8);
+            &:not(:disabled):active {
+                background-color: rgba(190, 169, 215);
             }
+        `
+    }
+
+    // 음성 기록 중일 때
+    ${(props) =>
+        props.$isRecording &&
+        css`
+            background-color: rgba(190, 169, 215, 0.8);
         `
     }
 
@@ -165,7 +181,7 @@ const StyledButton = styled.button<ButtonProps>`
             // border: 1px solid #6659A5;
             color: #FFFFFF;
             padding: 0.75rem 1rem;
-            &:not(:disabled):hover {
+            &:not(:disabled):active {
                 opacity: 0.8;
             }
         `
@@ -180,7 +196,7 @@ const StyledButton = styled.button<ButtonProps>`
             // border: 1px solid rgba(102, 89, 165, 0.5);
             padding: 0.75rem 1rem;
             color: #FFFFFF;
-            &:not(:disabled):hover {
+            &:not(:disabled):active {
                 opacity: 0.8;
             }
         `
@@ -193,9 +209,21 @@ const StyledButton = styled.button<ButtonProps>`
             background-color: #BEA9D7;
             // border: 1px solid #BEA9D7;
             color: #FFFFFF;
-            &:not(:disabled):hover {
-                opacity: 0.8;
+            // &:not(:disabled):hover {
+            //     opacity: 0.7;
+            // }
+            &:not(:disabled):active {
+                opacity: 0.5;
             }
+        `
+    }
+    
+    // 연한 보라색버튼 선택
+    ${(props) =>
+        props.$nightPalePurpleSelected &&
+        css`
+            background-color: #BEA9D7;
+            opacity: 0.8;
         `
     }
 
@@ -206,11 +234,27 @@ const StyledButton = styled.button<ButtonProps>`
             background-color: #75A8C7;
             border: 1px solid #75A8C7;
             color: #000000;
+            // &:not(:disabled):hover {
+            //     opacity: 0.8;
+            // }
+            &:not(:disabled):active {
+                opacity: 0.8;
+            }
+        `
+    }
+    // 짙은 하늘색
+    ${(props) =>
+        props.$dayGrey &&
+        css`
+            background-color: rgb(164, 164, 164, 0.8);
+            border: 1px solid rgb(164, 164, 164, 0.8);
+            color: #000000;
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
         `
     }
+
     // 타임캡슐 yellow
     ${(props) =>
         props.$dayYellow &&
@@ -243,7 +287,7 @@ const StyledButton = styled.button<ButtonProps>`
             border: 1px solid #F1E3E6;
             color: #000000;
             box-shadow: 0px 4px 20px 0px rgba(0,0,0,0.20);
-            &:not(:disabled):hover {
+            &:not(:disabled):active {
                 opacity: 0.8;
             }
         `
@@ -259,6 +303,10 @@ const StyledButton = styled.button<ButtonProps>`
             border-radius: 0.5rem;
             height: 1.5rem;
             margin-left: 0.2rem;
+
+            &:not(:disabled):active {
+                opacity: 0.5;
+            }
         `
     }
 
@@ -299,9 +347,20 @@ const StyledButton = styled.button<ButtonProps>`
         css`
             margin: 0.1rem;
             border: 1px solid #D0D7DF;
-            &:not(:disabled):hover {
+            // &:not(:disabled):hover {
+            //     background-color: #A0BED2;
+            // }
+            &:not(:disabled):active {
                 background-color: #75A8C7;
             }
+        `
+    }
+
+    // 낮 카테고리 선택 버튼
+    ${(props) =>
+        props.$isSelected &&
+        css`
+            background-color: #A0BED2;
         `
     }
 
@@ -323,6 +382,24 @@ const StyledButton = styled.button<ButtonProps>`
             }
         `
     }
+
+     // 댓글 게시 버튼
+    ${(props) => 
+        props.$addCommentButton && 
+        css`
+            position: absolute;
+            right: 1rem;
+            height: 2rem;
+            color: blue;
+            font-weight: bold;
+            background-color: transparent;
+            border-radius: 2rem;
+            &:active {
+                background-color: rgba(184, 184, 184, 0.5);
+            }
+        `
+    }
+
 `
 
 const Button = (props: ButtonProps) => {
