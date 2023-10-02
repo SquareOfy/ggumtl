@@ -34,6 +34,9 @@ const CustomKeywordBox = styled.div`
   padding: 0.25rem;
   text-align: center;
   border-radius: 0.25rem;
+  &:active {
+    opacity: 0.8;
+  }
 `
 
 const NightFlipCardKeyBtnWrap = styled.div`

@@ -166,7 +166,7 @@ const AuctionDetail = () => {
     {isFirstAuctionPage && 
       <>
       {/* 버튼 2개 */}
-      <Container $baseContainer>
+      <Container $baseContainer $auctionDetailMargin>
       <Wrap $spaceBetweenWrap>
         {/* 클릭하면 즉시 구매 & 우리 꿈머니 차감 필요 */}
         <Button $halfWidthImeBuy

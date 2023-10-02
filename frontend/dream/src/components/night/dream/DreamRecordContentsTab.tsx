@@ -9,10 +9,14 @@ import styled, {css} from "styled-components";
 import { Box } from "style/Box";
 import Text from "style/Text";
 
+const DreamContentsTabWrap = styled.div`
+  margin: 2rem 0.5rem;
+`
+
 const DreamTabWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  margin: inherit;
+  // margin: inherit;
   & > div {
     text-align: center;
   }
@@ -60,29 +64,31 @@ const DreamRecordContentsTab = () => {
 
   return (
     <>
-    <DreamTabWrap>
-      <CustomText 
-      onClick={show1RecordTab}
-      $isActive={isRecordTab}
-      >꿈 기록</CustomText>
-      <CustomText 
-      onClick={showInterpretTab}
-      $isActive={isInterpretTab}
-      >해몽</CustomText>
-    </DreamTabWrap>
-    <TabLine/>
-    {isRecordTab && <Box $wideTextBox $night>안녕 클레오파트라 난 기d록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
-      ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ</Box>}
-    {isInterpretTab && <Box $wideTextBox $night>난 해몽</Box>}
+    <DreamContentsTabWrap>
+      <DreamTabWrap>
+        <CustomText 
+        onClick={show1RecordTab}
+        $isActive={isRecordTab}
+        >꿈 기록</CustomText>
+        <CustomText 
+        onClick={showInterpretTab}
+        $isActive={isInterpretTab}
+        >해몽</CustomText>
+      </DreamTabWrap>
+      <TabLine/>
+      {isRecordTab && <Box $wideTextBox $night>안녕 클레오파트라 난 기d록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ록
+        ㄴㅇㅇㄹㄴㄹㅇㄴㄹㄴㄹㅇㄴㄹㅇㅇㄴㄹㅇㄴㄹㅇㄹㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ</Box>}
+      {isInterpretTab && <Box $wideTextBox $night>난 해몽</Box>}
+    </DreamContentsTabWrap>
     </>
   )
 }

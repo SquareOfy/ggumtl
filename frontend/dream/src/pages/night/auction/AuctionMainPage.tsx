@@ -11,7 +11,7 @@ const AuctionMainPage = () => {
 
   return (
     <>
-    <NavTitleBar />
+    <NavTitleBar>꿈 경매</NavTitleBar>
     <AuctionMainList/>
     </>
   )

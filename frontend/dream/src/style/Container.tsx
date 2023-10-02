@@ -18,6 +18,7 @@ interface ContainerProps {
   $dayBaseContainer ?: boolean
   // 챌린지 디테일 내용 컨테이너
   $chalDetail ?: boolean
+  $auctionDetailMargin ?: boolean
   
   // 댓글 모달 컨테이너
   $commentContainer ?: boolean
@@ -141,6 +142,13 @@ const StyledContainer = styled.div<ContainerProps>`
       margin-top: 3rem;
       margin-bottom: 4rem;
       // 트랜지션으로 올라오게하면 좋지 않을까..?
+    `
+  }
+  // 경매 디테일 페이지 아래쪽 margin
+  ${(props) =>
+    props.$auctionDetailMargin &&
+    css`
+      margin-bottom: 1rem;
     `
   }
 

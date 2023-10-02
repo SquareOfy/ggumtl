@@ -93,6 +93,9 @@ const StyledButton = styled.button<ButtonProps>`
             padding: 0.5rem;
             width:49%;
             height: 15vw;
+            &:active {
+                opacity: 0.5;
+            }
         `
     }
 
@@ -178,7 +181,7 @@ const StyledButton = styled.button<ButtonProps>`
             // border: 1px solid #6659A5;
             color: #FFFFFF;
             padding: 0.75rem 1rem;
-            &:not(:disabled):hover {
+            &:not(:disabled):active {
                 opacity: 0.8;
             }
         `
@@ -193,7 +196,7 @@ const StyledButton = styled.button<ButtonProps>`
             // border: 1px solid rgba(102, 89, 165, 0.5);
             padding: 0.75rem 1rem;
             color: #FFFFFF;
-            &:not(:disabled):hover {
+            &:not(:disabled):active {
                 opacity: 0.8;
             }
         `
@@ -231,7 +234,10 @@ const StyledButton = styled.button<ButtonProps>`
             background-color: #75A8C7;
             border: 1px solid #75A8C7;
             color: #000000;
-            &:not(:disabled):hover {
+            // &:not(:disabled):hover {
+            //     opacity: 0.8;
+            // }
+            &:not(:disabled):active {
                 opacity: 0.8;
             }
         `
@@ -281,7 +287,7 @@ const StyledButton = styled.button<ButtonProps>`
             border: 1px solid #F1E3E6;
             color: #000000;
             box-shadow: 0px 4px 20px 0px rgba(0,0,0,0.20);
-            &:not(:disabled):hover {
+            &:not(:disabled):active {
                 opacity: 0.8;
             }
         `
@@ -383,10 +389,14 @@ const StyledButton = styled.button<ButtonProps>`
         css`
             position: absolute;
             right: 1rem;
-            height: 3rem;
+            height: 2rem;
             color: blue;
             font-weight: bold;
             background-color: transparent;
+            border-radius: 2rem;
+            &:active {
+                background-color: rgba(184, 184, 184, 0.5);
+            }
         `
     }
 

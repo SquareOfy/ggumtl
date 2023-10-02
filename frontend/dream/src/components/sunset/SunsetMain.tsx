@@ -31,6 +31,12 @@ const StartIcon = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  
+  &:active {
+    background-color: rgba(184, 184, 184, 0.2);
+  }
+  
   & > img {
     width: 6rem;
     height: 6rem;
