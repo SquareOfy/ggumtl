@@ -13,7 +13,7 @@ def remove_special_charaters(strs):
 okt = Okt()
 
 # 불용어 처리
-input_path = ".\\stopwords.txt"
+input_path = "./stopwords.txt"
 stopTxtFile = open(input_path, 'r', encoding='utf-8')
 stopWords = set()
 

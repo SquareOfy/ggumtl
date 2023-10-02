@@ -6,7 +6,7 @@ from google.cloud import language_v2
 from google.oauth2 import service_account
 
 # 구글 키 설정
-key_path = ".\\googleKey.json"
+key_path = "./googleKey.json"
 
 # 인증 설정
 credentials = service_account.Credentials.from_service_account_file(
