@@ -49,3 +49,6 @@ def getEmotionScore(text):
     originScore = asyncio.run(analyze_text_sentiment(text))
     positivePoint, negativePoint = estimateScore(originScore)
     return [positivePoint, negativePoint]
+
+positivePoint, negativePoint  = getEmotionScore("나는 정말로 할 수 있을까. 제발 할 수 있기를 바라본다.")
+print( positivePoint, negativePoint)
