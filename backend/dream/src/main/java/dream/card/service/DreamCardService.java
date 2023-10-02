@@ -3,7 +3,6 @@ package dream.card.service;
 import dream.card.domain.DreamCard;
 import dream.card.domain.DreamCardQueryRepository;
 import dream.card.domain.DreamCardRepository;
-import dream.card.domain.WriggleReview;
 import dream.card.dto.request.RequestDreamCardDetail;
 import dream.card.dto.request.RequestDreamCardIsShow;
 import dream.card.dto.response.*;
@@ -89,8 +88,7 @@ public class DreamCardService {
         DreamCard findCard = dreamCardRepository.findOwnerById(dreamCardId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
 
-        log.info("{}", findCard.getDreamCardOwner().getUserId());
-        if (!Objects.equals(findCard.getDreamCardOwner().getUserId(), 1L)) findCard.updateHits();
+        findCard.updateHits();
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
@@ -127,6 +125,7 @@ public class DreamCardService {
 
     // 카드 전처리 후 결과 반환
     public ResultTemplate getPreProcessingForDreamCard(String dreamCardContent) {
+
 
         ResponseDreamCardPreprocessing response = new ResponseDreamCardPreprocessing();
         // 아마 이건 하둡이랑 연관된 함수
@@ -178,7 +177,16 @@ public class DreamCardService {
     }
 
     // 꿈 카드 공개여부 업데이트 함수
-    public ResultTemplate updateCardIsShow(RequestDreamCardIsShow request) {
+    @Transactional
+    public ResultTemplate updateCardIsShow(RequestDreamCardIsShow request, Long userId) {
+
+        DreamCard findCard = dreamCardRepository.findById(request.getDreamCardId())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+        if (!findCard.getDreamCardOwner().getUserId().equals(userId)) throw new NotMatchException(NotMatchException.CARD_OWNER_MATCH);
+
+        boolean isShow = findCard.getIsShow().equals(BaseCheckType.T);
+        findCard.updateIsShow(isShow);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }

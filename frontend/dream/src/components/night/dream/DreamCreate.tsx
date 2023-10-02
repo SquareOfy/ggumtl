@@ -88,7 +88,7 @@ const DreamCreate = () => {
   // const userId:number = 1
   const sendDreamToPython = () => {
     const dreamCardAuthor:number = 3
-    const isShow = isChecked
+    const isShow = isChecked ? "T" : "F"
     const dreamCardContent = allText
     const data = {dreamCardAuthor, isShow, dreamCardContent}
     console.log(data, "보낼 데이터!")

@@ -89,5 +89,14 @@ public class DreamCard extends BaseTimeEntity {
         dreamCardLikes.remove(likes.get(0));
     }
 
+    public void updateIsShow(boolean isShow){
+        this.isShow = isShow ? BaseCheckType.F : BaseCheckType.T;
+    }
+
+    public void insertAuction(){
+        this.auctionStatus = BaseCheckType.T;
+        this.isShow = BaseCheckType.T;
+    }
+
 
 }
