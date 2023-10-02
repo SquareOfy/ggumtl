@@ -15,7 +15,7 @@ const ModeToggle = () => {
     location.pathname.includes('day') ? true : false
   );
 
-  const themeMode = useSelector((state: RootState) => state.themeModeReducer.themeMode);
+  const themeMode = useSelector((state: RootState) => state.themeMode.themeMode);
 
   const changeNightDay = () => {
     console.log(location)

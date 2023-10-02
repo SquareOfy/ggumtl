@@ -6,10 +6,11 @@ import styled, {css} from "styled-components"
 interface ButtonProps {
     children ?: React.ReactNode;
     // styles?: string;
-    onClick ?: () => void;
-
-    disabled ?: boolean;    
-    type ?: 'submit' | 'button' | 'reset';
+    onClick?: () => void;
+    style ? : {};
+    disabled?: boolean;    
+    type?: 'submit' | 'button' | 'reset';
+    className ?:string;
 
     // 별개 스타일링
     // 너비
@@ -27,6 +28,8 @@ interface ButtonProps {
     $icon ?: boolean;
     $follow ?:boolean
     $halfWidthImeBuy ?:boolean;
+    $dayCreate ?: boolean;
+    $moreButton ?: boolean;
 
     // 색상 지정
     $nightPurple ?:boolean
@@ -234,6 +237,7 @@ const StyledButton = styled.button<ButtonProps>`
             background-color: #F1E3E6;
             border: 1px solid #F1E3E6;
             color: #000000;
+            box-shadow: 0px 4px 20px 0px rgba(0,0,0,0.20);
             &:not(:disabled):hover {
                 opacity: 0.8;
             }
@@ -244,10 +248,33 @@ const StyledButton = styled.button<ButtonProps>`
     ${(props) => 
         props.$follow &&
         css`
-            font-size: 1rem;
-            padding: 0.1rem 1.5rem;
+            font-size: 0.75rem;
+            padding: 0 1.2rem;
             /* font-weight: 400; */
-            border-radius: 1.5rem;
+            border-radius: 0.5rem;
+            height: 1.5rem;
+            margin-left: 0.2rem;
+        `
+    }
+
+    // 낮 생성 버튼
+    ${(props) => 
+        props.$dayCreate && 
+        css`
+            margin-top: 3rem;
+        `
+    }
+
+    ${(props)=>
+        props.$moreButton &&
+        css`
+            margin-top: 0.5rem;
+            padding: 0;
+            background-color: transparent;
+            & > p {
+                margin: 0;
+                font-size: 0.7rem;
+            }
         `
     }
 

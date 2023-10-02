@@ -45,6 +45,9 @@ export interface InputProps {
     // 굵기
     $textInput ?: boolean;
     $thinTextInput ?: boolean;
+
+    // 챌린지 내용 input
+    $chalContentInput ? :boolean;
 }
 
 const StyledInput = styled.input<InputProps>`   
@@ -151,14 +154,24 @@ const StyledInput = styled.input<InputProps>`
       `
     }
 
-    // chalCreateInput - 제목, 타이틀, 챌린지 기간
+    // chalCreateInputDefault - 제목, 타이틀, 챌린지 기간
     ${(props) =>
       props.$chalCreateInput &&
       css`
         width: 100%;
-        height: 4rem;
+        height: 3.5rem;
         margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.5rem;  
+      `
+    }
+    // 챌린지 생성 input 큰 사이즈
+    ${(props) =>
+      props.$chalContentInput &&
+      css`
+        width: 100%;
+        height: 7rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;  
       `
     }
 
@@ -177,7 +190,7 @@ const StyledInput = styled.input<InputProps>`
     ${(props) =>
       props.$dayColor &&
       css`
-        background-color: rgb(117, 168, 199, 50%);
+        background-color: rgb(249, 249, 249, 50%);
         color: #374151;
       `
     }

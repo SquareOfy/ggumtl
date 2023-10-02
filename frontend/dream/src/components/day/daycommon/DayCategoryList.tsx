@@ -4,6 +4,7 @@
 
 // 리액트
 import React from "react";
+import Text from "style/Text";
 
 // 컴포넌트
 
@@ -13,6 +14,7 @@ const DayCategoryList = () => {
 
   return (
     <>
+    <Text $isBold>카테고리</Text>
     </>
   )
 }

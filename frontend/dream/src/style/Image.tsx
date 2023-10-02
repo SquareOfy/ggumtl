@@ -14,6 +14,7 @@ interface ImageProps {
     // 프로필
     // $circleImage ?: boolean;
     $smallProfileImage ?: boolean;
+    $tinyProfileImage ?: boolean;
     $badge ?: boolean;
     $largeBadge ?: boolean;
 
@@ -29,10 +30,11 @@ interface ImageProps {
 
     // 밤 꿈 카드
     $nightImageBorder ?: boolean;
+    $dayImageBorder ?: boolean;
     $profileCard ?: boolean;
     $auctionCard ?: boolean;
 
-
+    $signupImage ? :boolean;
 }
 
 const StyledImage = styled.div<ImageProps>`
@@ -58,6 +60,25 @@ const StyledImage = styled.div<ImageProps>`
         width: 4rem;
         height: 4rem;
         margin: 1rem;
+        background-color: transparent;
+        & > img {
+          width: 100%;
+          object-fit: cover;
+          aspect-ratio: 1/1;
+          object-position: center;
+          border-radius: 50%;
+        }
+      `
+    }
+
+    // 매우 작은 프로필 이미지
+    ${(props) =>
+      props.$tinyProfileImage && 
+      css`
+        width: 2.5rem;
+        height: 2.5rem;
+        margin: 1rem;
+        background-color: red;
         & > img {
           width: 100%;
           object-fit: cover;
@@ -158,6 +179,13 @@ const StyledImage = styled.div<ImageProps>`
         border-radius: 1rem;  
       `
     }
+    // day image는 직각
+    ${(props) =>
+      props.$dayImageBorder &&
+      css`
+        border-radius: 0rem;  
+      `
+    }
 
     // profileCard - 밤 프로필 카드탭
     ${(props) =>
@@ -194,6 +222,27 @@ const StyledImage = styled.div<ImageProps>`
       `
     }
 
+${(props) =>
+      props.$signupImage &&
+      css`
+        width: 100%;
+        aspect-ratio: 1/1;
+        background-size: cover;
+        border-radius: 1rem;
+        margin: 2rem 0;
+        background-color: #666666;
+        
+        & > img { // 정사각형 만들기
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          aspect-ratio: 1/1;
+          object-position: center;
+          border-radius: 1rem;
+          object-fit: cover;
+        }
+      `
+    }
 
 `
 

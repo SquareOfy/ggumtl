@@ -1,18 +1,19 @@
-// 그냥 이미지 (플립 없음)
-// 키워드들 - <KeywordRegion></KeywordRegion>
-// 등급 - <GradeRegion></GradeRegion>
-
-// 2개의 TextBox -> 내부에서 만듦
-// 2개의 MiddleButton ~ WrappingDouple
-// 로그인 유저 보유 꿈머니
-
 // 리액트
-import React from "react";
+import React, {useEffect, useState} from "react";
+import { useParams } from "react-router-dom";
+import { useSelector } from 'react-redux'
+import { useNavigate, useLocation } from "react-router-dom";
+
+// 외부 
+import basicHttp from "api/basicHttp";
+import { changeDateHour } from "utils/dateForm";
+import { RootState } from "store";
 
 // 컴포넌트
 import Button from "components/common/Button";
 import DreamCardGrade from "../nightcommon/DreamCardGrade";
 import DreamKeywordRegion from "../nightcommon/DreamKeywordRegion";
+import AuctionBuying from "./AuctionBuying";
 
 // 스타일
 import styled, {css} from "styled-components";
@@ -21,6 +22,7 @@ import { Box, GradeWrappingBox } from "style/Box";
 import Container from "style/Container";
 import Text from "style/Text";
 import Wrap from "style/Wrap";
+
 const AuctionBox = styled(Box)`
   border-radius: 1rem;
   background-color: rgba(190, 169, 215, 0.5);
@@ -34,19 +36,19 @@ const SmallText = styled(Text)`
   margin-top: 0.25rem;
 `
 
-interface AuctionDetailAxiosType {
+interface AuctionDetailType {
   biddingId : number;
   userId : number;
-  biddingMoney : number;
+  biddingMoney : number; // 현재 최고가
   biddingAt : string;
-  nickname : string;
-  startAuctionMoney : number;
+  nickname : string; // 입찰자의 닉네임
+  startAuctionMoney : number; 
   immediatelyBuyMoney : number;
   endedAt : "2023-09-09T00:00";
   askingMoney : number; // 호가
-  biddingCount : number;
+  biddingCount : number; // 입찰횟수
   dreamCardId: number;
-  dreamCardImageUrl : string[];
+  dreamCardImageUrl : string;
   keywords : string[];
   positiveGrade : string;
   rareGrade : string;
@@ -57,50 +59,131 @@ interface AuctionDetailAxiosType {
 // AuctionDetail과 Buying은 결국 가운데 바꿔끼기밖에 없음 (신규 렌더링은 낭비 같음)
 // 경로는 다르게해도, useEffect -> location path 이걸로 보이는걸 다르게하면 어떨까.
 const AuctionDetail = () => {
+  const navigation = useNavigate()
+  const location = useLocation()
+
+  const {dreamCardId} = useParams()
+  const [auctionItem, setAuctionItem] = useState<AuctionDetailType>()
+  const [isFirstAuctionPage, setIsFirstAuctionPage] = useState(true)
+
+  // const myMoney = useSelector((state:RootState) => state)
+
+  useEffect(()=> {
+    basicHttp.get(`/auction/detail/${dreamCardId}`)
+    .then(res => {
+      setAuctionItem(res.data.data)
+      console.log(res.data.data, "경매장 입장")
+    })
+  }, [])
+
+  // 라우터 경로에 따른 것.
+  useEffect(()=> {
+    // 라우터 경로에 따라 컴포넌트 바꾸기
+    if (location.pathname.includes("bidding")) {
+      setIsFirstAuctionPage(false)
+    } else setIsFirstAuctionPage(true)
+
+  }, [location])
+
+  // 시간 차이 계산
+  const diffHour = () :number => {
+    const today = new Date()
+    const todayHour = today.getHours()
+    const endedTime = new Date(auctionItem?.endedAt ? auctionItem?.endedAt : "")
+    const endedHour = endedTime.getHours()
+    if (endedHour === 0) {
+      if (todayHour === 22) return 2
+      else if (todayHour === 23) return 1
+      else if (todayHour === 0) return 0
+      return 3
+    } else if (endedHour === 1) {
+      if (todayHour === 23) return 2
+      else if (todayHour === 0) return 1
+      else if (todayHour === 1) return 0
+      return 3
+    } else return endedHour - todayHour
+  }
+
+  // 꿈 즉시구매
+  const buyDreamCardNow = () => {
+    // 내 꿈머니보다 즉시구매가 높으면 돌려보내기 구현 필요
+
+    basicHttp.put(`/auction/purchase`, auctionItem?.dreamCardId)
+    .then(res => {
+      if (res.data.status === 204) {
+        // 고새 누가 구매해서 카드 없으면... alert..?
+        alert("판매된 카드입니다.")
+      }
+    })
+
+  }
 
   return (
     <>
     <Container $baseContainer>
       <Image $mainImage $nightImageBorder>
-        <img src={`${process.env.PUBLIC_URL}/image/samsung.png`}
+        <img src={auctionItem?.dreamCardImageUrl}
         />
       </Image>
     </Container>
     
-    {/* 키워드 영역 */}
-    <DreamKeywordRegion keywords={["Dd", "DD"]}/>
+    {/* 경매 첫 페이지만 나오는 곳 */}
+    {isFirstAuctionPage && 
+      <> 
+      {/* 키워드 영역 */}
+      <DreamKeywordRegion keywords={auctionItem?.keywords}/>
+  
+      {/* 길몽도, 희귀도 상속 필요 */}
+      <DreamCardGrade 
+      positiveGrade={auctionItem?.positiveGrade} 
+      rareGrade={auctionItem?.rareGrade}/>
+      </>
+    }
 
-    {/* 길몽도, 희귀도 상속 필요 */}
-    <DreamCardGrade positiveGrade="S" rareGrade="SS"/>
+    {/* 경매 참여 페이지(2) */}
+    {!isFirstAuctionPage && <AuctionBuying 
+    biddingMoney={auctionItem?.biddingMoney || 0}
+    askingMoney={auctionItem?.askingMoney || 0}
+    />}
 
     {/* 입찰마감 & 현재최고가 */}
     <Container $baseContainer>
       <AuctionBox $fullWidth > 
       <Wrap $spaceBetweenWrap>
         <Text $nightBlue $isBold>입찰 마감 2시간 전</Text> 
-        <Text $nightBlue>입찰 수: 00명</Text> 
+        <Text $nightBlue>입찰 수: {auctionItem?.biddingCount}명</Text> 
       </Wrap>      
       </AuctionBox>
       <AuctionBox $fullWidth>
         <Text $isBold $MBHalf>현재 최고가</Text>
       <Wrap $spaceBetweenWrap>
-        <Text $isBold>$ 5000</Text> 
-        <Text>2023.06.04 12:22</Text> 
+        <Text $isBold>$ {auctionItem?.biddingMoney}</Text> 
+        <Text>{changeDateHour(auctionItem?.endedAt)}</Text> 
       </Wrap>
       </AuctionBox>
     </Container>
-
-    {/* 버튼 2개 */}
-    <Container $baseContainer>
-    <Wrap $spaceBetweenWrap>
-      <Button $halfWidthImeBuy>
-        <Text $isBold>즉시 구매</Text>
-        <SmallText>5000 꿈포인트</SmallText>
-      </Button>
-      <Button $halfWidth $nightPurple>참여하기</Button>
-    </Wrap>
-    <Text $nightKeword>나의 꿈머니: {10000}</Text>
-    </Container>
+    {/* 첫 페이지만 존재 */}
+    {isFirstAuctionPage && 
+      <>
+      {/* 버튼 2개 */}
+      <Container $baseContainer>
+      <Wrap $spaceBetweenWrap>
+        {/* 클릭하면 즉시 구매 & 우리 꿈머니 차감 필요 */}
+        <Button $halfWidthImeBuy
+        onClick={buyDreamCardNow}
+        >
+          <Text $isBold>즉시 구매</Text>
+          <SmallText>{auctionItem?.immediatelyBuyMoney} 꿈포인트</SmallText>
+        </Button>
+        <Button $halfWidth $nightPurple
+        onClick={()=> navigation(`/night/auction/bidding/${dreamCardId}`)}
+        >참여하기</Button>
+      </Wrap>
+      {/* 꿈머니 구현 이후 */}
+      <Text $nightKeword>나의 꿈머니: {10000}</Text>
+      </Container>
+      </>
+    }
 
 
     </>

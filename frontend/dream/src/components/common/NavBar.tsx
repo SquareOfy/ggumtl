@@ -29,7 +29,7 @@ const NavBar = () => {
   // //true : night, false : day
   const [nightDayMode, setNightDayMode] = useState<boolean>(true);
 
-  const themeMode = useSelector((state :RootState) => state.themeModeReducer.themeMode);
+  const themeMode = useSelector((state :RootState) => state.themeMode.themeMode);
   
   useEffect(()=>{
     setNightDayMode(themeMode.mode ==='night' ? true : false)
@@ -43,7 +43,7 @@ const NavBar = () => {
         <ModeToggle/>
       </div>
       <div>
-        <Button $icon ><FiBell/></Button>
+        <Button $icon><FiBell/></Button>
       </div>
     </Bar>
     </>

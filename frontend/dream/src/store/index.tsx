@@ -8,8 +8,8 @@ import { combineReducers } from "@reduxjs/toolkit";
 
 // 이 부분에 reducer 추가
 const rootReducer = combineReducers({
-  authReducer: userdataReducer.reducer, // .reducer 붙여야 타입에러가 안남
-  themeModeReducer: themeModeReducer.reducer
+  auth: userdataReducer.reducer, // .reducer 붙여야 타입에러가 안남
+  themeMode: themeModeReducer.reducer
 })
 
 // storage에 저장하기 위해서 persistConfig 생성
@@ -22,6 +22,7 @@ const persistConfig= {
 // redux-persist + redux 모듈을 종합하여 persist 반환
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// redux-persist store
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

@@ -11,6 +11,7 @@ interface TextAreaProps {
     type?: 'text';
     placeholder ?: string;
     id ?: string;
+    value ?: string;
 
     // 별개 스타일링
     // text area
@@ -26,9 +27,7 @@ const StyledTextArea = styled.textarea<TextAreaProps>`
   outline: none;
   border: none;
   border-radius: 3rem;   
-  padding-top: 1rem; 
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 2rem;
   text-align: start;
   resize: none;
 
@@ -63,7 +62,7 @@ const StyledTextArea = styled.textarea<TextAreaProps>`
       border-radius: 0.75rem;    
       padding-left: 1rem;
       padding-right: 1rem;
-      background-color: rgb(249, 249, 249, 100%); 
+      background-color: rgb(249, 249, 249, 50%); 
       width: 100%;
       height: 10rem;
       margin-top: 0.5rem;

@@ -14,7 +14,7 @@ const ChalCreatePage = () => {
 
   return (
     <>
-    <NavTitleBar />
+    <NavTitleBar>새 챌린지</NavTitleBar>
     <ChalCreate />
     </>
   )
