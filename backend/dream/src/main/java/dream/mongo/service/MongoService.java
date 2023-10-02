@@ -2,10 +2,7 @@ package dream.mongo.service;
 
 import dream.card.service.DreamAnalysisService;
 import dream.common.domain.ResultTemplate;
-import dream.mongo.domain.DataDream;
-import dream.mongo.domain.RequestDream;
-import dream.mongo.domain.ResponseDream;
-import dream.mongo.domain.Dream;
+import dream.mongo.domain.*;
 import dream.mongo.repository.MongoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,19 +31,14 @@ public class MongoService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 
-    public ResultTemplate findBest(String title) {
+    public ResultTemplate findBest(RequestTestKeyword request) {
 
-        RequestDream requestDream = new RequestDream("비둘기가 방에 들어갑니다.",
-                54, 23);
 
-        String regTitle = ".*" + title + ".*";
-        List<Dream> list = mongoRepository.findByDreamRegex(title);
-        List<String> strList = new ArrayList<>();
-        strList.add("비둘기");
-        strList.add("방");
-        strList.add("들어가다");
-        List<Dream> list2 = dreamAnalysisService.findDreamsWithKeywords(strList);
-        log.info("list size2 : {}", list2.size());
+        RequestDream requestDream = new RequestDream(request.getContent(),
+                request.getPositive(), request.getNegative());
+
+        List<String> strList = request.getKeywords();
+        List<Dream> list = dreamAnalysisService.findDreamsWithKeywords(strList);
         double max = Integer.MIN_VALUE;
         int idx = -1;
         for(int i = 0; i < list.size(); i++){
@@ -69,6 +61,10 @@ public class MongoService {
             }
         }
 
+        for (String s : strList) {
+            log.info("keyword : " + s);
+        }
+        log.info("list size : {}", list.size());
         ResponseDream response = ResponseDream.from(requestDream.getSentence(), list.get(idx).getDream(),
                 list.get(idx).getAnalysis().getDreamTelling(), list.get(idx).getAnalysis().getDreamTellingPositivePoint());
 

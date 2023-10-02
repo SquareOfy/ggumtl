@@ -163,7 +163,7 @@ public class DreamCardService {
         dreamCardRepository.save(makeDreamCard);
 
         // 챌린지 추천할꺼 추가
-        ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard, recommendChallenges);
+        ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard, recommendChallenges, responseDreamAnalysis);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
