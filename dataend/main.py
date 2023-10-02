@@ -23,6 +23,11 @@ class DreamModel(BaseModel):
 
 app = FastAPI()
 
+headers = {
+    "Content-Type": "application/json"
+}
+
+
 # 모든 도메인 허용
 app.add_middleware(
     CORSMiddleware,
@@ -78,6 +83,6 @@ def dreamProcessing(data: DreamModel):
             "wordKeywords": wordKeywords
         }
     }
-    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData, files=files)
+    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData, files=files, headers=headers)
     print(response)
     return response

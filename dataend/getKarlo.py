@@ -164,4 +164,4 @@ def getKarloImgPath(text):
     print(tmp_file_path, "경로")
     return tmp_file_path
 
-getKarloImgPath(prompt)
+# getKarloImgPath(prompt)

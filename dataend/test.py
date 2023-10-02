@@ -47,6 +47,11 @@ def root():
 
 # exit()
 
+headers = {
+    "Content-Type": "application/json"
+}
+
+
 async def request(client):
     response = await client.get(URL)
     return response.text
@@ -76,7 +81,7 @@ def dreamProcessing(data):
         "keywords": ["학업", "재물"],
         "wordKeywords": wordKeywords
     }
-    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData, files=files)
+    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData, files=files, headers=headers)
     print(response)
     return response
 
