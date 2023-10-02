@@ -99,7 +99,7 @@ const AuctionMainList = () => {
           setArriveEnd={setArriveEnd}
           component={
             auctionList.map((item, idx) => (
-              <AuctionCard auctionCard={item} key={item.auctionId} />
+              <AuctionCard auctionCard={item} key={idx} />
             ))}
           />
         }

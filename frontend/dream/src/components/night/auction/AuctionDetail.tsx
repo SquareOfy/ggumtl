@@ -45,6 +45,7 @@ interface AuctionDetailType {
   startAuctionMoney : number; 
   immediatelyBuyMoney : number;
   endedAt : "2023-09-09T00:00";
+  createdAt : string;
   askingMoney : number; // 호가
   biddingCount : number; // 입찰횟수
   dreamCardId: number;
@@ -173,7 +174,7 @@ const AuctionDetail = () => {
         <Text $isBold $MBHalf>현재 최고가</Text>
       <Wrap $spaceBetweenWrap>
         <Text $isBold>$ {auctionItem?.biddingMoney}</Text> 
-        <Text>{changeDateHour(auctionItem?.endedAt)}</Text> 
+        <Text>{changeDateHour(auctionItem?.createdAt)}</Text> 
       </Wrap>
       </AuctionBox>
     </Container>
