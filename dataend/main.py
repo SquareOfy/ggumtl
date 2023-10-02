@@ -54,6 +54,7 @@ async def request(client):
 @app.post("/data/night/dream/create")
 def dreamProcessing(data: DreamModel):
     # 받은 데이터 처리
+    print(data, "널 좀 알고 싶다...!")
     dreamCardContent = data.dreamCardContent
     dreamCardAuthor = data.dreamCardAuthor
     isShow = data.isShow
@@ -75,9 +76,8 @@ def dreamProcessing(data: DreamModel):
             "negativePoint": negativePoint,
             "keywords": ["학업", "재물"],
             "wordKeywords": wordKeywords
-        },
-        "file": files
+        }
     }
-    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData)
+    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData, files=files)
     print(response)
     return response
