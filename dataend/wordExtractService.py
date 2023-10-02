@@ -12,6 +12,7 @@ def remove_special_charaters(strs):
 
 okt = Okt()
 
+
 # 불용어 처리
 input_path = "./stopwords.txt"
 stopTxtFile = open(input_path, 'r', encoding='utf-8')
@@ -22,7 +23,6 @@ lines = stopTxtFile.readlines()
 for line in lines:
     line = line.strip()
     stopWords.add(line)
-
 def getDreamKeywords(text):
     preText = remove_special_charaters(text)
     oktText = okt.morphs(preText, stem=True)

@@ -54,9 +54,9 @@ async def request(client):
 @app.post("/data/night/dream/create")
 def dreamProcessing(data: DreamModel):
     # 받은 데이터 처리
-    dreamCardContent = data.dreamCardContent.decode('utf-8')
+    dreamCardContent = data.dreamCardContent
     dreamCardAuthor = data.dreamCardAuthor
-    isShow = data.isShow.decode('utf-8')
+    isShow = data.isShow
     wordKeywords = getDreamKeywords(dreamCardContent)
     positivePoint, negativePoint = getEmotionScore(dreamCardContent)
     

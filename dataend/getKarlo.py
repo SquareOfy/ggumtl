@@ -157,9 +157,10 @@ def getKarloImgPath(text):
     rlt = Image.open(urllib.request.urlopen(r.get("images")[0].get('image')))
     rlt.save("mmm.png", format="PNG") # 이건 불필요
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp_file:
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".png", dir="./tmp") as tmp_file:
         rlt.save(tmp_file, format="PNG")
         tmp_file_path = tmp_file.name
+        # tmp_file.close()
     print(tmp_file_path, "경로")
     return tmp_file_path
 

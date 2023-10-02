@@ -65,6 +65,7 @@ def dreamProcessing(data):
 
     img_path = getKarloImgPath(prompt)
     files = {'file': ("karloImage.png", open(img_path, 'rb'), "image/png")}
+    print(files, "난 파일")
 
     toJavaData = {
         "dreamCardContent": dreamCardContent,
