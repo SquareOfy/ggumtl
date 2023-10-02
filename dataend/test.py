@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from typing import List
 import httpx 
+import json
 import asyncio # 비동기 통신
 import requests
 
