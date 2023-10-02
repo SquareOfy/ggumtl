@@ -29,8 +29,8 @@ public class ChallengeController {
     }
 
     @GetMapping("/recommend")
-    public ResultTemplate getRecommendChallenge() {
-        return challengeService.getRecommendChallenge(1L);
+    public ResultTemplate getRecommendChallenge(@UserInfo User user) {
+        return challengeService.getRecommendChallenge(user.getUserId());
     }
 
 
