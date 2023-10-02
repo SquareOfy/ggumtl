@@ -16,4 +16,5 @@ public class RequestAuction {
     private LocalDateTime endedAt;
     private int immediatelyBuyMoney;
     private int startAuctionMoney;
+
 }

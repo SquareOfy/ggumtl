@@ -1,5 +1,6 @@
 package dream.auction.controller;
 
+import dream.auction.dto.request.RequestAuction;
 import dream.auction.dto.request.RequestBidding;
 import dream.auction.dto.request.RequestCardReview;
 import dream.auction.dto.request.RequestChangeOwner;
@@ -17,9 +18,11 @@ public class AuctionController {
     private final AuctionService auctionService;
 
     @PostMapping(value = "/{dreamCardId}")
-    public ResultTemplate postAuction(@PathVariable("dreamCardId") long dreamCardId){
+    public ResultTemplate postAuction(@PathVariable("dreamCardId") Long dreamCardId,
+                                      @RequestBody RequestAuction request,
+                                      Long userId){
 
-        return auctionService.postAuction(dreamCardId);
+        return auctionService.postAuction(dreamCardId, request, 1L);
     }
 
     @GetMapping(value = "/list")
