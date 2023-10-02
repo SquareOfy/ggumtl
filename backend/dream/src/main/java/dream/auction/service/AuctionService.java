@@ -68,9 +68,9 @@ public class AuctionService {
     }
 
     // 전체 경매등록 카드들 조회 함수
-    public ResultTemplate getAllAuctionList(Long lastItemId, int size) {
+    public ResultTemplate getAllAuctionList(Long lastItemId, int size, String keyword) {
 
-        List<Auction> findAuctions = auctionQueryRepository.findAuctionPaging(lastItemId, size);
+        List<Auction> findAuctions = auctionQueryRepository.findAuctionPaging(lastItemId, size, keyword);
         if (findAuctions.isEmpty()) throw new NotFoundException(NotFoundException.AUCTION_LIST_NOT_FOUND);
         List<CardKeyword> cardKeyword = findAuctions.get(0).getDreamCard().getCardKeyword();
 

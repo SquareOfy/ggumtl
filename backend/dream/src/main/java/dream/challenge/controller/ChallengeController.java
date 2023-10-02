@@ -28,6 +28,12 @@ public class ChallengeController {
         return challengeService.getDayMain(keywordId, lastItemId, size);
     }
 
+    @GetMapping("/recommend")
+    public ResultTemplate getRecommendChallenge() {
+        return challengeService.getRecommendChallenge(1L);
+    }
+
+
     @GetMapping(value = "/keyword/list")
     public ResultTemplate getAllCategory() {
         return challengeService.getAllCategory();

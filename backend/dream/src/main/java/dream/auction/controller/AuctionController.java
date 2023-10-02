@@ -28,15 +28,10 @@ public class AuctionController {
 
     @GetMapping(value = "/api/auction/list")
     public ResultTemplate getAllAuctionList(@RequestParam(value = "lastItemId", required = false) Long lastItemId,
-                                            @RequestParam("size") int size){
+                                            @RequestParam("size") int size,
+                                            @RequestParam(value = "keyword", required = false) String keyword){
 
-        return auctionService.getAllAuctionList(lastItemId, size);
-    }
-
-    @GetMapping(value = "/api/auction/list/{searchKeyword}")
-    public ResultTemplate getAuctionListByKeyword(@PathVariable("searchKeyword") String keyword){
-
-        return auctionService.getAuctionListByKeyword(keyword);
+        return auctionService.getAllAuctionList(lastItemId, size, keyword);
     }
 
     @GetMapping(value = "/api/auction/detail/{auctionId}")

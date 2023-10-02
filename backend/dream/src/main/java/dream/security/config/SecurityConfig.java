@@ -62,14 +62,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-
-                .antMatchers("/ws-stomp/**", "/login/**",  "/oauth2/**", "/login/oauth2/code/kakao",
-                "/api/mongo/**", "/api/s3/**", "/css/**", "/images/**", "/js/**", "/h2-console/**")
-                .permitAll()
+                .antMatchers("/", "/css/**", "images/**", "/js/**", "/h2-console/***").permitAll()
+                .antMatchers("/ws-stomp/**", "/login/**", "/api/oauth2/**").permitAll()
+                .antMatchers("/api/s3/**").permitAll()
+                .antMatchers("/api/mongo/**").permitAll()
                 .antMatchers("/api/user/signup/extra-info").hasRole("GUEST")
                 .antMatchers("/api/**").hasRole("USER")
                 .and()
-
 
                 .oauth2Login()
                 .successHandler(socialLoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
