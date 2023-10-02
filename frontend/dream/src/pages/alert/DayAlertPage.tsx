@@ -13,7 +13,7 @@ const DayAlertPage = () => {
 
   return (
     <>
-    <NavTitleBar></NavTitleBar>
+    <NavTitleBar>알림</NavTitleBar>
     <AlertMain/>
     {/* <FooterBar></FooterBar> */}
     </>
