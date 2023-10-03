@@ -21,7 +21,7 @@ from tempfile import NamedTemporaryFile
 # 꿈 데이터
 class DreamModel(BaseModel):
     dreamCardContent: str
-    dreamCardAuthor: int
+    dreamCardAuthor: float
     isShow: str
 
 app = FastAPI()
@@ -58,9 +58,7 @@ def root():
 
 # exit()
 
-async def request(client):
-    response = await client.get(URL)
-    return response.text
+
 
 
 @app.post("/data/night/dream/create")
@@ -81,9 +79,6 @@ def dreamProcessing(data: DreamModel):
     # files = {'file': ("karloImage.png", open(img_path, 'rb'), "image/png")} #
 
     # 여긴 내 가정. (파일 전용 경로 필요)
-    with open(img_path, "rb") as file:
-        files = {"file": (img_path, file)}
-        response = requests.post("서버주소", files=file, headers=file_headers)
     # 내거 마지막
 
     # 이걸 대신하기.
@@ -100,8 +95,16 @@ def dreamProcessing(data: DreamModel):
             "wordKeywords": wordKeywords
         }
     }
-    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData, files=files, headers=headers)
-    print(response, "응답!")
+    print(toJavaData, "자바로 갈 데이터")
+    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData, headers=headers)
+    print(response["data"], "응답!")
+    print(response["data"]["dreamCardId"], "번호..?!")
+    dreamCardId = response["data"]["dreamCardId"]
 
+    with open(img_path, "rb") as file:
+        files = {"file": (img_path, file)}
+    requests.post(f"https://j9b301.p.ssafy.io/api/s3/dream/image/{dreamCardId}", files=files, headers=file_headers)
+    print(files, "files#########")
+    
     return response
 
