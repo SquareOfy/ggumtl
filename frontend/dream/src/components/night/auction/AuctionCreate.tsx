@@ -137,7 +137,7 @@ const AuctionCreate = () => {
     <MarginBot/>
 
     {/* 꿈 기록과 해몽 바뀌는 곳 ~ props 필요 */}
-    <DreamRecordContentsTab />
+    {/* <DreamRecordContentsTab setReverseCardData={setReverseCardData}/> */}
 
     <Wrap $nightBotButtonWrap>
       <div>

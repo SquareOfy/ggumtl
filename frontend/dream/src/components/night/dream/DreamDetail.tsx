@@ -7,21 +7,22 @@
 // 공개 // 버튼 2개
 
 // 리액트
-import React from "react";
+import React, { useState } from "react";
 
 // 컴포넌트
 import DreamRecordContentsTab from "./DreamRecordContentsTab";
-import Button from "components/common/Button";
 import NightFlipCard from "../nightcommon/NightFlipCard";
+import { ReverseCardType } from "../home/NightHomeItem";
 
 // 스타일
 
 const DreamDetail = () => {
+  const [reverseCardData, setReverseCardData] = useState<ReverseCardType>()
 
   return (
     <>
-    <NightFlipCard/>
-    <DreamRecordContentsTab />
+    <NightFlipCard reverseCardData={reverseCardData}/>
+    <DreamRecordContentsTab setReverseCardData={setReverseCardData}/>
     </>
   )
 }
