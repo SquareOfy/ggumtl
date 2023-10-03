@@ -151,10 +151,10 @@ public class DreamCardService {
         }
 
         List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
-        log.info("{}", keywords.size());
-        for (DreamKeyword keyword : keywords) {
-            log.info("{}", keyword.getKeyword());
-        }
+//        log.info("{}", keywords.size());
+//        for (DreamKeyword keyword : keywords) {
+//            log.info("{}", keyword.getKeyword());
+//        }
 
         List<Challenge> recommendChallenges = challengeRepository.findRecommendChallengeByDreamCard(request.getKeywords())
                 .stream().limit(5).collect(Collectors.toList());
