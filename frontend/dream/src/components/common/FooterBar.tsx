@@ -65,7 +65,7 @@ const FooterBar = () => {
         {nightDayMode ? (
           <IconAuction onClick={()=>{navigate("/night/auction/list")}}/>
           ):(
-          <IconBook onClick={()=>{navigate("/day/main")}}/>
+          <IconBook onClick={()=>{navigate("/day/challenge/recommend")}}/>
         )}
         <IconUser onClick={()=>{
           navigate(nightDayMode ? `/night/profile/${currentUserId}`:`/day/profile/${currentUserId}`)

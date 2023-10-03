@@ -23,6 +23,7 @@ interface BoxProps {
   $chalManageBox ?: boolean;  
   $timeCapsuleContentBox ?: boolean;
   $tiemCapsuleChalTitleBox ?: boolean;
+  $recommendChalBox ?: boolean;
 
   // 모드 관련
   $night ?: boolean;
@@ -262,6 +263,24 @@ ${(props) => props.$timeCapsuleContentBox &&
     background-color: rgb(249, 249, 249, 50%); 
   `
 }
+// 챌린지 추천 박스
+${(props) => props.$recommendChalBox &&
+  css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    margin-top: 4rem;
+    width: 18rem;
+    height: 50vh;
+    border: 1px solid black;
+    border-radius: 1rem;
+    background-color: rgb(249, 249, 249, 50%); 
+  `
+}
+
+
 
 `;
 
