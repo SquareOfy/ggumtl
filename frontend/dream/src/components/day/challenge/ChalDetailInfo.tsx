@@ -34,7 +34,7 @@ const ChalDetailInfo: React.FC<ChalDetailInfoProps> = (props) => {
 
   return (
     <Container $chalDetail>
-      <Text>{chalDetail.challengeContent}</Text>
+      <Text $chalDetailTitle>{chalDetail.challengeContent}</Text>
       {/* 기간 참여자 카테고리 */}
       <Container $spaceBetweenContainer>
         <Box $tripleWidth  $chalDetailBox>

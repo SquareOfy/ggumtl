@@ -12,7 +12,7 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -69,13 +69,11 @@ registerRoute(
   })
 );
 
-// This allows the web app to trigger skipWaiting via
-// registration.waiting.postMessage({type: 'SKIP_WAITING'})
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
+registerRoute(
+  'https://j9b301.p.ssafy.io/oauth2/authorization/kakao', // 대상 URL
+  new NetworkOnly()
+)
+
 
 // Any other custom service worker logic can go here.
 
@@ -86,15 +84,16 @@ self.addEventListener('fetch', event => {
   console.log('현재 url', currentUrl)
   console.log('event request', event.request)
 
-  if (currentUrl.includes('/oauth2')) {
-    console.log('현재 url에 /oauth2 들어있음')
-    event.respondWith(fetch(event.request))
-    return;
-  }
+  // if (currentUrl.includes('/oauth2')) {
+  //   console.log('현재 url에 /oauth2 들어있음')
+  //   const newRequest = new Request(event.request, {referrer: 'your-new-referrer-url'});
+  //   event.respondWith(fetch(newRequest));
+  //   return;
+  // }
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
-  if (checkurl.includes('/api') || checkurl.includes('/oauth2')) {
-    console.log(' checkurl에 api oauth2 들어있음')
+  if (checkurl.includes('/api') || checkurl.includes('/oauth/') || checkurl.includes('/oauth2')) {
+    console.log(' checkurl에 api oauth oauth2 들어있음')
     // event.respondWith(fetch(event.request));
     const newRequest = new Request(event.request, {referrer: 'your-new-referrer-url'});
     event.respondWith(fetch(newRequest));
@@ -112,3 +111,4 @@ self.addEventListener('fetch', event => {
       })
   );
 });
+

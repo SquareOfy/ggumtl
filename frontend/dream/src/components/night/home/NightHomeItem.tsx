@@ -1,5 +1,5 @@
 // 리액트
-import React, {useEffect, useState} from "react";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 // 외부 파일
@@ -58,7 +58,8 @@ const MarginBot = styled.div`
 
 // 타입
 export interface NightHomeItemProps {
-  cardData : NightHomeItemType
+  cardData : NightHomeItemType;
+  // setUpdated :Dispatch<SetStateAction<boolean>>;
 }
 
 export interface ReverseCardType {
@@ -79,16 +80,21 @@ export interface ReverseCardType {
 const NightHomeItem = ({cardData}:NightHomeItemProps) => {
   const navigation = useNavigate()
   const [reverseCard, setReverseCard] = useState<ReverseCardType | null>(null)
+  const [isLikeUpdated, setIsLikeUpdated] = useState<boolean>(false)
 
-  useEffect(()=> {
-    // basicHttp(`/night/dream/detail/${cardData.dreamCardId}`)
+  const getAxios = () => {
     tokenHttp.get(`/night/dream/detail/${cardData.dreamCardId}`)
     .then(res=> {
       setReverseCard(res.data.data)
-      // console.log(res.data.data)
+      console.log("밤 홈 아이템 : ", res)
     })
     .catch(err => console.log(err, "아이템 에러"))
-  }, [])
+  }
+
+  useEffect(()=> {
+    getAxios()
+    setIsLikeUpdated(false)
+  }, [, setIsLikeUpdated, isLikeUpdated])
 
   
   // 꿈 주인 유저 프로필로 이동
@@ -122,7 +128,9 @@ const NightHomeItem = ({cardData}:NightHomeItemProps) => {
       {/* 좋아요 버튼 */}
         <Heart 
         isLike={cardData.like}
+        // setIsLikeUpdated={setIsLikeUpdated}
         likedNumber={cardData.likedNumber}
+        dreamCardId={cardData.dreamCardId}
         />
     </Container>
     <MarginBot/>

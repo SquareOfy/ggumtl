@@ -19,6 +19,7 @@ import { IoMicOutline, IoMicSharp } from "react-icons/io5"
 import Wrap from "style/Wrap";
 import "components/night/dream/DreamCreate.css"
 import Text from "style/Text";
+import { useNavigate } from "react-router-dom";
 
 const DreamCreateContainer = styled.div`
   margin: 1.5rem 0.5rem;
@@ -50,7 +51,7 @@ const IconRecording = styled(IoMicSharp)`
 `
 
 const DreamCreate = () => {
-
+  const navigate = useNavigate()
   const [recordStart, setRecordStart] = useState<boolean>(false); // 녹음 시작
   const [allText, setAllText] = useState<string>(""); // 입력본 + 녹음본 모두 합친 것
   const { startListening, stopListening, accenting, setAccentText, accentText } = SoundToText();
@@ -144,11 +145,10 @@ const DreamCreate = () => {
           </label>
         </div>
         <div>
-          <Button $nightPalePurple>취소</Button>
+          <Button $nightPalePurple onClick={() => navigate(`/night/main`)}>취소</Button>
           <Button 
           $nightPurple
           onClick={sendDreamToPython}
-          // onClick={} // Karlo 백 서버 API 연결 - 보낼 데이터 : allText
           >등록</Button>
         </div>
       </Wrap>

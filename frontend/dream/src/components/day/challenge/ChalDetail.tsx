@@ -65,7 +65,7 @@ const ChalDetail = () => {
 
   const navigate = useNavigate()
   const params = useParams()
-  const currentChallengeId = params.challengeId
+  const currentChallengeId = Number(params.challengeId)
 
   const [chalDetailData,setChalDetailData] = useState<ChalDetailDataType>(initialChalDetail.chalDetailData)
   const [chalParticipate, setChalParticipate] = useState<boolean>(true)
@@ -85,7 +85,7 @@ const ChalDetail = () => {
 
   return (
     <Container $dayBaseContainer>
-    {/* 공부흔적 남기기 */}
+    {/* 디테일 정보들 */}
     <ChalDetailInfo chalDetailData={chalDetailData}/>
 
     {/* 참여하기 버튼 */}
@@ -107,7 +107,7 @@ const ChalDetail = () => {
       )
     }
     {/* 인증글 목록 */}
-    <ChalCertArticleList />
+    <ChalCertArticleList currentChallengeId={currentChallengeId}/>
     </Container>
   )
 }

@@ -24,12 +24,10 @@ type Config = {
 };
 
 export function register(config?: Config) {
-  console.log('NODE_ENV 모드',process.env.NODE_ENV)
-  console.log('navigator', navigator)
+  // if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available `in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
-    console.log('2단계: publicUrl',publicUrl)
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin
       // from what our page is served on. This might happen if a CDN is used to
@@ -39,7 +37,6 @@ export function register(config?: Config) {
 
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
-      console.log('load 발생',swUrl)
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config);

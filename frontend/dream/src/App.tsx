@@ -35,6 +35,7 @@ import ChalManagePage from 'pages/day/challenge/ChalManagePage';
 import ChalManageDetailPage from 'pages/day/challenge/ChalManageDetailPage';
 import ChalCreateCertPage from 'pages/day/challenge/ChalCreateCertPage';
 import ChalCapsuleListPage from 'pages/day/capsule/ChalCapsuleListPage';
+import RecommendChalPage from 'pages/day/recommend/RecommendChalPage';
 import DayAlertPage from 'pages/alert/DayAlertPage';
 import BackgroundImage from 'style/backgroundImage';
 import DayProfilePage from 'pages/day/profile/DayProfilePage';
@@ -136,6 +137,9 @@ function App() {
         <Route path="/day/mychallenge/:challengeId" element={<ChalManageDetailPage/>}/>
         {/* 인증글 올리기 */}
         <Route path="/day/mychallenge/:challengeId/cert/create" element={<ChalCreateCertPage/>}/>        
+
+        {/* 가장 잘 맞는 챌린지 추천 */}
+        <Route path="/day/challenge/recommend" element={<RecommendChalPage/>}/>
 
         {/* 낮 프로필 */}        
         <Route path="/day/profile/:userId" element={<DayProfilePage/>}/>

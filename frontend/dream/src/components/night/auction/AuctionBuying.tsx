@@ -7,6 +7,7 @@
 // 2개 텍스트 박스(AuctionDetail 복붙)
 // 리액트
 import React, {useState} from "react";
+import { useSelector } from 'react-redux'
 
 // 컴포넌트
 import Button from "components/common/Button";
@@ -17,6 +18,7 @@ import Image from "style/Image";
 import Container from "style/Container";
 import Text from "style/Text";
 import Input from "style/Input";
+import { RootState } from "store";
 
 // // push 알림
 // import { getMessaging, onMessage } from 'firebase/messaging';
@@ -51,8 +53,8 @@ interface AuctionBuyingProps {
 }
 
 const AuctionBuying = ({biddingMoney, askingMoney} :AuctionBuyingProps) => {
+  const userdata = useSelector((state: RootState) => state.auth.userdata);
 
-  const point :number = 8000 // 서버에서받을 값(내 꿈머니)
   // const biddingMoney :number = 5000 // 서버에서 받을 값
   const [myBiddingMoney, setMyBiddingMoney] = useState<number>(biddingMoney)
   const [currentAskingMoney, setAskingMoney] = useState<number>(askingMoney)
@@ -74,7 +76,7 @@ const AuctionBuying = ({biddingMoney, askingMoney} :AuctionBuyingProps) => {
       setLowerMoney(true)
       setLackMoney(false)
       return
-    } else if (e.currentTarget.value > point) {
+    } else if (e.currentTarget.value > userdata.point) {
       console.log("보유액 부족")
       setMyBiddingMoney(biddingMoney) // 여기 최초가로
       setLowerMoney(false)
@@ -108,7 +110,7 @@ const AuctionBuying = ({biddingMoney, askingMoney} :AuctionBuyingProps) => {
       </Container>
 
       <AuctionBidContainer>
-        <Text $nightKeword $nightWhite>나의 꿈머니: ${point}</Text>
+        <Text $nightKeword $nightWhite>나의 꿈머니: ${userdata.point}</Text>
         <BiddingWrap>
           <Input $nightColor $biddingValue 
           type="number"
