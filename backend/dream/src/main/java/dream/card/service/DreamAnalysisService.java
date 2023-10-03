@@ -46,18 +46,18 @@ public class DreamAnalysisService {
 
     public ResponseDreamAnalysis processAnalysis(RequestDreamCardDetail requestDream) {
 
-        for(int i = 0; i < requestDream.getWordKeywords().size(); i++){
-            log.info(requestDream.getWordKeywords().get(i));
-        }
+//        for(int i = 0; i < requestDream.getWordKeywords().size(); i++){
+//            log.info(requestDream.getWordKeywords().get(i));
+//        }
 
         // 동적 쿼리 날려서 Mongo에서 해당 ROW 다 가져오기
         List<Dream> list = findDreamsWithKeywords(requestDream.getWordKeywords());
         if (list.isEmpty()) return null;
         log.info("findDreamsWithKeywordsListSize : {}", list.size());
-        for (Dream dream : list) {
-            log.info("찾은 꿈 내용 : " + dream.getDream());
-            log.info("찾은 꿈 해 내용 : " + dream.getAnalysis().getDreamTelling());
-        }
+//        for (Dream dream : list) {
+//            log.info("찾은 꿈 내용 : " + dream.getDream());
+//            log.info("찾은 꿈 해 내용 : " + dream.getAnalysis().getDreamTelling());
+//        }
 
         Dream simillarDream = findBestSimillarDream(requestDream, list);
 
@@ -123,11 +123,11 @@ public class DreamAnalysisService {
         double maxSimillarPoint = Integer.MIN_VALUE;
         int maxSimillarDreamIndex = -1;
         for(int i = 0; i < list.size(); i++){
-            log.info("내 꿈 내용 : " + requestDream.getDreamCardContent());
-            log.info("데이터 꿈 내용 : " + list.get(i).getAnalysis().getDreamTelling());
+//            log.info("내 꿈 내용 : " + requestDream.getDreamCardContent());
+//            log.info("데이터 꿈 내용 : " + list.get(i).getAnalysis().getDreamTelling());
             double analysisPoint = analysis(requestDream, list.get(i));
-            log.info("두 꿈의 최종 유사도 : " + analysisPoint);
-            log.info("--------------------------------");
+//            log.info("두 꿈의 최종 유사도 : " + analysisPoint);
+//            log.info("--------------------------------");
             if (maxSimillarPoint < analysisPoint) {
                 maxSimillarPoint = analysisPoint;
                 maxSimillarDreamIndex = i;
