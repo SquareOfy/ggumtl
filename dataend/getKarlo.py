@@ -31,9 +31,9 @@ CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
 def translateDreamKeywords(kewords):
     encText = urllib.parse.quote(str(kewords))
     data= "source=ko&target=en&text="+encText
-    request = urllib.request(papago_URL)
-    request.add_header("X-Naver-Client-Id".CLIENT_ID)
-    request.add_header("X-Naver-Client-Secret".CLIENT_SECRET)
+    request = urllib.request.Request(papago_URL)
+    request.add_header("X-Naver-Client-Id", CLIENT_ID)
+    request.add_header("X-Naver-Client-Secret", CLIENT_SECRET)
     response = urllib.request.urlopen(request, data=data.encode("utf-8"))
     rescode = response.getcode()
 
@@ -46,9 +46,11 @@ def translateDreamKeywords(kewords):
     json_response = response_body.decode("utf-8")
     response_dict = json.loads(json_response)
 
-    translated_text = response_dict["message"]["result"]["translatedText"] + ", cute style"
+    translated_text = response_dict["message"]["result"]["translatedText"]
 
     return translated_text
+
+
 
 # karlo
 # def postKarloRequest(text):
@@ -160,7 +162,7 @@ def getKarloImgPath(text):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".png", dir="./tmp") as tmp_file:
         rlt.save(tmp_file, format="PNG")
         tmp_file_path = tmp_file.name
-        # tmp_file.close()
+        tmp_file.close()
     print(tmp_file_path, "경로")
     return tmp_file_path
 
