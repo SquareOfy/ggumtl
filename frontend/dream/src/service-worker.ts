@@ -83,7 +83,7 @@ self.addEventListener('fetch', event => {
 
   if (currentUrl.includes('/oauth2')) {
     console.log('현재 url에 /oauth2 들어있음')
-    const newRequest = new Request(event.request, {referrer: 'your-new-referrer-url'});
+    const newRequest = new Request(currentUrl)
     event.respondWith(fetch(newRequest));
     return;
   }
