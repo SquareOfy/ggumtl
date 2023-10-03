@@ -136,14 +136,15 @@ const AuctionBuying = ({biddingMoney, askingMoney} :AuctionBuyingProps) => {
 
   useEffect(() => {
     client.onConnect = (frame) => {
-      client.subscribe(`/sub/auction/${auctionId}`, (msg)=> {
+      client.subscribe(`/sub/auction/${Number(auctionId)}`, (msg)=> {
+      console.log(msg, "너 왔니? 메세지")
       const newPriceBody = JSON.parse(msg.body)
       const newPrice = newPriceBody.biddingMoney
       setMyBiddingMoney(newPrice)
       })
 
       return () => {
-        client.unsubscribe(`/sub/auction/${auctionId}`)
+        client.unsubscribe(`/sub/auction/${Number(auctionId)}`)
       }
     }
 
@@ -189,12 +190,13 @@ const AuctionBuying = ({biddingMoney, askingMoney} :AuctionBuyingProps) => {
 
   const sendBiddingMoney = () => {
     const msgBody = {
-      auctionId,
+      auctionId: Number(auctionId),
       biddingMoney: myBiddingMoney,
       userId,
       askingMoney
     }
     client.send("/pub/auction/bidding", {}, JSON.stringify(msgBody))
+    console.log("전송완료", msgBody)
   }
 
   // push 알림 확인
