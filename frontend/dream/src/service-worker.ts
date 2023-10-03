@@ -12,7 +12,7 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -69,6 +69,10 @@ registerRoute(
   })
 );
 
+registerRoute(
+  'https://j9b301.p.ssafy.io/oauth2/authorization/kakao', // 대상 URL
+  new NetworkOnly()
+)
 
 
 // Any other custom service worker logic can go here.
