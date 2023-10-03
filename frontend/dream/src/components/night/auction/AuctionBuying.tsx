@@ -81,7 +81,7 @@ const AuctionBuying = ({biddingMoney, askingMoney} :AuctionBuyingProps) => {
 
 
   // 웹소캣(2)
-  const socket = new SockJS("https://j9b301.p.ssafy.io:9090/ws-stomp")
+  const socket = new SockJS("https://j9b301.p.ssafy.io/ws-stomp")
 
   const client = Stomp.over(socket)
   client.connectHeaders = {
