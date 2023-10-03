@@ -106,16 +106,6 @@ public class ChallengeController {
         return challengeService.writeDetailPossible(user, challengeId);
     }
 
-    @PostMapping(value = "/challenge/new")
-    public ResultTemplate postChallenge(@RequestBody RequestChallenge request, @UserInfo User user) {
-
-//        User user = userRepository.findByUserId(2L).
-//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
-
-        Long challengeId = challengeService.postChallenge(user, request);
-
-        return challengeService.postChallengeKeyword(challengeId, request);
-    }
 
     @GetMapping(value = "/challenge/detail/{detailId}/comment")
     public ResultTemplate getComments(@PathVariable("detailId") Long detailId,
