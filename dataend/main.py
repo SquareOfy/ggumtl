@@ -1,6 +1,6 @@
 # main.py
 
-from fastapi import FastAPI 
+from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from typing import List
@@ -10,12 +10,16 @@ import requests
 
 from pydantic import BaseModel
 
+# 내가 만든 함수
+from wordExtractService import getDreamKeywords
+from emotionAnalysisService import getEmotionScore
+from getKarlo import getKarloImgPath
 
 # 꿈 데이터
 class DreamModel(BaseModel):
     dreamCardContent: str
     dreamCardAuthor: int
-    isShow: bool
+    isShow: str
 
 app = FastAPI()
 
@@ -52,25 +56,25 @@ async def dreamProcessing(data: DreamModel):
     # 받은 데이터 처리
     dreamCardContent = data.dreamCardContent
     dreamCardAuthor = data.dreamCardAuthor
-    isShow = "T" if data.isShow else "F"
-    print("ㅋㅋㅋㅋ")
-    toJavaData = {
-        "dreamCardDetail": {
-            "dreamCardContent": dreamCardContent,
-            "dreamCardAuthor": dreamCardAuthor,
-            "isShow": isShow,
-            "positivePoint": 50,
-            "negativePoint": 30,
-            "keywords": ["학업", "재물"],
-            "wordKeywords": ["돈", "부자", "공부"]
-        }
-        ,
-    }
-    response1 = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', toJavaData, files=None)
-    response2 = requests.post('{URL}/s3/dream/new', toJavaData, files=None)
-    response3 = requests.post('/s3/dream/new', toJavaData, files=None)
-    # return {"message": "성공했어!! 옹예!"}
+    isShow = data.isShow
+    wordKeywords = getDreamKeywords(dreamCardContent)
+    positivePoint, negativePoint = getEmotionScore(dreamCardContent)
     
-    return response1
+    # 임시로 넣음. 원래는 번역한 텍스트를 넣어야 해.
+    prompt = "A cat with white fur, floating balloon, by Renoir"
 
+    img_path = getKarloImgPath(prompt)
+    files = {'file': ("karloImage.png", open(img_path, 'rb'), "image/png")}
 
+    toJavaData = {
+        "dreamCardContent": dreamCardContent,
+        "dreamCardAuthor": dreamCardAuthor,
+        "isShow": isShow,
+        "positivePoint": positivePoint,
+        "negativePoint": negativePoint,
+        "keywords": ["학업", "재물"],
+        "wordKeywords": wordKeywords
+    }
+    response = requests.post('https://j9b301.p.ssafy.io/api/s3/dream/new', data=toJavaData, files=files)
+    print(response)
+    return response
