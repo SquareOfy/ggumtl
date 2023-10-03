@@ -83,7 +83,7 @@ self.addEventListener('fetch', event => {
 
   if (currentUrl.includes('/oauth2')) {
     console.log('현재 url에 /oauth2 들어있음')
-    const newRequest = new Request(currentUrl)
+    const newRequest = new Request(event.request, {referrer: 'https://j9b301.p.ssafy.io/oauth2/authorization/kakao'});
     event.respondWith(fetch(newRequest));
     return;
   }
