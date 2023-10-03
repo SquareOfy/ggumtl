@@ -449,4 +449,14 @@ public class ChallengeService {
         }
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
+
+    @Transactional
+    public ResultTemplate postImageName(Long challengeId, String fileName) {
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        challenge.updateImageName(fileName);
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
 }
