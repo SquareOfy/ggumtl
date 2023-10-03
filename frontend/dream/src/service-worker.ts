@@ -47,6 +47,10 @@ registerRoute(
       return false;
     }
 
+    // 여기서 한번 막아보자
+    console.log('url',url)
+    console.log('request', request)
+
     // Return true to signal that we want to use the handler.
     return true;
   },
@@ -69,12 +73,6 @@ registerRoute(
   })
 );
 
-registerRoute(
-  'https://j9b301.p.ssafy.io/oauth2/authorization/kakao', // 대상 URL
-  new NetworkOnly()
-)
-
-
 // Any other custom service worker logic can go here.
 
 self.addEventListener('fetch', event => {
@@ -84,12 +82,12 @@ self.addEventListener('fetch', event => {
   console.log('현재 url', currentUrl)
   console.log('event request', event.request)
 
-  // if (currentUrl.includes('/oauth2')) {
-  //   console.log('현재 url에 /oauth2 들어있음')
-  //   const newRequest = new Request(event.request, {referrer: 'your-new-referrer-url'});
-  //   event.respondWith(fetch(newRequest));
-  //   return;
-  // }
+  if (currentUrl.includes('/oauth2')) {
+    console.log('현재 url에 /oauth2 들어있음')
+    const newRequest = new Request(event.request, {referrer: 'your-new-referrer-url'});
+    event.respondWith(fetch(newRequest));
+    return;
+  }
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
   if (checkurl.includes('/api') || checkurl.includes('/oauth/') || checkurl.includes('/oauth2') || checkurl.includes('projectnoonnu')) {
