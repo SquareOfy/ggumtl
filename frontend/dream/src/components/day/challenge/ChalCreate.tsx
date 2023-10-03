@@ -22,6 +22,9 @@ import basicHttp from "api/basicHttp";
 import { checkWrongInput } from "utils/alert/checkInput";
 import { useNavigate } from "react-router";
 import tokenHttp from "api/tokenHttp";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import dataHttp from "api/dataHttp";
 
 interface categoryListType {
   "keywordId" : number;
@@ -40,6 +43,7 @@ const ChalCreate = () => {
   const [selectCategory, setSelectCategory] = useState<string>('');
   const [selectPeriod, setSelectPeriod] = useState<string>('');
 
+  const userdata = useSelector((state: RootState) => state.auth.userdata);
   
   // 클릭 되어있는지 상태 확인 변수
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)  
@@ -71,13 +75,13 @@ const ChalCreate = () => {
     const challengeData = {
       "challengeTitle" : challengeTitle,
       "challengeContent" : challengeContent,
-      "badgeUrl" : "S3 저장경로",
+      "challengeOwner": userdata.userId,
       "keywordId" : categoryList.indexOf(selectCategory)+1,
       "period" : selectPeriod
     }
-    tokenHttp.post('/day/challenge/new', challengeData)
+    dataHttp.post('/day/challenge/create', challengeData)
       .then((response) => {
-        const challengeId = response.data.data.challengeId
+        const challengeId = response.data
         navigate(`/day/challenge/${challengeId}/timecapsule/create`)
         console.log('== 챌린지 생성 성공 ==', response)
       })

@@ -4,9 +4,9 @@
 
 // 리액트
 import React, { useEffect, useState } from "react";
-
 // 외부
 import dataHttp from "api/dataHttp";
+import { RootState } from "store";
 
 // 컴포넌트
 import SoundToText from "./SoundToText";
@@ -20,6 +20,7 @@ import Wrap from "style/Wrap";
 import "components/night/dream/DreamCreate.css"
 import Text from "style/Text";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const DreamCreateContainer = styled.div`
   margin: 1.5rem 0.5rem;
@@ -56,6 +57,7 @@ const DreamCreate = () => {
   const [allText, setAllText] = useState<string>(""); // 입력본 + 녹음본 모두 합친 것
   const { startListening, stopListening, accenting, setAccentText, accentText } = SoundToText();
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const userId = useSelector((state:RootState) => state.auth.userdata.userId)
   // const [accentRecord, setAccentRecord] = useState<string>("");
   // const [accentScript, setAccentScript] = useState<string>("");
   // const [accentClickable, setAccentClickable] = useState<boolean>(false);
@@ -88,7 +90,7 @@ const DreamCreate = () => {
   // userId
   // const userId:number = 1
   const sendDreamToPython = () => {
-    const dreamCardAuthor:number = 3
+    const dreamCardAuthor:number = userId
     const isShow = isChecked ? "T" : "F"
     const dreamCardContent = allText
     const data = {dreamCardAuthor, isShow, dreamCardContent}
@@ -96,6 +98,8 @@ const DreamCreate = () => {
     dataHttp.post("/night/dream/create", data)
     .then(res => {
       console.log(res, "생성!")
+      console.log(res.data)
+      navigate(`/night/dream/${res.data}`)
     })
     .catch(err => console.log(err))
   }
