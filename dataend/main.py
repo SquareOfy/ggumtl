@@ -18,8 +18,6 @@ from getKarlo import getKarloImgPath, translateDreamKeywords
 
 from tempfile import NamedTemporaryFile
 
-from requests_toolbelt import MultipartEncoder
-
 # 꿈 데이터
 class DreamModel(BaseModel):
     dreamCardContent: str
