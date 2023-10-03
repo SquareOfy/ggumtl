@@ -24,6 +24,14 @@ class DreamModel(BaseModel):
     dreamCardAuthor: int
     isShow: str
 
+# 챌린지 생성
+class ChalModel(BaseModel):
+    challengeTitle: str
+    challengeContent: str
+    keywordId : int
+    period : str
+    challengeOwner: int
+
 app = FastAPI()
 
 headers = {
@@ -134,3 +142,29 @@ def dreamProcessing(data: DreamModel):
         requests.post(f"https://j9b301.p.ssafy.io/api/s3/dream/image/{dreamCardId}", files=files)
         return f"{dreamCardId}"
 
+@app.post("/data/day/challenge/create")
+def challengeProcessing(data:ChalModel):
+    challengeTitle = data.challengeTitle
+    challengeContent = data.challengeContent
+    keywordId = data.keywordId
+    period = data.period
+    challengeOwner = data.challengeOwner
+    wordKeywords = getDreamKeywords(challengeContent)
+    prompt = str(translateDreamKeywords(wordKeywords)).replace("[", "").replace("]", "") + ", by Andy Warhol"
+    img_path = getKarloImgPath(prompt)
+    toJavaData = {
+        "challengeTitle": challengeTitle,
+        "challengeContent": challengeContent,
+        "keywordId": keywordId,
+        "period": period,
+        "challengeOwner": challengeOwner,
+        "badgeUrl": "아무거나"
+    }
+    response = requests.post('https://j9b301.p.ssafy.io/api/s3/challenge/new', json=toJavaData, headers=headers)
+    data = response.json()
+    challengeId = data["data"]["challengeId"]
+
+    with open(img_path, "rb") as file:
+        files = {"file": ("karloImage2.png", file.read())}
+        requests.post(f"https://j9b301.p.ssafy.io/api/s3/challenge/image/{challengeId}", files=files)
+        return f"{challengeId}"
