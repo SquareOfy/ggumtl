@@ -241,4 +241,14 @@ public class DreamCardService {
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
+
+    @Transactional
+    public ResultTemplate postImageName(Long dreamCardId, String fileName) {
+
+        DreamCard findCard = dreamCardRepository.findById(dreamCardId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CARD_NOT_FOUND));
+
+        findCard.updateImageName(fileName);
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
 }

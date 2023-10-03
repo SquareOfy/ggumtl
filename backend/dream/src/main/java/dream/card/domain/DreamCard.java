@@ -137,4 +137,7 @@ public class DreamCard extends BaseTimeEntity {
         wriggleReviews.add(WriggleReview.makeReview(this, buyer, seller, reviewPoint));
     }
 
+    public void updateImageName(String fileName) {
+        this.dreamCardImageUrl = fileName;
+    }
 }
