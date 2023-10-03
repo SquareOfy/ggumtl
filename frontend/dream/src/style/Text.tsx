@@ -40,6 +40,8 @@ interface TextProps {
 
   $progressPercent ?: boolean;
 
+  $chalDetailTitle ?: boolean;
+
   $timeCapsuleText ?: boolean;
   $recommendTitle ?: boolean;
   $recommendCardTitle ?: boolean;
@@ -176,6 +178,15 @@ const StyledText = styled.div<TextProps>`
     `
   }
   
+  // 챌린지 디테일 제목
+  ${(props) => 
+    props.$chalDetailTitle && 
+    css`
+      margin-top: 0.7rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.4rem;
+    `
+  }
   // 응원 메세지 확인 텍스트
   ${(props) => 
     props.$timeCapsuleText && 
