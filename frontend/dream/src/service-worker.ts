@@ -81,30 +81,40 @@ self.addEventListener('message', (event) => {
 // Any other custom service worker logic can go here.
 
 self.addEventListener('fetch', (event) => {
-  const checkurl = event.request.url
-  const currentUrl = event.request.referrer
-  console.log('checkurl', checkurl)
-  console.log('currenturl', currentUrl)
-  console.log('event request', event.request)
+  const requestUrl = new URL(event.request.url)
 
-  if (checkurl.includes('/oauth2')) {
-    event.respondWith(fetch(event.request))
-    window.location.href =
-      'https://j9b301.p.ssafy.io/oauth2/authorization/kakao'
-    return
+  if (requestUrl.pathname === '/oauth2/authorization/kakao') {
+    const backendRequest = new Request(event.request.url, {
+      method: event.request.method,
+      headers: event.request.headers,
+      body: event.request.body
+    })
+
+    event.respondWith(fetch(backendRequest))
   }
 
-  if (currentUrl.includes('/oauth2')) {
-    event.respondWith(fetch(event.request))
-    return
-  }
+  // const checkurl = event.request.url
+  // const currentUrl = event.request.referrer
+  // console.log('checkurl', checkurl)
+  // console.log('currenturl', currentUrl)
+  // console.log('event request', event.request)
 
-  // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
-  if (checkurl.includes('/api')) {
-    console.log('checkurl에 api oauth 들어있음')
-    event.respondWith(fetch(event.request))
-    return
-  }
+  // if (checkurl.includes('/oauth2')) {
+  //   event.respondWith(fetch(event.request))
+  //   return
+  // }
+
+  // if (currentUrl.includes('/oauth2')) {
+  //   event.respondWith(fetch(event.request))
+  //   return
+  // }
+
+  // // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
+  // if (checkurl.includes('/api')) {
+  //   console.log('checkurl에 api oauth 들어있음')
+  //   event.respondWith(fetch(event.request))
+  //   return
+  // }
 
   // console.log(currentUrl.includes('/oauth2'))
 
