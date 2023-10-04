@@ -122,39 +122,29 @@ public class AuctionService {
 
         Auction findAuction = auctionRepository.findBiddingById(request.getAuctionId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.AUCTION_NOT_FOUND));
-        log.info(" 1 : " + 123);
         if (findAuction.getDreamCard().getDreamCardOwner().equals(request.getUserId())) throw new BiddingException(BiddingException.USER_SAME_OWNER);
-        log.info(" 2 : " + 123);
         if (BaseCheckType.F.equals(findAuction.getDreamCard().getAuctionStatus())) throw new BiddingException(BiddingException.ALREADY_AUCTION_END);
-        log.info(" 3 : " + 123);
         if (findAuction.getBidding().isEmpty()) throw new NotFoundException(NotFoundException.BIDDING_NOT_FOUND);
-        log.info(" 4 : " + 123);
         if (LocalDateTime.now().isAfter(findAuction.getEndedAt())) throw new BiddingException(BiddingException.ALREADY_TIME_END);
-        log.info(" 5 : " + 123);
 
         Bidding topBidding = findAuction.getBidding().get(0);
         if (request.getBiddingMoney() <= topBidding.getBiddingMoney()) throw new BiddingException(BiddingException.LOW_BIDDING_MONEY);
-        log.info(" 6 : " + 123);
         if (request.getBiddingMoney() >= findAuction.getImmediatelyBuyMoney()) throw new BiddingException(BiddingException.HIGH_BIDDING_MONEY);
-        log.info(" 7 : " + 123);
         if (topBidding.getBiddingMoney() == findAuction.getImmediatelyBuyMoney()) throw new BiddingException(BiddingException.ALREADY_MONEY_END);
 
-        log.info(" 8 : " + 123);
         if (user.getPoint() < request.getBiddingMoney()) throw new BiddingException(BiddingException.NOT_ENOUGH_MONEY);
 
-        log.info(" 9 : " + 123);
         if (!findAuction.getDreamCard().getDreamCardOwner().getUserId().equals(topBidding.getUser().getUserId())) topBidding.getUser().plusPoint(topBidding.getBiddingMoney());
         user.minusPoint(request.getBiddingMoney());
-        log.info(" 10 : " + 123);
 
         findAuction.addBidding(user, request.getBiddingMoney(), request.getAskingMoney());
         em.flush();
 
         Bidding findBidding = auctionQueryRepository.findTopBiddingById(request.getAuctionId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.BIDDING_NOT_FOUND));
+        em.flush();
         List<Bidding> findBiddings = auctionQueryRepository.findBiddingById(request.getAuctionId());
         ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding, findBiddings.size());
-        log.info(" 11 : " + 123);
 
         auctionListener.sendBidding(response);
 //        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
@@ -193,6 +183,7 @@ public class AuctionService {
 
         Bidding findBidding = auctionQueryRepository.findTopBiddingById(request.getAuctionId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.BIDDING_NOT_FOUND));
+        em.flush();
         List<Bidding> findBiddings = auctionQueryRepository.findBiddingById(request.getAuctionId());
         ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding, findBiddings.size());
 
