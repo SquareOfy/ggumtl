@@ -146,14 +146,14 @@ public class DreamAnalysisService {
 
         double result = 0;
         double sentenceSimilarity = jaccardSimilarity(requestDream.getDreamCardContent(), dataDream.getDream()) * 10 * 5;
-        log.info("문자열 유사도 : " + sentenceSimilarity * 2);
-        log.info("가중치 반영된 문자열 유사도 : " + sentenceSimilarity);
+//        log.info("문자열 유사도 : " + sentenceSimilarity * 2);
+//        log.info("가중치 반영된 문자열 유사도 : " + sentenceSimilarity);
         double posSimilarity = (double) (positiveSimilarity(requestDream.getPositivePoint(), dataDream.getAnalysis().getDreamPositivePoint()) * 2.5) / 10;
-        log.info("긍정도 유사도 : " + posSimilarity * 4);
-        log.info("가중치 반영된 긍정도 유사도 : " + posSimilarity);
+//        log.info("긍정도 유사도 : " + posSimilarity * 4);
+//        log.info("가중치 반영된 긍정도 유사도 : " + posSimilarity);
         double negSimilarity = (double) (negativeSimilarity(requestDream.getNegativePoint(), dataDream.getAnalysis().getDreamNegativePoint()) * 2.5) / 10;
-        log.info("가중치 반영된 부정도 유사도 : " + negSimilarity * 4);
-        log.info("부정도 유사도 : " + negSimilarity);
+//        log.info("가중치 반영된 부정도 유사도 : " + negSimilarity * 4);
+//        log.info("부정도 유사도 : " + negSimilarity);
 
         result = sentenceSimilarity + posSimilarity + negSimilarity;
         return result;

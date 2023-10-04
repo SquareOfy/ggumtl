@@ -4,6 +4,7 @@ package dream.challenge.domain;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import dream.user.domain.Follow;
 import dream.user.domain.QFollow;
 import dream.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -27,27 +28,46 @@ public class ChallengeDetailQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<ChallengeDetail> findChallengeListByPage(Long userId, Long lastItemId, int size) {
-        QChallengeDetail challengeDetail = QChallengeDetail.challengeDetail;
-        QFollow follow = QFollow.follow;
+    public List<ChallengeDetail> findChallengeList(Long userId, Long lastItemId, int size) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
 
-        JPAQuery<Long> subQuery = queryFactory.select(follow.toUser.userId)
-                .from(follow)
-                .where(
-                        follow.fromUser.userId.eq(userId)
-                );
-
         return queryFactory.selectFrom(challengeDetail)
                 .where(
-                        challengeDetail.user.userId.in(subQuery),
-                        lastItemIdLt(lastItemId),
-                        challengeDetail.createdAt.between(startOfDay, endOfDay)
+                        challengeDetail.createdAt.between(startOfDay, endOfDay),
+                        challengeDetail.user.userId.eq(userId),
+                        lastItemIdLt(lastItemId)
                 )
-                // 시간 비교
-                .orderBy(challengeDetail.challengeDetailId.desc())
-                .limit(size + 1)
+                .fetch();
+    }
+
+    public List<Follow> findChallengeListByPage(Long userId, Long lastItemId, int size) {
+        QChallengeDetail challengeDetail = QChallengeDetail.challengeDetail;
+        QFollow follow = QFollow.follow;
+//        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+//        LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+//        JPAQuery<Long> subQuery = queryFactory.select(follow.toUser.userId)
+//                .from(follow)
+//                .where(
+//                        follow.fromUser.userId.eq(userId)
+//                );
+//
+//        return queryFactory.selectFrom(challengeDetail)
+//                .where(
+//                        challengeDetail.user.userId.in(subQuery),
+//                        lastItemIdLt(lastItemId),
+//                        challengeDetail.createdAt.between(startOfDay, endOfDay)
+//                )
+//                // 시간 비교
+//                .orderBy(challengeDetail.challengeDetailId.desc())
+//                .limit(size + 1)
+//                .fetch();
+
+        return queryFactory.selectFrom(follow)
+                .where(
+                        follow.fromUser.userId.eq(userId)
+                )
                 .fetch();
     }
 
