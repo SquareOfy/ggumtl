@@ -81,18 +81,22 @@ self.addEventListener('message', (event) => {
 // Any other custom service worker logic can go here.
 
 self.addEventListener('fetch', (event) => {
-  const checkurl = event.request.url
   const currentUrl = event.request.referrer
+  const checkurl = event.request.url
   console.log('checkurl', checkurl)
   console.log('currenturl', currentUrl)
   console.log('event request', event.request)
 
-  if (checkurl.includes('/oauth2')) {
+  if (checkurl.includes('kakao')) {
+    event.respondWith(fetch(event.request))
+    return
+  }
+  if (currentUrl.includes('/oauth2')) {
     event.respondWith(fetch(event.request))
     return
   }
 
-  if (currentUrl.includes('/oauth2')) {
+  if (checkurl.includes('/oauth2')) {
     event.respondWith(fetch(event.request))
     return
   }
