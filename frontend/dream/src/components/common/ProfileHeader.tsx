@@ -79,7 +79,7 @@ const ProfileHeader = () => {
   const [isStarClicked, setIsStarClicked] = useState<boolean>(true);
   const [isMyProfile, setIsMyProfile] = useState<boolean>(false); // 내 프로필인지 유저 확인
   const [isFollowing, setIsFollowing] = useState<boolean>(false); // 팔로우 했는지 여부
-  const [progress, setProgress] = useState<number>(auth.wrigglePoint); // 꿈틀도 추후 변경하기
+  const [progress, setProgress] = useState<number>(0);
 
   // 프로필 axios 통신 데이터들
   const [userData, setUserData] = useState<ProfileHeaderAxiosType>();
@@ -122,6 +122,41 @@ const ProfileHeader = () => {
     }
   }, [auth.userId, params])
 
+  // 팔로워 수 변경
+  const [nowFollower, setNowFollower] = useState(0)
+
+  useEffect(() => {
+    if (userData) {
+      setNowFollower(userData?.followerCount)
+    }
+  }, [userData?.followerCount])
+
+  // 팔로우 팔로잉
+  const handleFollow = () => {
+    if (isFollowing) { // 언팔로우 하기
+      tokenHttp.delete(`/user/unfollow/${params.userId}`)
+      .then((res) => {
+        console.log("언팔로우 : ", res)
+        if (res.data.status === 200) {
+          setIsFollowing(false)
+          setNowFollower(nowFollower-1)
+        }
+      })
+      .catch(err => console.log("언팔로우 에러", err))
+    }
+    else { // 팔로우 하기
+      tokenHttp.post(`/user/follow`, {toId: Number(params.userId)})
+      .then((res) => {
+        console.log("팔로우 : ", res)
+        if (res.data.status === 200) {
+          setIsFollowing(true)
+          setNowFollower(nowFollower+1)
+        }
+      })
+      .catch(err => console.log("팔로우 에러", err))
+    }
+  }
+
   return (
     <>
     <Wrap $profileHeaderWrap>
@@ -147,17 +182,20 @@ const ProfileHeader = () => {
               <Button
               $follow
               $nightPalePurple
+              onClick={() => handleFollow()}
               >{!isFollowing ? "팔로우" : "팔로잉"}</Button>
             }
           </div>
           <div>
             <div>
-              { isNight ? <p>꿈 카드</p> : <p>완료 챌린지</p>}
-              <p>{userData?.dreamCardCount}</p>
+              { isNight 
+                ? <><p>꿈 카드</p><p>{userData?.dreamCardCount}</p></> 
+                : <><p>완료 챌린지</p><p>{userData?.finishChallengeCount}</p></>}
+              
             </div>
             <div>
               <p>팔로워</p>
-              <p>{userData?.followerCount}</p>
+              <p>{nowFollower}</p>
             </div>
             <div>
               <p>팔로잉</p>

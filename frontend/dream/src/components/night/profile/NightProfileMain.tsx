@@ -2,7 +2,9 @@
 // 탭 3개(카드, 꿈 받기, 꿈 주기) // 2개 (카드, 꿈주기)
 
 // 리액트
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 // 컴포넌트
 import ProfileHeader from "components/common/ProfileHeader";
@@ -14,10 +16,11 @@ import NightProfileBuyingTab from "./NightProfileBuyingTab";
 // 스타일
 import styled, {css} from "styled-components";
 import Text from "style/Text";
+import { useParams } from "react-router-dom";
 
 const DreamTabWrap = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: space-evenly;
   margin: inherit;
   & > div {
     text-align: center;
@@ -46,6 +49,16 @@ export interface TabStyleType {
 
 
 const NightProfileMain = () => {
+  const params = useParams();
+  const userdata = useSelector((state: RootState) => state.auth.userdata);
+  const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
+
+  // 유저 확인
+  useEffect(() => {
+    if (Number(params.userId) === userdata?.userId) {setIsMyProfile(true)} 
+    else {setIsMyProfile(false)}
+  }, [])
+
   // 탭 3개
   const [isCardTab, setIsCardTab] = useState(true);
   const [isBuyingTab, setIsBuyingTab] = useState(false);
@@ -82,11 +95,13 @@ const NightProfileMain = () => {
       $isActive={isCardTab}
       >카드</CustomText>
       
-      {/* 유저가 같을 때만 보여줌 */}
-      <CustomText 
-      onClick={showBuyingTab}
-      $isActive={isBuyingTab}
-      >꿈 받기</CustomText>
+      {
+        isMyProfile &&
+        <CustomText 
+        onClick={showBuyingTab}
+        $isActive={isBuyingTab}
+        >꿈 받기</CustomText>
+      }
 
       <CustomText 
       onClick={showdSellingTab}

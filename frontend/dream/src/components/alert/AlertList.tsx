@@ -42,7 +42,7 @@ const AlertList = () => {
     // 처음 요청 받을 때
     if (lastItemId === 0) {apiAddress = `/notification/list?size=${size}`}
     // 두번째부터 요청 할 때
-    else {apiAddress = `/api/notification/list?lastItemId=${lastItemId}&size=${size}`}
+    else {apiAddress = `/notification/list?lastItemId=${lastItemId}&size=${size}`}
     
     if (arriveEnd && hasNext) {  // 끝에 도달하고 다음이 있을 때 다음 데이터 호출
       tokenHttp.get(apiAddress)
@@ -54,7 +54,7 @@ const AlertList = () => {
         setHasNext(response.hasNext);
         console.log("== 알람 리스트 ==", res); 
       })
-      .catch((err) => console.log("== 알람 리스트 ==", err))
+      .catch((err) => console.log("== 알람 리스트 에러 ==", err))
     }
   }
 

@@ -15,7 +15,7 @@ import Button from "components/common/Button";
 import Image from "style/Image";
 import styled from "styled-components";
 import Text from "style/Text";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "store";
 
 const ProfileCardButtonWrap = styled.div`
@@ -43,6 +43,7 @@ export interface ProfileDreamCardAxiosType {
 }
 
 const NightProfileCardTab = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const userId = useSelector((state: RootState) => state.auth.userdata.userId); // 내 아이디
   const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
@@ -77,9 +78,9 @@ const NightProfileCardTab = () => {
 
         // 생성된 꿈카드가 있을 때
         if (response.status === 200) {
-          const dreamCardList = data.dreamCardList
-          setDreamCardList([...dreamCardList, ...dreamCardList]);
-          setLastItemId(dreamCardList[dreamCardList.length - 1].dreamCardId) 
+          const axiosDreamCardList = data.dreamCardList
+          setDreamCardList([...dreamCardList, ...axiosDreamCardList]);
+          setLastItemId(axiosDreamCardList[axiosDreamCardList.length - 1].dreamCardId) 
         } 
         // 생성된 꿈카드가 없을 때
         if (response.status === 400) {
@@ -180,7 +181,7 @@ const NightProfileCardTab = () => {
             .filter((card) => (isShowAllCard ? card.isShow === "T" : true))
             .filter((card) => (isBuyCard ? card.purchase === true : true))
             .map((card, i) => (
-              <Image $profileCard $nightImageBorder key={i}>
+              <Image $profileCard $nightImageBorder onClick={() => {if (isMyProfile) {navigate(`/night/dream/${card.dreamCardId}`)}}} key={i}>
                 <img src={card.dreamCardImageUrl} alt="dreamCard"></img>
               </Image>
             ))
