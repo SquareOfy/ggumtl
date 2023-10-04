@@ -21,13 +21,13 @@ const LoginContainer = styled.div`
 
 // 로그인 함수
 
-const openKakaoLogin = () => {
-  const KakaoLoginAPI = 'https://j9b301.p.ssafy.io/oauth2/authorization/kakao'
-
-  window.location.href = KakaoLoginAPI
-}
-
 const Login = () => {
+  const openKakaoLogin = () => {
+    const KakaoLoginAPI = 'https://j9b301.p.ssafy.io/oauth2/authorization/kakao'
+
+    window.location.href = KakaoLoginAPI
+  }
+
   return (
     <>
       <LoginContainer>
