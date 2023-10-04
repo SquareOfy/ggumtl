@@ -81,50 +81,28 @@ self.addEventListener('message', (event) => {
 // Any other custom service worker logic can go here.
 
 self.addEventListener('fetch', (event) => {
-  const requestUrl = new URL(event.request.url)
+  const checkurl = event.request.url
+  const currentUrl = event.request.referrer
+  console.log('checkurl', checkurl)
+  console.log('currenturl', currentUrl)
+  console.log('event request', event.request)
 
-  if (requestUrl.pathname === '/oauth2/authorization/kakao') {
-    const backendRequest = new Request(event.request.url, {
-      method: event.request.method,
-      headers: event.request.headers,
-      body: event.request.body
-    })
-
-    event.respondWith(fetch(backendRequest))
+  if (checkurl.includes('/oauth2')) {
+    event.respondWith(fetch(event.request))
+    return
   }
 
-  // const checkurl = event.request.url
-  // const currentUrl = event.request.referrer
-  // console.log('checkurl', checkurl)
-  // console.log('currenturl', currentUrl)
-  // console.log('event request', event.request)
+  if (currentUrl.includes('/oauth2')) {
+    event.respondWith(fetch(event.request))
+    return
+  }
 
-  // if (checkurl.includes('/oauth2')) {
-  //   event.respondWith(fetch(event.request))
-  //   return
-  // }
-
-  // if (currentUrl.includes('/oauth2')) {
-  //   event.respondWith(fetch(event.request))
-  //   return
-  // }
-
-  // // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
-  // if (checkurl.includes('/api')) {
-  //   console.log('checkurl에 api oauth 들어있음')
-  //   event.respondWith(fetch(event.request))
-  //   return
-  // }
-
-  // console.log(currentUrl.includes('/oauth2'))
-
-  // if (currentUrl.includes('/oauth2')) {
-  //   console.log('현재 url에 /oauth2 들어있음')
-  //   // const newRequest = new Request(event.request, {referrer: 'oauth2/authorization/kakao'});
-  //   // console.log('newRequest', newRequest)
-  //   // event.respondWith(fetch(newRequest));
-  //   return;
-  // }
+  // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
+  if (checkurl.includes('/api')) {
+    console.log('checkurl에 api oauth 들어있음')
+    event.respondWith(fetch(event.request))
+    return
+  }
 
   // For other requests, follow the cache-then-network strategy
   event.respondWith(
