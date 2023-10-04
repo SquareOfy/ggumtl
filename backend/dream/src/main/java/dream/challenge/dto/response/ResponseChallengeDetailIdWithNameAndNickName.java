@@ -18,9 +18,9 @@ public class ResponseChallengeDetailIdWithNameAndNickName {
     public static ResponseChallengeDetailIdWithNameAndNickName from(Follow follow){
 
         ResponseChallengeDetailIdWithNameAndNickName response = new ResponseChallengeDetailIdWithNameAndNickName();
-        response.userId = follow.getFromUser().getUserId();
-        response.imageUrl = follow.getFromUser().getProfileUrl();
-        response.nickname = follow.getFromUser().getNickname();
+        response.userId = follow.getToUser().getUserId();
+        response.imageUrl = follow.getToUser().getProfileUrl();
+        response.nickname = follow.getToUser().getNickname();
 
         return response;
     }
