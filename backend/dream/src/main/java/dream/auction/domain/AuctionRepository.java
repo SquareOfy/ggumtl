@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     @Query("select a from Auction a join fetch a.dreamCard ad " +
-            "join fetch ad.cardKeyword ac " +
-            "join fetch ac.keyWordId " +
+            "left join fetch ad.cardKeyword ac " +
+            "left join fetch ac.keyWordId " +
             "where a.auctionId = :id")
     Optional<Auction> findAuctionDetailById(@Param("id") Long id);
 
