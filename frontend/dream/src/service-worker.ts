@@ -82,7 +82,11 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const checkurl = event.request.url
-  if (checkurl.includes('/oauth2')) {
+  if (
+    checkurl.includes('/oauth2' || checkurl.includes('kakao')) ||
+    checkurl.includes('oauth')
+  ) {
+    console.log('바로 넘겨 주세요')
     fetch(event.request)
     return
   }
