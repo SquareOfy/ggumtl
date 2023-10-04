@@ -19,6 +19,7 @@ import styled from "styled-components";
 export interface DayStoryDetailProps {
   setIsOpenModal :Dispatch<SetStateAction<boolean>>,
   isOpenModal :boolean,
+  userId :number,
 }
 
 interface StoryType {
@@ -27,7 +28,6 @@ interface StoryType {
   challengeTitle :string,
   nickName :string,
   photoUrl :string,
-  userId :number
 }
 
 interface StoryBarProps {
@@ -45,9 +45,8 @@ const StoryBar = styled.div<StoryBarProps>`
   border: 1px solid #3D5665;
   `
 
-// interface StoriesType extends Array<StoriesObjType> {}
 
-const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
+const DayStoryDetail = ({setIsOpenModal, isOpenModal, userId} :DayStoryDetailProps) => {
   // const auth = useSelector((state: RootState) => state.auth);
   const [storyList, setStoryList] = useState<StoryType[]>([]); // axios로 새로 받아올 데이터
   
@@ -61,21 +60,22 @@ const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
 
   // API 연결
   // userId는 상대방의 ID를 넣어야 함
-  const userId = 3; // 임시 데이터
+  // const userId = props.userId;
 
   useEffect(() => {
-    tokenHttp.get(`/day/challange/story/${userId}`)
-    .then((res) => {
-      console.log(res);
-      if (res.data.status === 200) {
-        setStoryList(res.data.data); // 데이터 저장
-      }
-      // 팔로우한 유저가 올린 글이 없을 때
-      if (res.data.status === 400) {
-        // setIsStoryData(false)
-      }
-    })
-    .catch(err => console.log(err))
+      tokenHttp.get(`/day/challange/story/${userId}`)
+      .then((res) => {
+        console.log(res);
+        if (res.data.status === 200) {
+          setStoryList(res.data.data); // 데이터 저장
+        }
+        // 팔로우한 유저가 올린 글이 없을 때
+        if (res.data.status === 400) {
+          // setIsStoryData(false)
+        }
+      })
+      .catch(err => console.log(err))
+    
   }, [])
 
 
@@ -103,14 +103,6 @@ const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
     }
     return timerId; // 타이머가 시작되지 않으면 undefined 반환
   }
-  // const storyStart = async () :Promise<void> => {
-  //   if (isOpenModal) {
-  //     await nextTime(() => {
-  //       console.log('시작');
-  //       setCurrentIndex(1);
-  //     }, interval);
-  //   }
-  // }
 
   // 일정시간 후 다음 페이지로 이동
   const goToNextInterval = async () :Promise<void> => {
@@ -165,8 +157,8 @@ const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
   return (
     <>
     {
-      isOpenModal &&
-      storyList && 
+      // isOpenModal &&
+      // storyList && 
       currentIndex < storyList.length &&
       currentIndex > -1 &&
       <Wrap $storyWrap>
@@ -182,12 +174,10 @@ const DayStoryDetail = ({setIsOpenModal, isOpenModal} :DayStoryDetailProps) => {
             {/* 클릭 영역 */}
             <div
             className="storyRight"
-            // onClick={handleOnNext}
             onClick={handleOnNext}
             ></div>
             <div
             className="storyLeft"
-            // onClick={handleOnPrevious}
             onClick={handleOnPrevious}
             ></div>
 
