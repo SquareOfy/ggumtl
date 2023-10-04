@@ -87,14 +87,19 @@ self.addEventListener('fetch', (event) => {
   console.log('currenturl', currentUrl)
   console.log('event request', event.request)
 
-  if (
-    currentUrl.includes('/oauth2' || currentUrl.includes('kakao')) ||
-    currentUrl.includes('oauth')
-  ) {
-    console.log('바로 넘겨 주세요')
-    fetch(event.request)
+  if (checkurl.includes('oauth2')) {
+    event.respondWith(fetch(event.request))
     return
   }
+
+  // if (
+  //   currentUrl.includes('/oauth2' || currentUrl.includes('kakao')) ||
+  //   currentUrl.includes('oauth')
+  // ) {
+  //   console.log('바로 넘겨 주세요')
+  //   fetch(event.request)
+  //   return
+  // }
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
   if (checkurl.includes('/api') || checkurl.includes('/oauth/')) {
