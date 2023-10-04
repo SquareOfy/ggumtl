@@ -76,9 +76,6 @@ public class ChallengeController {
     @PostMapping(value = "/challenge")
     public ResultTemplate postParticipateChallenge(@RequestBody RequestChallengeId request, @UserInfo User user) {
 
-//        User user = userRepository.findByUserId(2L).
-//                orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
-
         return challengeService.postParicipateChallenge(user.getUserId(), request.getChallengeId());
     }
 
