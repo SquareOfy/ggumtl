@@ -28,8 +28,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/api/sub");
-        registry.setApplicationDestinationPrefixes("/api/pub");
+        registry.enableSimpleBroker("/sub");
+        registry.setApplicationDestinationPrefixes("/pub");
     }
 
     @Override
