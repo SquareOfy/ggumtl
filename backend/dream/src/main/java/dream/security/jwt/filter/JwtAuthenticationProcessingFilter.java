@@ -37,7 +37,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private static final String NO_CHECK_URL1 = "/login/oauth2/code/kakao";
     private static final String NO_CHECK_URL2 = "/api/login";
     private static final String NO_CHECK_URL3 = "/api/s3";
-    private static final String NO_CHECK_URL4 = "/api/ws-stomp";
+    private static final String NO_CHECK_URL4 = "/api/ws-stomp/info";
 
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
