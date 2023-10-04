@@ -89,6 +89,8 @@ self.addEventListener('fetch', (event) => {
 
   if (checkurl.includes('/oauth2')) {
     event.respondWith(fetch(event.request))
+    window.location.href =
+      'https://j9b301.p.ssafy.io/oauth2/authorization/kakao'
     return
   }
 
