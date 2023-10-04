@@ -14,6 +14,7 @@ import dream.common.exception.NotFoundException;
 import dream.common.exception.DuplicateException;
 import dream.s3.dto.request.RequestChallengeDetail;
 import dream.s3.dto.response.ResponseBadgeImage;
+import dream.user.domain.Follow;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -77,17 +78,40 @@ public class ChallengeService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
+//    public ResultTemplate getFollowUsers(User user, Long lastItemId, int size) {
+//
+//        List<ChallengeDetail> list = challengeDetailQueryRepository.findChallengeListByPage(user.getUserId(), lastItemId, size);
+//        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_FOLLOWING_USER_STORY);
+//
+//        List<ResponseChallengeDetailIdWithNameAndNickName> userList = new ArrayList<>();
+//        int count = 0;
+//        for (ChallengeDetail challengeDetail : list) {
+//            ResponseChallengeDetailIdWithNameAndNickName nickAndId = ResponseChallengeDetailIdWithNameAndNickName.from(challengeDetail);
+//            userList.add(nickAndId);
+//            if(++count == size) break;
+//        }
+//
+//        boolean hasNext = (list.size() > size);
+//        ResponseFollowingUsers response = ResponseFollowingUsers.from(true, userList, hasNext);
+//
+//        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+//    }
+
     public ResultTemplate getFollowUsers(User user, Long lastItemId, int size) {
 
-        List<ChallengeDetail> list = challengeDetailQueryRepository.findChallengeListByPage(user.getUserId(), lastItemId, size);
+        List<Follow> list = challengeDetailQueryRepository.findChallengeListByPage(user.getUserId(), lastItemId, size);
         if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_FOLLOWING_USER_STORY);
 
         List<ResponseChallengeDetailIdWithNameAndNickName> userList = new ArrayList<>();
         int count = 0;
-        for (ChallengeDetail challengeDetail : list) {
-            ResponseChallengeDetailIdWithNameAndNickName nickAndId = ResponseChallengeDetailIdWithNameAndNickName.from(challengeDetail);
-            userList.add(nickAndId);
-            if(++count == size) break;
+        for (Follow follow : list) {
+            // 만약 팔로우한 유저가 그날 올린 게시글이 있으면
+            List<ChallengeDetail> storyList = challengeDetailQueryRepository.findChallengeList(follow.getFromUser().getUserId(), lastItemId, size);
+            if(!storyList.isEmpty()){
+                ResponseChallengeDetailIdWithNameAndNickName nickAndId = ResponseChallengeDetailIdWithNameAndNickName.from(follow);
+                userList.add(nickAndId);
+                if(++count == size) break;
+            }
         }
 
         boolean hasNext = (list.size() > size);
