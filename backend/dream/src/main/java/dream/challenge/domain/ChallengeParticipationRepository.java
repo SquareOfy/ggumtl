@@ -32,5 +32,7 @@ public interface ChallengeParticipationRepository extends JpaRepository<Challeng
     List<ChallengeParticipation> getChallengeParticipationListByUserAndStatus(
             @Param("userId") Long userId, @Param("status") ChallengeStatus status);
 
-
+@Query("select c from ChallengeParticipation c "+
+       "where c.isIn = :status" )
+    List<ChallengeParticipation> getChallengeParticipationByIsIn(@Param("status") ChallengeStatus status);
 }

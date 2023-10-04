@@ -45,4 +45,8 @@ public class ChallengeParticipation extends BaseTimeEntity {
     public void updateTimeCapsuleContent(String timeCapsuleContent) {
         this.timeCapsuleContent = timeCapsuleContent;
     }
+
+    public void updateIsIn(ChallengeStatus status){
+        this.isIn = status;
+    }
 }
