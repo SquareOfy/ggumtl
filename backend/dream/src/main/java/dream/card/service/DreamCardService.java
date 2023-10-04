@@ -143,6 +143,8 @@ public class DreamCardService {
     @Transactional
     public ResultTemplate postDreamCard(User author, RequestDreamCardDetail request, String fileName) {
 
+        long startTime = System.currentTimeMillis();
+        log.info("start : " + startTime);
         // 여기서 일단 키워드로 mongoDB에 있는 dream을 다 뽑아야함
         ResponseDreamAnalysis responseDreamAnalysis = dreamAnalysisService.processAnalysis(request);
 
@@ -151,10 +153,7 @@ public class DreamCardService {
         }
 
         List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
-//        log.info("{}", keywords.size());
-//        for (DreamKeyword keyword : keywords) {
-//            log.info("{}", keyword.getKeyword());
-//        }
+
 
         List<Challenge> recommendChallenges = challengeRepository.findRecommendChallengeByDreamCard(request.getKeywords())
                 .stream().limit(5).collect(Collectors.toList());
@@ -166,7 +165,10 @@ public class DreamCardService {
 
         // 챌린지 추천할꺼 추가
         ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard, recommendChallenges, responseDreamAnalysis);
+        long endTime = System.currentTimeMillis();
+        log.info("endTime : " + endTime);
 
+        log.info("totalTime : " + (double)(endTime - startTime) / 1000 + "ms");
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
