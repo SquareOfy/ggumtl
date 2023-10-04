@@ -122,6 +122,41 @@ const ProfileHeader = () => {
     }
   }, [auth.userId, params])
 
+  // 팔로워 수 변경
+  const [nowFollower, setNowFollower] = useState(0)
+
+  useEffect(() => {
+    if (userData) {
+      setNowFollower(userData?.followerCount)
+    }
+  }, [userData?.followerCount])
+
+  // 팔로우 팔로잉
+  const handleFollow = () => {
+    if (isFollowing) { // 언팔로우 하기
+      tokenHttp.delete(`/user/unfollow/${params.userId}`)
+      .then((res) => {
+        console.log("언팔로우 : ", res)
+        if (res.data.status === 200) {
+          setIsFollowing(false)
+          setNowFollower(nowFollower-1)
+        }
+      })
+      .catch(err => console.log("언팔로우 에러", err))
+    }
+    else { // 팔로우 하기
+      tokenHttp.post(`/user/follow`, {toId: Number(params.userId)})
+      .then((res) => {
+        console.log("팔로우 : ", res)
+        if (res.data.status === 200) {
+          setIsFollowing(true)
+          setNowFollower(nowFollower+1)
+        }
+      })
+      .catch(err => console.log("팔로우 에러", err))
+    }
+  }
+
   return (
     <>
     <Wrap $profileHeaderWrap>
@@ -147,6 +182,7 @@ const ProfileHeader = () => {
               <Button
               $follow
               $nightPalePurple
+              onClick={() => handleFollow()}
               >{!isFollowing ? "팔로우" : "팔로잉"}</Button>
             }
           </div>
@@ -159,7 +195,7 @@ const ProfileHeader = () => {
             </div>
             <div>
               <p>팔로워</p>
-              <p>{userData?.followerCount}</p>
+              <p>{nowFollower}</p>
             </div>
             <div>
               <p>팔로잉</p>
