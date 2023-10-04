@@ -5,42 +5,42 @@
 // 최초 로그인:  -> <SignUpPage/>
 // 기존 회원: ->  <SunsetMainPage/>
 
-import React from "react";
-import styled from "styled-components";
+import React from 'react'
+import styled from 'styled-components'
 
 // 스타일
-import Button from "components/common/Button";
-import axios from "axios";
-import basicHttp from "api/basicHttp";
+import Button from 'components/common/Button'
+import axios from 'axios'
+import basicHttp from 'api/basicHttp'
 
 const LoginContainer = styled.div`
   width: 80%;
-  margin:auto;
+  margin: auto;
   margin-top: 45vh;
-`;
+`
 
 // 로그인 함수
 
-
-
 const openKakaoLogin = () => {
-  const KakaoLoginAPI = 'https://j9b301.p.ssafy.io/oauth2/authorization/kakao';
+  const KakaoLoginAPI = 'https://j9b301.p.ssafy.io/oauth2/authorization/kakao'
 
   window.location.href = KakaoLoginAPI
 }
 
-
 const Login = () => {
-
   return (
     <>
-    <LoginContainer>
-      <Button 
-      $fullWidth 
-      $kakao
-      onClick={()=>{openKakaoLogin()}}
-      >Login with Kakao</Button>
-    </LoginContainer>
+      <LoginContainer>
+        <Button
+          $fullWidth
+          $kakao
+          onClick={() => {
+            openKakaoLogin()
+          }}
+        >
+          Login with Kakao
+        </Button>
+      </LoginContainer>
     </>
   )
 }
