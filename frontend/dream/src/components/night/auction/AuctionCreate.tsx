@@ -9,7 +9,7 @@
 // 2개의 버튼
 
 // 리액트
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 // 컴포넌트
 import DreamRecordContentsTab from "../dream/DreamRecordContentsTab";
@@ -24,6 +24,9 @@ import Input, {InputProps} from "style/Input";
 import Image from "style/Image";
 import Text from "style/Text";
 import Wrap from "style/Wrap";
+import { useNavigate, useParams } from "react-router";
+import tokenHttp from "api/tokenHttp";
+import { ReverseCardType } from "../home/NightHomeItem";
 
 const AuctionInputWrap = styled.div`
   display: grid;
@@ -60,51 +63,130 @@ export interface AuctionCreateType {
 }
 
 const AuctionCreate = () => {
+  const params = useParams()
+  const navigate = useNavigate()
+
   const [startAuctionMoney , setStartAuctionMoney] = useState(1000)
   const [immediatelyBuyMoney , setImmediatelyBuyMoney] = useState(1000)
 
   // 메시지 바꾸기 용도
-  const [isSMBaseMSG, setIsSMBaseMSG] = useState(false)
-  const [isIMBaseMSG, setIsIMBaseMSG] = useState(false)
+  const [isSMBaseMSG, setIsSMBaseMSG] = useState(true)
+  const [isIMBaseMSG, setIsIMBaseMSG] = useState(true)
 
   // const endDate = today.setDate(today.getDate()+1)
-  const endDate = () :string => {
+  const endDate = (type :string) :string | undefined => {
     const today = new Date()
     const nextDay = new Date(today.setDate(today.getDate()+1))
     const year = nextDay.getFullYear()
-    const month = nextDay.getMonth() +1
-    const day = nextDay.getDate()
-    const hour = nextDay.getHours()
-    const miniutes = nextDay.getMinutes()
+    let month = String(nextDay.getMonth() +1)
+    let day = String(nextDay.getDate())
+    let hour = String(nextDay.getHours())
+    let minutes = String(nextDay.getMinutes())
+    let seconds = String(nextDay.getSeconds())
     
-    return [year, month, day].join(".") + " " + [hour, miniutes].join(":")
+    if (type === "normal") {
+      return [year, month, day].join(".") + " " + [hour, minutes].join(":")
+    } 
+    // "2023-09-22T11:23:00",
+    else if (type === "axios") {
+      if (month.length === 1) {
+        month = "0" + month
+      }
+      if (day.length === 1) {
+        day = "0" + day
+      }
+      if (hour.length === 1) {
+        hour = "0" + hour
+      }
+      if (minutes.length === 1) {
+        minutes = "0" + minutes
+      }
+      if (seconds.length === 1) {
+        seconds = "0" + seconds
+      } else if (seconds.length === 0) {
+        seconds = "00"
+      }
+      console.log(nextDay)
+      console.log([year, month, day].join("-") + "T" + [hour, minutes, seconds].join(":"))
+    
+      return [year, month, day].join("-") + "T" + [hour, minutes, seconds].join(":")
+    }
   }
 
   
   // 추후 호가 몫만 들고가는 유효성 검사
   const changeStartMoney = () => {
-    setIsSMBaseMSG(false)
+    if (startAuctionMoney % 1000 > 0) {setIsSMBaseMSG(false)}
+    else {setIsSMBaseMSG(true)}
   }
 
   const changeImmediatelyBuyMoney = () => {
-    setIsIMBaseMSG(false)
+    if (immediatelyBuyMoney % 1000 > 0) {setIsIMBaseMSG(false)}
+    else {setIsSMBaseMSG(true)}
   }
 
+  // 플립 카드 데이터
+  const [reverseCardData, setReverseCardData] = useState<ReverseCardType>()
+
+  useEffect(() => {
+    tokenHttp.get(`/night/dream/${params.dreamCardId}/interpretation`)
+    .then((res)=>{
+      console.log("꿈 정보 불러오기 : ", res)
+      const response = res.data
+      const data = response.data
+
+      // 카드 소유자가 아닐 때
+      if (response.status === 400) {
+        alert(response.data)
+        navigate('/night/main')
+      } else if (response.status === 200) {
+        setReverseCardData(data)
+      }
+    })
+    .catch((err) => console.log("꿈 정보 불러오기 에러 : ", err))
+
+    // const data = {
+
+    // }
+    // setReverseCardData()
+  }, [])
+
+  const auctionCreate = () => {
+    const data = {
+      auctionStatus : "T",
+      isShow : "T",
+      endedAt : endDate("axios"),
+      immediatelyBuyMoney : immediatelyBuyMoney,
+      startAuctionMoney : startAuctionMoney,
+    }
+
+    if (startAuctionMoney % 1000 === 0 && immediatelyBuyMoney % 1000 === 0) {
+      tokenHttp.post(`/auction/${params.dreamCardId}`, data)
+      .then((res) => {
+        console.log("경매 데이터 보내기 : ", res) 
+        const response = res.data
+        if (response.status === 400) {console.log(response.data)}
+        else if (response.status === 200) {alert("경매 등록 성공")}
+      })
+      .catch(err => console.log("경매 데이터 보내기 에러 : ", err))
+    } else {alert("올바른 값을 입력해주세요!")}
+  }
+    
   return (
     <>
     <Container $baseContainer>
     {/* 이미지 */}
-    <Image $mainImage $nightImageBorder><img src={`${process.env.PUBLIC_URL}/image/iu.png`}/></Image>
-    <DreamKeywordRegion keywords={["2", "33"]}/>
+    <Image $mainImage $nightImageBorder><img src={reverseCardData?.dreamCardImageUrl}/></Image>
+    <DreamKeywordRegion keywords={reverseCardData?.keywords}/>
     <DreamCardGrade   
-    positiveGrade="S"  
-    rareGrade="A"
+    positiveGrade={reverseCardData?.positiveGrade}  
+    rareGrade={reverseCardData?.rareGrade}
     />
 
   {/* 옥션 전용 Input */}
     <AuctionInputWrap>
       <CustomText $isBold $black>마감시간</CustomText>
-      <CustomInput $auctionInput $nightColor disabled value={endDate()}/>
+      <CustomInput $auctionInput $nightColor disabled value={endDate("normal")}/>
       </AuctionInputWrap>
     <MarginBot/>
     <AuctionInputWrap>
@@ -132,19 +214,19 @@ const AuctionCreate = () => {
     </AuctionInputWrap>
     <AuctionInputWrap>
       <CustomText />
-    <WarnText>1000단위 금액을 입력해주세요.</WarnText>
+    { !isIMBaseMSG && <WarnText>1000단위 금액을 입력해주세요.</WarnText>}      
     </AuctionInputWrap>
     <MarginBot/>
 
     {/* 꿈 기록과 해몽 바뀌는 곳 ~ props 필요 */}
-    {/* <DreamRecordContentsTab setReverseCardData={setReverseCardData}/> */}
+    <DreamRecordContentsTab setReverseCardData={setReverseCardData}/>
 
     <Wrap $nightBotButtonWrap>
       <div>
       </div>
       <div>
-        <Button $nightPalePurple>삭제</Button>
-        <Button $nightPurple>경매</Button>
+        <Button $nightPalePurple onClick={() => navigate(-1)}>취소</Button>
+        <Button $nightPurple onClick={() => auctionCreate()}>경매</Button>
       </div>
     </Wrap>
     </Container>

@@ -68,10 +68,11 @@ export interface dreamCardDataType {
 
 interface DreamRecordContentsTabProps {
   setReverseCardData: Dispatch<SetStateAction<ReverseCardType | undefined>>;
+  setReviewStatus?: Dispatch<SetStateAction<string>> | undefined;
 }
 
 // 2개 색깔에 따라 달라짐
-const DreamRecordContentsTab = ({setReverseCardData} :DreamRecordContentsTabProps) => {
+const DreamRecordContentsTab = ({setReverseCardData, setReviewStatus} :DreamRecordContentsTabProps) => {
   const navigate = useNavigate();
 
   // 꿈 기록 탭
@@ -108,6 +109,7 @@ const DreamRecordContentsTab = ({setReverseCardData} :DreamRecordContentsTabProp
         navigate('/night/main')
       } else if (response.status === 200) {
         setDreamCardData(data)
+        // setReviewStatus(data.reviewStatus)
       }
 
     })
@@ -133,53 +135,13 @@ const DreamRecordContentsTab = ({setReverseCardData} :DreamRecordContentsTabProp
         keywords: dreamCardData?.keywords,
       }
       setReverseCardData(data)
-    }
-    
-    // setReverseCardData(data)
-  }, [setDreamCardData, dreamCardData])
-
-  // 체크박스
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-  
-  // 체크박스 변화 감지
-  const handleCheckboxChange = () => {
-    const data = {dreamCardId: dreamCardData?.dreamCardId}
-
-    tokenHttp.put(`/night/dream`, data)
-    .then((res) => {
-      console.log("공개 여부 변경 : ", res)
-      const response = res.data
-    
-      if (response.status === 200) {
-        setIsChecked(!isChecked);
-      } else if (response.staus === 204) {
-        console.log("공개 여부 변경 fail")
+      // setReviewStatus 함수가 정의되어 있을 때만 호출
+      if (setReviewStatus) {
+        setReviewStatus(dreamCardData.reviewStatus);
       }
+    }
+  }, [setReviewStatus, dreamCardData])
 
-    })
-    .catch((err) => console.log("공개 여부 변경 에러 : ", err, isChecked))
-  };
-
-  // 초기 데이터가 공개 상태라면 체크박스 체크 상태로 하기
-  useEffect(() => {
-    dreamCardData?.isShow == "T" && setIsChecked(true)
-  }, [setDreamCardData, dreamCardData])
-
-
-  // 꿈 카드 삭제
-  const deleteDreamCard = () => {
-    if (window.confirm("꿈 카드를 정말로 삭제하시겠습니까?")) {
-      tokenHttp.delete(`/night/dream/${dreamCardData?.dreamCardId}`)
-      .then((res) => {
-        if (res.data.status === 200) {
-          alert("삭제되었습니다!")
-          navigate(`/night/main`)
-        } else if (res.data.status === 204) {
-          alert("존재하지 않는 꿈 카드입니다!")
-        }
-      })
-      .catch(err => console.log("꿈 카드 삭제 에러 : ", err))
-    }}
 
   
 
@@ -202,7 +164,7 @@ const DreamRecordContentsTab = ({setReverseCardData} :DreamRecordContentsTabProp
       }
       {isInterpretTab && <Box $wideTextBox $night>{dreamCardData?.dreamTelling}</Box>}
     
-      <Wrap $nightBotButtonWrap $nightButtonCheckWrap>
+      {/* <Wrap $nightBotButtonWrap $nightButtonCheckWrap>
         <div>
           <label className="container">
             <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange}/>
@@ -228,7 +190,7 @@ const DreamRecordContentsTab = ({setReverseCardData} :DreamRecordContentsTabProp
           }
           
         </div>
-      </Wrap>
+      </Wrap> */}
     </DreamContentsTabWrap>
     </>
   )

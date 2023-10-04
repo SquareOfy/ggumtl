@@ -129,7 +129,7 @@ const StyledBox = styled.div<BoxProps>`
         width: 3rem;
         height: 3rem;
         border-radius: 50%;
-        background-color: red;
+        // background-color: red;
         // object fit 적용 -> css 적용
         object-fit: cover;
       }

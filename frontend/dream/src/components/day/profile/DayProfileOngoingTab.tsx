@@ -58,8 +58,8 @@ const DayProfileOngoingTab = () => {
 
         if (response.status === 400) {
           setNoChalMsg(response.data)
-        } else {
-          const challengeList = response.challengeList
+        } else if (response.status === 200) {
+          const challengeList = response.data.challengeList
           setAllChalList([...allChalList, ...challengeList]);
           setLastItemId(challengeList[challengeList.length - 1]?.challengeId);
           setHasNext(response.data.hasNext);

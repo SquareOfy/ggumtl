@@ -79,7 +79,7 @@ const ProfileHeader = () => {
   const [isStarClicked, setIsStarClicked] = useState<boolean>(true);
   const [isMyProfile, setIsMyProfile] = useState<boolean>(false); // 내 프로필인지 유저 확인
   const [isFollowing, setIsFollowing] = useState<boolean>(false); // 팔로우 했는지 여부
-  const [progress, setProgress] = useState<number>(auth.wrigglePoint); // 꿈틀도 추후 변경하기
+  const [progress, setProgress] = useState<number>(0);
 
   // 프로필 axios 통신 데이터들
   const [userData, setUserData] = useState<ProfileHeaderAxiosType>();
@@ -152,8 +152,10 @@ const ProfileHeader = () => {
           </div>
           <div>
             <div>
-              { isNight ? <p>꿈 카드</p> : <p>완료 챌린지</p>}
-              <p>{userData?.dreamCardCount}</p>
+              { isNight 
+                ? <><p>꿈 카드</p><p>{userData?.dreamCardCount}</p></> 
+                : <><p>완료 챌린지</p><p>{userData?.finishChallengeCount}</p></>}
+              
             </div>
             <div>
               <p>팔로워</p>
