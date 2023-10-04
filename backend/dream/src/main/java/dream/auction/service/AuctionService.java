@@ -152,7 +152,8 @@ public class AuctionService {
 
         Bidding findBidding = auctionQueryRepository.findTopBiddingById(request.getAuctionId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.BIDDING_NOT_FOUND));
-        ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding);
+        List<Bidding> findBiddings = auctionQueryRepository.findBiddingById(request.getAuctionId());
+        ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding, findBiddings.size());
         log.info(" 11 : " + 123);
 
         auctionListener.sendBidding(response);
@@ -192,7 +193,8 @@ public class AuctionService {
 
         Bidding findBidding = auctionQueryRepository.findTopBiddingById(request.getAuctionId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.BIDDING_NOT_FOUND));
-        ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding);
+        List<Bidding> findBiddings = auctionQueryRepository.findBiddingById(request.getAuctionId());
+        ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding, findBiddings.size());
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }

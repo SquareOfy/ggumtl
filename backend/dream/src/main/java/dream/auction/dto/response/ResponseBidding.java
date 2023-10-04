@@ -18,8 +18,9 @@ public class ResponseBidding {
     private LocalDateTime createdAt;
     private Long biddingUserId;
     private String biddingNickname;
+    private int biddingCount;
 
-    public static ResponseBidding from(Long auctionId, Bidding bidding){
+    public static ResponseBidding from(Long auctionId, Bidding bidding, int biddingCount){
 
         ResponseBidding response = new ResponseBidding();
         response.auctionId = auctionId;
@@ -27,6 +28,7 @@ public class ResponseBidding {
         response.createdAt = bidding.getCreatedAt();
         response.biddingUserId = bidding.getUser().getUserId();
         response.biddingNickname = bidding.getUser().getNickname();
+        response.biddingCount = biddingCount;
 
         return response;
     }
