@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         log.info("endPoints : " + "제발 뭐라도 ... ");
-        registry.addEndpoint("/api/ws-stomp/info")
+        registry.addEndpoint("/api/ws-stomp")
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
