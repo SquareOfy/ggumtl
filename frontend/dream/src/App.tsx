@@ -94,7 +94,6 @@ function App() {
         {/* 초기 3개 화면 */}
         <Route path="/a" element={<StartPage/>}/>
         <Route path="/sunset/main" element={<SunsetMainPage/>} />
-        <Route path="/oauth2/authorization/kakao" element={<SunsetMainPage/>} />
         <Route path="/" element={<LoginPage/>}/>
         <Route path="/sunset/signup" element={<SignUpPage/>}/>
         <Route path="/sunset/token" element={<GetTokenPage/>}/>
