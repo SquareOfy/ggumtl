@@ -106,7 +106,7 @@ public class ChallengeService {
         int count = 0;
         for (Follow follow : list) {
             // 만약 팔로우한 유저가 그날 올린 게시글이 있으면
-            List<ChallengeDetail> storyList = challengeDetailQueryRepository.findChallengeList(follow.getFromUser().getUserId(), lastItemId, size);
+            List<ChallengeDetail> storyList = challengeDetailQueryRepository.findChallengeList(follow.getToUser().getUserId(), lastItemId, size);
             if(!storyList.isEmpty()){
                 ResponseChallengeDetailIdWithNameAndNickName nickAndId = ResponseChallengeDetailIdWithNameAndNickName.from(follow);
                 userList.add(nickAndId);
