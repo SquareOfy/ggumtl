@@ -67,7 +67,6 @@ const AuctionCard = ({auctionCard} : AuctionCardProps) => {
           >{Object.values(keyword)}</Box>  
         ))}
       </div>
-
       <div className="grade-region clearfix">
         <div className="one-second">
           <div className="grade">{auctionCard?.positivePoint}</div>
