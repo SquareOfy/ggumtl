@@ -50,9 +50,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 );
                                 config.setAllowCredentials(true);
                                 config.setAllowedMethods(
-                                        List.of("*")
+                                        List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                                 );
                                 config.setAllowedHeaders(
+                                        List.of("*")
+                                );
+                                config.setExposedHeaders(
                                         List.of("*")
                                 );
                                 return config;
