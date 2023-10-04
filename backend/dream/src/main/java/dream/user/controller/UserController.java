@@ -79,6 +79,8 @@ public class UserController {
     }
 
 
+
+
 ////개발용
 //    @GetMapping("/nickname/duplication/{nickname}")
 //    public ResultTemplate checkDuplicationNick( @PathVariable RequestNickname nickname){
