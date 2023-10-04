@@ -35,7 +35,7 @@ import java.util.Optional;
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     private static final String NO_CHECK_URL1 = "/login/oauth2/code/kakao";
-    private static final String NO_CHECK_URL2 = "/login";
+    private static final String NO_CHECK_URL2 = "/api/login";
     private static final String NO_CHECK_URL3 = "/api/s3";
     private static final String NO_CHECK_URL4 = "/ws-stomp";
 
