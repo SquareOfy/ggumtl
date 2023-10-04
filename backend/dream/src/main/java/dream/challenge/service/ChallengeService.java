@@ -141,8 +141,23 @@ public class ChallengeService {
 
         List<User> getRank = challengeDetailQueryRepository.getRank(challengeId);
 
+        boolean isParticipate = false;
+
+        // 일단 예외 처리 안 했어,.
+        List<ChallengeParticipation> challengeParticipation = challengeParticipationRepository.findRecentCertainChallenge(user.getUserId(), challengeId);
+        if(challengeParticipation.isEmpty()){
+            isParticipate = false;
+        }
+        else{
+            ChallengeParticipation challengeParticipationTmp = challengeParticipation.get(0);
+            if(challengeParticipationTmp.getIsIn() == ChallengeStatus.P){
+                isParticipate = true;
+            }
+        }
+
+
         ResponseChallengeInfo response = ResponseChallengeInfo
-                .from(sizeOfUserParticipateInChallenge, challengeWithKeyword, challengeWithParticipates, getRank);
+                .from(sizeOfUserParticipateInChallenge, challengeWithKeyword, challengeWithParticipates, getRank, isParticipate);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }

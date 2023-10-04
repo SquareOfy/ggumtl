@@ -20,6 +20,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
             "where c.challengeId = :id")
     Optional<Challenge> findChallengeParticipates(@Param("id") Long id);
 
+
     @Query("select distinct c from Challenge c " +
             "join fetch c.keywords ck " +
             "join fetch ck.keyword cdk " +
