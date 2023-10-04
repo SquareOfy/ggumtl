@@ -58,7 +58,7 @@ const FooterBar = () => {
 
   return (
     <>
-      <Bar $footer $day={!nightDayMode} $night={nightDayMode}>  
+      <Bar $footer $day={!nightDayMode} $nightFooter={nightDayMode}>  
         <IconHome onClick={()=>{navigate(nightDayMode ? "/night/main":"/day/main")}}/>
         <IconSearch onClick={()=>{navigate(nightDayMode ? "/night/search":"/day/search")}}/>
         <IconPlusSquare onClick={()=>{navigate(nightDayMode ? "/night/dream/create":"/day/challenge/create")}}/>

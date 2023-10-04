@@ -27,7 +27,7 @@ const ChalCommentItem = ({commentData}:CommentItemTypeProps) => {
     <>
     <Wrap $commentWrap>
       <Image $tinyProfileImage>
-        <img></img>
+        <img src={commentData.profileImageUrl}></img>
       </Image>
       <div className="contentarea">
         <Text $black $isBold>{commentData.nickname}</Text>

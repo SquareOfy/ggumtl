@@ -89,6 +89,7 @@ const StyledBox = styled.div<BoxProps>`
       display: inline;
       font-size: 0.5rem;
       padding : 1vw;
+      padding-top: 1.3vw;
       /* margin : 1rem; */
       border-radius: 1rem;
       /* width: 5rem; */

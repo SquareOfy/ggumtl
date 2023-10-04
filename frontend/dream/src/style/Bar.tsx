@@ -9,6 +9,7 @@ interface NavProps {
 
   $day ?: boolean;
   $night ?: boolean;
+  $nightFooter ?: boolean;
   $footer ? : boolean;
   $nav ? : boolean;
   $navTitle ? : boolean;
@@ -131,14 +132,22 @@ const BarContainer = styled.div<NavProps>`
   // 낮 모드
   ${(props) => props.$day &&
     css `
-      background-color: rgba(160, 190, 210, 0.5);
+      // background-color: rgba(160, 190, 210);
+      background-color: #95BAD1;
+      `
+    }
+    // 밤 모드
+    ${(props) => props.$night &&
+      css `
+      // background-color: rgba(157, 142, 196);
+      background-color: #585576;
     `
   }
-  // 밤 모드
-  ${(props) => props.$night &&
+  // 밤 모드 - footer
+  ${(props) => props.$nightFooter &&
     css `
-      background-color: rgba(157, 142, 196, 0.5);
-    `
+    background-color: #9687BE;
+  `
   }
 `
 

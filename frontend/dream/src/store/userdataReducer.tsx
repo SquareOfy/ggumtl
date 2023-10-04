@@ -8,7 +8,7 @@ export interface UserdataType{
     nickname :string
     point :number
     profileImageName :string
-    profileUrl :string
+    profileImageUrl :string
     createdAt :string
     wrigglePoint :number
   }
@@ -21,7 +21,7 @@ const initialState: UserdataType={
     nickname:'',
     point:0,
     profileImageName : '',
-    profileUrl:'',
+    profileImageUrl:'',
     createdAt : '',
     wrigglePoint: 36.5,
   },
@@ -43,7 +43,7 @@ export const userdataReducer = createSlice({
         nickname:'',
         point:0,
         profileImageName : '',
-        profileUrl:'',
+        profileImageUrl:'',
         createdAt : '',
         wrigglePoint: 36.5,
       };

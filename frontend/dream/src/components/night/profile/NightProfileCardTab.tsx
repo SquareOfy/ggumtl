@@ -53,7 +53,7 @@ const NightProfileCardTab = () => {
   const [lastItemId, setLastItemId] = useState<number>(0);
   const [noCardMsg, setNoCardMsg] = useState<string>("");
   const [hasNext, setHasNext] = useState<boolean>(true); 
-  let size = 6;
+  let size = 16;
   
   // Infinite scroll
   const [arriveEnd, setArriveEnd] = useState<boolean>(true);

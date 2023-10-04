@@ -26,7 +26,7 @@ const FooterCommentBar = ({currentDetailId, setNewCommentSignal}:FooterCommentBa
 
   const [comment, setComment] = useState<string>('')
   const userdata = useSelector((state: RootState) => state.auth.userdata);
-  const userProfileImage = userdata.profileUrl
+  const userProfileImage = userdata.profileImageUrl
   const userNickname = userdata.nickname
 
   const addComment = async() => {

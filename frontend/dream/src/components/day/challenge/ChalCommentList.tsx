@@ -23,6 +23,7 @@ export interface ChalCommentAxiosType {
   userId :number,
   nickname :string,
   content :string,
+  profileImageUrl :string,
 }
 
 interface ChalCommentListProps {
