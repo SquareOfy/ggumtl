@@ -69,12 +69,12 @@ const AuctionCard = ({auctionCard} : AuctionCardProps) => {
       </div>
       <div className="grade-region clearfix">
         <div className="one-second">
-          <div className="grade">{auctionCard?.positivePoint}</div>
+          <div className="grade">{auctionCard?.positivePoint ? auctionCard?.positivePoint : auctionCard?.positiveGrade}</div>
           <div className="grade-value">길몽</div>
         </div>
 
         <div className="one-second">
-          <div className="grade">{auctionCard?.rarePoint}</div>
+          <div className="grade">{auctionCard?.rarePoint ? auctionCard?.rarePoint : auctionCard?.rareGrade}</div>
           <div className="grade-value">희귀</div>
         </div>
 

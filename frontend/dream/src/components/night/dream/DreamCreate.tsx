@@ -10,6 +10,7 @@ import { RootState } from "store";
 
 // 컴포넌트
 import SoundToText from "./SoundToText";
+import Loading from "components/loading/Loading";
 
 // 스타일
 import Button from "components/common/Button";
@@ -21,6 +22,7 @@ import "components/night/dream/DreamCreate.css"
 import Text from "style/Text";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 
 const DreamCreateContainer = styled.div`
   margin: 1.5rem 0.5rem;
@@ -58,10 +60,10 @@ const DreamCreate = () => {
   const { startListening, stopListening, accenting, setAccentText, accentText } = SoundToText();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const userId = useSelector((state:RootState) => state.auth.userdata.userId)
-  // const [accentRecord, setAccentRecord] = useState<string>("");
-  // const [accentScript, setAccentScript] = useState<string>("");
-  // const [accentClickable, setAccentClickable] = useState<boolean>(false);
-  // const [accentText, setAccentText] = useState<string>("");
+
+  // 로당
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   
 
   // 녹음 시작 & 종료
@@ -94,11 +96,10 @@ const DreamCreate = () => {
     const isShow = isChecked ? "T" : "F"
     const dreamCardContent = allText
     const data = {dreamCardAuthor, isShow, dreamCardContent}
-    console.log(data, "보낼 데이터!")
+    setIsLoading(true)
+
     dataHttp.post("/night/dream/create", data)
     .then(res => {
-      console.log(res, "생성!")
-      console.log(res.data)
       navigate(`/night/dream/${res.data}`)
     })
     .catch(err => console.log(err))
@@ -113,7 +114,11 @@ const DreamCreate = () => {
 
   return (
     <>
-    <DreamCreateContainer>
+    {isLoading && <Loading/>}
+ <DreamCreateContainer>
+ {   !isLoading &&
+ <>
+ 
       <Button
       $fullWidth
       $nightVoice
@@ -156,6 +161,8 @@ const DreamCreate = () => {
           >등록</Button>
         </div>
       </Wrap>
+      </>
+    }
     </DreamCreateContainer>
     </>
   )
