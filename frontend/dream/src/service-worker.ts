@@ -82,9 +82,14 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const checkurl = event.request.url
+  const currentUrl = event.request.referrer
+  console.log('checkurl', checkurl)
+  console.log('currenturl', currentUrl)
+  console.log('event request', event.request)
+
   if (
-    checkurl.includes('/oauth2' || checkurl.includes('kakao')) ||
-    checkurl.includes('oauth')
+    currentUrl.includes('/oauth2' || currentUrl.includes('kakao')) ||
+    currentUrl.includes('oauth')
   ) {
     console.log('바로 넘겨 주세요')
     fetch(event.request)
@@ -99,11 +104,6 @@ self.addEventListener('fetch', (event) => {
     // event.respondWith(fetch(newRequest));
     return
   }
-
-  // const currentUrl = event.request.referrer
-  // console.log('서비스 워커', checkurl)
-  // console.log('현재 url', currentUrl)
-  // console.log('event request', event.request)
 
   // console.log(currentUrl.includes('/oauth2'))
 
