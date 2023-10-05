@@ -54,7 +54,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 path.startsWith("/login/") ||
                 path.startsWith("/api/oauth2/authorization/kakao") ||
                 path.startsWith("/api/s3") ||
-                path.startsWith("/ws-stomp");
+                path.startsWith("/api/ws-stomp");
     }
 
     @Override
