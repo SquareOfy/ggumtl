@@ -65,6 +65,7 @@ export interface dreamCardDataType {
   reviewStatus :string,
   ownerNickname :string,
   auctionId: number,
+  challengeList: number[]
 }
 
 interface DreamRecordContentsTabProps {
@@ -149,6 +150,16 @@ const DreamRecordContentsTab = ({setReverseCardData, setReviewStatus} :DreamReco
 
   return (
     <>
+    <Button $fullWidth $nightPalePurple
+      onClick={()=> {
+        const chalList = dreamCardData?.challengeList
+        if (Array.isArray(chalList)){
+          const recommendChalId = chalList[Math.floor(Math.random() *  chalList.length)]
+          navigate(`/day/challenge/${recommendChalId}`)
+        }
+      }}
+    >추천 챌린지</Button>
+    
     <DreamContentsTabWrap>
       <DreamTabWrap>
         <CustomText 
