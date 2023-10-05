@@ -76,8 +76,7 @@ const AuctionDetail = () => {
   const [biddingMoney, setBiddingMoney] = useState(auctionItem?.biddingMoney)
   const [biddingTime, setBiddingTime] = useState(auctionItem?.createdAt)
   // 하드코딩
-  // const userId = useSelector((state:RootState)=> state.auth.userdata.userId)
-  const userId = 33
+  const userId = useSelector((state:RootState)=> state.auth.userdata.userId)
   useEffect(()=> {
     
     tokenHttp.get(`/auction/point/${33}`)
@@ -155,11 +154,11 @@ const AuctionDetail = () => {
     })
       .then(res => {
         if (res !== -1) {
-          const data = {auctionId, newOwnerId: res}
+          const data = {auctionId, newOwnerId: userId}
           tokenHttp.put("/auction", data)
           .then(res => {
             console.log(res, "주인 바뀜?")
-            navigation(`/night/profile/${userdata.userId}`)
+            navigation(`/night/profile/${userId}`)
           })
         }
       })
