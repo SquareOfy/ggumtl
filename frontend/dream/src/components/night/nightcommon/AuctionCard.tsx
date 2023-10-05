@@ -1,14 +1,11 @@
-// 마감시간 : 3시간 전만 보이기. 
-// 1시간 전 색깔 변경은 보고 생각하기.
-
-{/* <SmallNightImage></SmallNightImage> */}
-// 키워드들 - <KeywordRegion></KeywordRegion>
-// 등급 - <GradeRegion></GradeRegion> 
-
 // 리액트
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 // 컴포넌트
+
+// 타입 & 외부
+import { AuctionCardType } from "../auction/AuctionMainList";
 
 // 스타일
 import { Box } from "style/Box";
@@ -24,38 +21,61 @@ const AuctionCardFrame = styled.div`
   height: 75vw;
 `
 
+export interface AuctionCardProps {
+  auctionCard ?: AuctionCardType | null
+}
 
+const AuctionCard = ({auctionCard} : AuctionCardProps) => {
+  const navigation = useNavigate()
 
-const AuctionCard = () => {
-
+  // 시간 계산
+  const diffHour = () :number => {
+    const today = new Date()
+    const todayHour = today.getHours()
+    const endedTime = new Date(auctionCard?.endedAt ? auctionCard?.endedAt : "")
+    const endedHour = endedTime.getHours()
+    if (endedHour === 0) {
+      if (todayHour === 22) return 2
+      else if (todayHour === 23) return 1
+      else if (todayHour === 0) return 0
+      return 3
+    } else if (endedHour === 1) {
+      if (todayHour === 23) return 2
+      else if (todayHour === 0) return 1
+      else if (todayHour === 1) return 0
+      return 3
+    } else return endedHour - todayHour
+  }
+  
   return (
     <>
-
-    {/* <AuctionCardFrame>
-    </AuctionCardFrame> */}
-    <div className="auction-card">
-      <div className="auction-end-time">마감 2시간 전</div>
+    {/* 옥션 카드에 존재하는 키워드박스 클릭할 때도 경매장 가는 거 막아야 함. */}
+    <div className="auction-card"
+    onClick={() => navigation(`/night/auction/detail/${auctionCard?.dreamCardId}`)}    
+    >
+      <div className="auction-end-time"> 
+      {diffHour() < 3 ? ( diffHour() > 0 ? `마감 ${diffHour()}시간 전` : "종료 임박") : "경매장 입장"}
+      </div>
       <div className="auction-card-image">
-        <Image $nightImageBorder $auctionCard><img src={`${process.env.PUBLIC_URL}/image/iu.png`}/></Image>
-        {/* <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/barbarian.png" alt="barbarian" /> */}
+        <Image $nightImageBorder $auctionCard><img src={auctionCard?.dreamCardImageUrl}/></Image>
       </div>
       <div className="keyword-region">
-        <Box $keywordBoxNight>손틈새로</Box>
-        <Box $keywordBoxNight>비추는</Box>
-        <Box $keywordBoxNight>아이유</Box>
-      {/* 키워드 영역 */}
+        {/* keywords가 객체인 문제임 */}
+        {auctionCard?.keywords.map((keyword, idx) => (
+          <Box $keywordBoxNight key={idx}
+          onClick={() => navigation(`/night/search?searchKeyword=${Object.values(keyword)}`)}
+          >{Object.values(keyword)}</Box>  
+        ))}
       </div>
 
       <div className="grade-region clearfix">
         <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">SS</div>
+          <div className="grade">{auctionCard?.positiveGrade}</div>
           <div className="grade-value">길몽</div>
         </div>
 
         <div className="one-second">
-          {/* 추후 자동화 */}
-          <div className="grade">S</div>
+          <div className="grade">{auctionCard?.rareGrade}</div>
           <div className="grade-value">희귀</div>
         </div>
 

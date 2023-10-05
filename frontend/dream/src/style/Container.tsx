@@ -7,10 +7,15 @@ interface ContainerProps {
   children?: React.ReactNode;
   $baseContainer ?: boolean
   $centerContainer ?: boolean
+  $spaceBetweenContainer ?: boolean
 
   // 5개 넘어가면 한줄 띄어가는 keyword
   $nightKeyword ?: boolean
 
+  $dayCreate ?: boolean
+  $dayBaseContainer ?: boolean
+  // 챌린지 디테일 내용 컨테이너
+  $chalDetail ?: boolean
   
 }
 const StyledContainer = styled.div<ContainerProps>`
@@ -18,7 +23,13 @@ const StyledContainer = styled.div<ContainerProps>`
   ${(props) =>
     props.$baseContainer &&
     css`
-      margin: 0 0.5rem;
+      margin: 0.5rem 0.5rem 0;
+    `
+  }
+  ${(props) =>
+    props.$dayBaseContainer &&
+    css`
+      margin: 1rem 1rem 0;
     `
   }
 
@@ -30,6 +41,17 @@ const StyledContainer = styled.div<ContainerProps>`
       justify-content: center;
       align-content: center;
       margin: 1rem auto;
+    `
+  }
+  
+  // div 가운데 spacebetween 버전
+  ${(props) =>
+    props.$spaceBetweenContainer &&
+    css`
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      /* margin: 1rem auto; */
     `
   }
 
@@ -47,8 +69,30 @@ const StyledContainer = styled.div<ContainerProps>`
         width: 3.5rem;
         border-radius: 0.5rem;
       }
-  `
+    `
   }
+
+  // 챌린지 생성 컨테이너
+  ${(props) =>
+    props.$dayCreate &&
+    css`
+      margin-top: 5rem;
+    `
+  }
+
+  // 챌린지 디테일 컨테이너
+  ${(props) =>
+    props.$chalDetail &&
+    css`
+      margin: 1.5rem 0;
+      padding:1rem;
+      background-color: rgba(249, 249, 249, 0.3);
+      border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
+    `
+  }
+
 `
 
 const Container = (props:ContainerProps) => {

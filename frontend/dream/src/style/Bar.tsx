@@ -11,6 +11,8 @@ interface NavProps {
   $night ?: boolean;
   $footer ? : boolean;
   $nav ? : boolean;
+  $navTitle ? : boolean;
+
 }
 
 const BarContainer = styled.div<NavProps>`
@@ -50,6 +52,32 @@ const BarContainer = styled.div<NavProps>`
     }
     `
   }
+
+  // navTitleBar 
+  // <NavTitleBar>제목</NavTitleBar> 이 방식으로 사용
+  ${(props) => props.$navTitle && 
+    css`
+      left: 0;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+    // 타이틀
+    & > div {
+
+    }
+
+    // 아이콘
+    & > Button {
+      position: absolute;
+      right: 0;
+  
+    }
+
+    `
+  }
+
   // 낮 모드
   ${(props) => props.$day &&
     css `

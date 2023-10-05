@@ -12,6 +12,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import FooterBar from 'components/common/FooterBar';
 import SunsetMainPage from 'pages/sunset/SunsetMainPage';
 import LoginPage from 'pages/sunset/LoginPage';
+import GetTokenPage from 'pages/sunset/GetTokenPage';
 import SignUpPage from 'pages/sunset/SignUpPage';
 import NightHomePage from 'pages/night/home/NightHomePage';
 import DreamCreatePage from 'pages/night/dream/DreamCreatePage';
@@ -19,7 +20,6 @@ import DreamDetailPage from 'pages/night/dream/DreamDetailPage';
 import AuctionCreatePage from 'pages/night/auction/AuctionCreatePage';
 import AuctionMainPage from 'pages/night/auction/AuctionMainPage';
 import AuctionDetailPage from 'pages/night/auction/AuctionDetailPage';
-import AuctionBuyingPage from 'pages/night/auction/AuctionBuyingPage';
 import AuctionBuyingSuccessPage from 'pages/night/auction/AuctionBuyingSuccessPage';
 import NightSearchPage from 'pages/night/search/NightSearchPage';
 import NightSearchDetailPage from 'pages/night/search/NightSearchDetailPage';
@@ -38,6 +38,7 @@ import ChalCapsuleListPage from 'pages/day/capsule/ChalCapsuleListPage';
 import DayAlertPage from 'pages/alert/DayAlertPage';
 import BackgroundImage from 'style/backgroundImage';
 
+
 function App() {
 
   const location = useLocation();
@@ -46,7 +47,7 @@ function App() {
   
   // 라우터 이동 시에 url pathname 확인
   // const [theme,setTheme] = useState(sunsetTheme);
-  const themeMode = useSelector((state: RootState) => state.themeModeReducer.themeMode);
+  const themeMode = useSelector((state: RootState) => state.themeMode.themeMode);
   
   useEffect(()=>{
     if (location.pathname.includes('sunset')){
@@ -74,13 +75,15 @@ function App() {
   return (
     <>
     {/* <ThemeProvider theme={theme}> */}
-    <BackgroundImage backgroundImage={themeMode.backgroundImageUrl}/>
+    <BackgroundImage backgroundimage={themeMode.backgroundImageUrl}/>
     <GlobalStyle/>
       <Routes>
         {/* 초기 3개 화면 */}
         <Route path="/sunset/main" element={<SunsetMainPage/>} />
         <Route path="/sunset/login" element={<LoginPage/>}/>
         <Route path="/sunset/signup" element={<SignUpPage/>}/>
+        <Route path="/sunset/token" element={<GetTokenPage/>}/>
+
         {/* 밤 페이지 */}
         <Route path="/night/main" element={<NightHomePage/>}/>
         <Route path="/night/search" element={<NightSearchPage/>}/>
@@ -93,7 +96,7 @@ function App() {
         <Route path="/night/auction/detail/:dreamCardId" element={<AuctionDetailPage/>}/>
          {/* 라우터 경로만 */}
         <Route path="/night/auction/detail/:dreamCardId/create" element={<AuctionCreatePage/>}/> 
-        <Route path="/night/auction/bidding/:dreamCardId" element={<AuctionBuyingPage/>}/> 
+        <Route path="/night/auction/bidding/:dreamCardId" element={<AuctionDetailPage/>}/> 
 
         <Route path="/night/auction/bidding/review" element={<AuctionBuyingSuccessPage/>}/> 
 

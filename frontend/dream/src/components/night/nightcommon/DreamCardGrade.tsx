@@ -10,8 +10,8 @@ import styled, {css} from "styled-components";
 import {GradeWrappingBox } from "style/Box";
 
 interface DreamCardGradeProps {
-  positiveGrade : string;
-  rareGrade : string;
+  positiveGrade ?: string;
+  rareGrade ?: string;
 }
 
 const CustomGradeWrappingBox = styled(GradeWrappingBox)`
@@ -21,6 +21,7 @@ const CustomGradeWrappingBox = styled(GradeWrappingBox)`
 
 const DreamCardGrade = (props:DreamCardGradeProps) => {
   const {positiveGrade, rareGrade} = props
+  console.log(props, "그레이드")
   return (
     <>
     <CustomGradeWrappingBox>
