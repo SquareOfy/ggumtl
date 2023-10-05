@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 // Cors 허용 패턴
                                 CorsConfiguration config = new CorsConfiguration();
                                 config.setAllowedOrigins(
-                                        List.of("*", "https://j9b301.p.ssafy.io/", "http://j9b301.p.ssafy.io:9090/")
+                                        List.of("*", "https://j9b301.p.ssafy.io/", "wss://j9b301.p.ssafy.io/")
                                 );
                                 config.setAllowedMethods(
                                         List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
 
-                .antMatchers("/ws-stomp/**", "/api/login/**",  "/oauth2/**", "/login/oauth2/code/kakao",
+                .antMatchers("/ws-stomp/**", "/api/login/**",  "/oauth2/**", "/login/oauth2/code/kakao", "wss://j9b301.p.ssafy.io/**",
                 "/api/mongo/**", "/api/s3/**", "/css/**", "/images/**", "/js/**", "/h2-console/**")
                 .permitAll()
                 .antMatchers("/api/user/signup/extra-info").hasRole("GUEST")
