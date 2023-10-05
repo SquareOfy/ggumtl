@@ -44,6 +44,7 @@ const CustomInput = styled(Input)`
 const CustomText = styled(Text)`
   padding-left: 1rem;
   line-height: 2rem;
+  color: #ffff;
 `
 const WarnText = styled(Text)`
   padding-left: 1rem;
@@ -166,7 +167,9 @@ const AuctionCreate = () => {
         console.log("경매 데이터 보내기 : ", res) 
         const response = res.data
         if (response.status === 400) {console.log(response.data)}
-        else if (response.status === 200) {alert("경매 등록 성공")}
+        else if (response.status === 200) {
+          navigate("/night/auction/list")
+      }
       })
       .catch(err => console.log("경매 데이터 보내기 에러 : ", err))
     } else {alert("올바른 값을 입력해주세요!")}
@@ -187,7 +190,7 @@ const AuctionCreate = () => {
     <AuctionInputWrap>
       <CustomText $isBold $black>마감시간</CustomText>
       <CustomInput $auctionInput $nightColor disabled value={endDate("normal")}/>
-      </AuctionInputWrap>
+    </AuctionInputWrap>
     <MarginBot/>
     <AuctionInputWrap>
     <CustomText $isBold $black>시작가</CustomText>
