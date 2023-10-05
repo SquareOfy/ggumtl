@@ -74,8 +74,10 @@ public class DreamAnalysisService {
         response.setDreamTelling(simillarDream.getAnalysis().getDreamTelling());
 
         // 데이터가 들어왔을 때, 50000이라는 분모를 조정해 주면서 최적의 분모 값을 찾는 과정이 필요해
-
+        System.out.println("list = " + list.size());
+        System.out.println("requestDream.getWordKeywords().size() = " + requestDream.getWordKeywords().size());
         int rarePoint = list.size() / requestDream.getWordKeywords().size() / 10;
+        System.out.println("rarePoint = " + rarePoint);
 
 
         ProcessGrade gradeSet = setGrade(simillarDream.getAnalysis().getDreamTellingPositivePoint(),
