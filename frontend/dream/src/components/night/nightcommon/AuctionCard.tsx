@@ -1,7 +1,7 @@
 // 리액트
-import React from "react";
+import React, {useRef, useState} from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 // 컴포넌트
 
 // 타입 & 외부
@@ -27,6 +27,11 @@ export interface AuctionCardProps {
 
 const AuctionCard = ({auctionCard} : AuctionCardProps) => {
   const navigation = useNavigate()
+
+  // 문구 차등화
+  const location = useLocation()
+  const profilePath = useRef(false)
+  profilePath.current = location.pathname.includes("profile")
 
   // 시간 계산
   const diffHour = () :number => {
@@ -54,10 +59,16 @@ const AuctionCard = ({auctionCard} : AuctionCardProps) => {
     <>
     {/* 옥션 카드에 존재하는 키워드박스 클릭할 때도 경매장 가는 거 막아야 함. */}
     <div className="auction-card"
-    onClick={() => navigation(`/night/auction/detail/${auctionCard?.auctionId}`)}    
+    onClick={() => {
+      if (!profilePath) {
+        navigation(`/night/auction/detail/${auctionCard?.auctionId}`)
+      } else {
+        navigation(`/night/dream/${auctionCard?.dreamCardId}`)
+      }
+    }}    
     >
       <div className="auction-end-time"> 
-      {diffHour() < 3 ? ( diffHour() > 0 ? `마감 ${diffHour()}시간 전` : "종료 임박") : "경매장 입장"}
+      { !profilePath && diffHour() < 3 ? ( diffHour() > 0 ? `마감 ${diffHour()}시간 전` : "종료 임박") : "경매장 입장"}
       </div>
       <div className="auction-card-image">
         <Image $nightImageBorder $auctionCard><img src={auctionCard?.dreamCardImageUrl}/></Image>
