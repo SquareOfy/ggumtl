@@ -203,7 +203,15 @@ public class DreamCardService {
                 .anyMatch(review -> review.getBuyerId().getUserId().equals(userId));
 
         BaseCheckType reviewStatus = isTrue ? BaseCheckType.T : BaseCheckType.F;
-        ResponseDreamCardDetailByUser response = ResponseDreamCardDetailByUser.from(findCard, reviewStatus);
+
+        List<String> keywords = new ArrayList<>();
+        for (CardKeyword cardKeyword : findCard.getCardKeyword()) {
+            keywords.add(cardKeyword.getKeyWordId().getKeyword());
+        }
+        List<Challenge> challenges = challengeRepository.findRecommendChallengeByDreamCard(keywords);
+
+
+        ResponseDreamCardDetailByUser response = ResponseDreamCardDetailByUser.from(findCard, reviewStatus, challenges);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
