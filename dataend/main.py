@@ -106,9 +106,13 @@ def root():
 #     print(data, "데이터")
 #     dreamCardId = data["data"]    
 #     return response
+
+import random
+print()
 @app.post("/data/night/dream/create")
-def dreamProcessing(data: DreamModel):
+def dreamProcessing(data: DreamModel):    
     # 받은 데이터 처리
+    category = ["재물", "진로", "인간관계", "감정", "자기계발", "건강", "도전", "교양", "학습"]
     print(data, "널 좀 알고 싶다...!")
     dreamCardContent = data.dreamCardContent
     dreamCardAuthor = data.dreamCardAuthor
@@ -129,7 +133,7 @@ def dreamProcessing(data: DreamModel):
         "isShow": isShow,
         "positivePoint": positivePoint,
         "negativePoint": negativePoint,
-        "keywords": ["학업", "재물"],
+        "keywords": random.sample(category, 3),
         "wordKeywords": wordKeywords
     }
     print(toJavaData, "자바로 갈 데이터")
