@@ -145,7 +145,6 @@ const AuctionDetail = () => {
       } else if (response.status === 400) {
         alert(response.data)
       } else if (response.status === 200) {
-        alert("구매 성공")
         Swal.fire({
           icon:'success',
           title :'구매 성공',
