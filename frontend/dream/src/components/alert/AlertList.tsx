@@ -1,7 +1,7 @@
 // .map <AlertItem/>
 
 // 리액트
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // 컴포넌트
 import AlertItem from "./AlertItem";
@@ -35,17 +35,17 @@ const AlertList = () => {
   const [lastItemId, setLastItemId] = useState<number>(0);
   const [hasNext, setHasNext] = useState<boolean>(true); 
   let size = 12;
-
+  const apiAddressRef = useRef<string>("")
   const getAxios = () => {
     let apiAddress :string = "";
 
     // 처음 요청 받을 때
-    if (lastItemId === 0) {apiAddress = `/notification/list?size=${size}`}
+    if (lastItemId === 0) {apiAddressRef.current = `/notification/list?size=${size}`}
     // 두번째부터 요청 할 때
-    else {apiAddress = `/notification/list?lastItemId=${lastItemId}&size=${size}`}
+    else {apiAddressRef.current = `/notification/list?lastItemId=${lastItemId}&size=${size}`}
     
     if (arriveEnd && hasNext) {  // 끝에 도달하고 다음이 있을 때 다음 데이터 호출
-      tokenHttp.get(apiAddress)
+      tokenHttp.get(apiAddressRef.current)
       .then((res)=>{
         const response = res.data.data
         const auctionList = response.auctionList
