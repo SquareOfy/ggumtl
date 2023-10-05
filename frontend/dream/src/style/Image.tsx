@@ -140,6 +140,10 @@ const StyledImage = styled.div<ImageProps>`
     props.$recommendBadge &&
     css`
       border: none;
+
+      & > img {
+        border: 0.5rem solid black;
+      }
     `}
 
     // 뱃지 색 - gold
