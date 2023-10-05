@@ -125,7 +125,7 @@ public class AuctionService {
         if (findAuction.getDreamCard().getDreamCardOwner().equals(request.getUserId())) throw new BiddingException(BiddingException.USER_SAME_OWNER);
         if (BaseCheckType.F.equals(findAuction.getDreamCard().getAuctionStatus())) throw new BiddingException(BiddingException.ALREADY_AUCTION_END);
         if (findAuction.getBidding().isEmpty()) throw new NotFoundException(NotFoundException.BIDDING_NOT_FOUND);
-        if (LocalDateTime.now().isAfter(findAuction.getEndedAt())) throw new BiddingException(BiddingException.ALREADY_TIME_END);
+//        if (LocalDateTime.now().isAfter(findAuction.getEndedAt())) throw new BiddingException(BiddingException.ALREADY_TIME_END);
 
         Bidding topBidding = findAuction.getBidding().get(0);
         if (request.getBiddingMoney() <= topBidding.getBiddingMoney()) throw new BiddingException(BiddingException.LOW_BIDDING_MONEY);
@@ -166,7 +166,7 @@ public class AuctionService {
         if (findAuction.getDreamCard().getDreamCardOwner().equals(request.getUserId())) throw new BiddingException(BiddingException.USER_SAME_OWNER);
         if (BaseCheckType.F.equals(findAuction.getDreamCard().getAuctionStatus())) throw new BiddingException(BiddingException.ALREADY_AUCTION_END);
         if (findAuction.getBidding().isEmpty()) throw new NotFoundException(NotFoundException.BIDDING_NOT_FOUND);
-        if (LocalDateTime.now().isAfter(findAuction.getEndedAt())) throw new BiddingException(BiddingException.ALREADY_TIME_END);
+//        if (LocalDateTime.now().isAfter(findAuction.getEndedAt())) throw new BiddingException(BiddingException.ALREADY_TIME_END);
 
         Bidding topBidding = findAuction.getBidding().get(0);
         if (request.getBiddingMoney() != findAuction.getImmediatelyBuyMoney()) throw new BiddingException(BiddingException.NOT_SAME_MONEY);
@@ -194,7 +194,8 @@ public class AuctionService {
     // 유저 같이 넘겨와야해요
     @Transactional
     public ResultTemplate successBiddingAndOwnerChange(RequestChangeOwner request) {
-
+        log.info("{}", request.toString());
+        System.out.println(request.toString());
         User newUser = userRepository.findById(request.getNewOwnerId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
@@ -204,7 +205,7 @@ public class AuctionService {
 
         if (BaseCheckType.F.equals(findAuction.getDreamCard().getAuctionStatus())) throw new BiddingException(BiddingException.ALREADY_AUCTION_END);
         if (findAuction.getBidding().isEmpty()) throw new NotFoundException(NotFoundException.BIDDING_NOT_FOUND);
-        if (LocalDateTime.now().isBefore(findAuction.getEndedAt())) throw new BiddingException(BiddingException.BEFORE_AUCTION_END);
+//        if (LocalDateTime.now().isBefore(findAuction.getEndedAt())) throw new BiddingException(BiddingException.BEFORE_AUCTION_END);
 
         Bidding topBidding = findAuction.getBidding().get(0);
         if (topBidding.getBiddingMoney() == findAuction.getImmediatelyBuyMoney()) throw new BiddingException(BiddingException.ALREADY_MONEY_END);
