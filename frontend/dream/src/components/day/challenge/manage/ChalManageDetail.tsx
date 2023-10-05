@@ -119,7 +119,7 @@ const ChalManageDetail = () => {
         console.log('성취도', Math.floor((passDays/chalPeriodDays)*100))
 
         // 타임 캡슐 확인 가능 여부
-        if (Math.floor((passDays/chalPeriodDays)*100) >= 50) {
+        if (Math.floor((passDays/chalPeriodDays)*100) >= 3) {
           setPossibleTimecapsule(true)
         }
 
