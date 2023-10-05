@@ -262,8 +262,14 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(requestChallengeDetail.getChallengeId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
 
+        user.updatePoint(100);
+        user.updateWrigglePoint(10);
+
         ChallengeDetail challengeDetail = ChallengeDetail.makeChallengeDetail(user, requestChallengeDetail, challenge, fileName);
         challengeDetailRepository.save(challengeDetail);
+
+
+
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
