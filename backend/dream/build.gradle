@@ -55,8 +55,10 @@ dependencies {
 	//webSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+
 	// mongodb
 	implementation ('org.springframework.boot:spring-boot-starter-data-mongodb')
+
 }
 
 //querydsl

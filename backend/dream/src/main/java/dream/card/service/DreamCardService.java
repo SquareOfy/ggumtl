@@ -163,12 +163,20 @@ public class DreamCardService {
         DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords, fileName, responseDreamAnalysis);
         dreamCardRepository.save(makeDreamCard);
 
+
         // 챌린지 추천할꺼 추가
         ResponseDreamCardId response = ResponseDreamCardId.from(makeDreamCard, recommendChallenges, responseDreamAnalysis);
         long endTime = System.currentTimeMillis();
         log.info("endTime : " + endTime);
 
         log.info("totalTime : " + (double)(endTime - startTime) / 1000 + "ms");
+
+
+        //포인트, 꿈틀도 증가
+        author.updatePoint(100);
+        author.updateWrigglePoint(10);
+
+
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
