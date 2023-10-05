@@ -51,29 +51,29 @@
 //     stompClientRef.current.heartbeatIncoming=4000
 //     stompClientRef.current.heartbeatOutgoing=4000
     
-//     stompClientRef.current.onConnect = (frame) => {
-//       if (stompClientRef.current) {
-//         const userIdxStr = localStorage.getItem('userIdx')
-//         const userIdx = userIdxStr ? parseInt(userIdxStr,10) : null
+    // stompClientRef.current.onConnect = (frame) => {
+    //   if (stompClientRef.current) {
+    //     const userIdxStr = localStorage.getItem('userIdx')
+    //     const userIdx = userIdxStr ? parseInt(userIdxStr,10) : null
 
-//         // 채팅 신청에 대한 반응
-//         stompClientRef.current.subscribe(`/sub/user/${userIdx}`, function(message: Message) {
-//           const newMessage = JSON.parse(message.body);
-//           setNewmessage(newMessage)
-//         });
-//         // 프로젝트 가입요청에 대한 반응
-//         stompClientRef.current.subscribe(`/sub/request/project/${userIdx}`, function(message: Message) {
-//           const newMessage = JSON.parse(message.body);
-//           setNewmessage(newMessage)
-//         });
-//         return () => {
-//           if (stompClientRef.current) {
-//             stompClientRef.current.unsubscribe(`/sub/user/${userIdx}`)
-//             stompClientRef.current.unsubscribe(`/sub/request/project/${userIdx}`)
-//           }
-//         };
-//       }
-//     }
+    //     // 채팅 신청에 대한 반응
+    //     stompClientRef.current.subscribe(`/sub/user/${userIdx}`, function(message: Message) {
+    //       const newMessage = JSON.parse(message.body);
+    //       setNewmessage(newMessage)
+    //     });
+    //     // 프로젝트 가입요청에 대한 반응
+    //     stompClientRef.current.subscribe(`/sub/request/project/${userIdx}`, function(message: Message) {
+    //       const newMessage = JSON.parse(message.body);
+    //       setNewmessage(newMessage)
+    //     });
+    //     return () => {
+    //       if (stompClientRef.current) {
+    //         stompClientRef.current.unsubscribe(`/sub/user/${userIdx}`)
+    //         stompClientRef.current.unsubscribe(`/sub/request/project/${userIdx}`)
+    //       }
+    //     };
+    //   }
+    // }
 //     // 연결 시도
 //     stompClientRef.current.activate();
     
