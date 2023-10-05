@@ -7,6 +7,8 @@ import dream.card.dto.request.RequestDreamCardDetail;
 import dream.card.dto.request.RequestDreamCardIsShow;
 import dream.card.dto.response.*;
 import dream.challenge.domain.Challenge;
+import dream.challenge.domain.ChallengeParticipation;
+import dream.challenge.domain.ChallengeParticipationRepository;
 import dream.challenge.domain.ChallengeRepository;
 import dream.common.domain.BaseCheckType;
 import dream.common.domain.ResultTemplate;
@@ -39,6 +41,7 @@ public class DreamCardService {
     private final AuctionRepository auctionRepository;
     private final DreamCardQueryRepository dreamCardQueryRepository;
     private final ChallengeRepository challengeRepository;
+    private final ChallengeParticipationRepository challengeParticipationRepository;
 
 
     public ResultTemplate getNightMain(Long lastItemId, int size) {
@@ -155,10 +158,18 @@ public class DreamCardService {
         List<DreamKeyword> keywords = dreamKeywordRepository.findByKeywordIn(request.getKeywords());
 
 
-        List<Challenge> recommendChallenges = challengeRepository.findRecommendChallengeByDreamCard(request.getKeywords())
-                .stream().limit(5).collect(Collectors.toList());
+        List<Challenge> findChallenges = challengeRepository.findRecommendChallengeByDreamCard(request.getKeywords());
+        List<ChallengeParticipation> findParts = challengeParticipationRepository.findPartUserByUser(request.getDreamCardAuthor());
+        List<Long> alreadyChallenges = new ArrayList<>();
 
-
+        for (ChallengeParticipation findPart : findParts) {
+            alreadyChallenges.add(findPart.getChallenge().getChallengeId());
+        }
+        List<Challenge> recommendChallenges = new ArrayList<>();
+        for (Challenge findChallenge : findChallenges) {
+            if (alreadyChallenges.contains(findChallenge.getChallengeId())) continue;
+            recommendChallenges.add(findChallenge);
+        }
 
         DreamCard makeDreamCard = DreamCard.makeDreamCard(request, author, keywords, fileName, responseDreamAnalysis);
         dreamCardRepository.save(makeDreamCard);
@@ -208,10 +219,24 @@ public class DreamCardService {
         for (CardKeyword cardKeyword : findCard.getCardKeyword()) {
             keywords.add(cardKeyword.getKeyWordId().getKeyword());
         }
-        List<Challenge> challenges = challengeRepository.findRecommendChallengeByDreamCard(keywords);
+
+        List<Challenge> findChallenges = challengeRepository.findRecommendChallengeByDreamCard(keywords);
+        List<ChallengeParticipation> findParts = challengeParticipationRepository.findPartUserByUser(userId);
+        List<Long> alreadyChallenges = new ArrayList<>();
+
+        for (ChallengeParticipation findPart : findParts) {
+            alreadyChallenges.add(findPart.getChallenge().getChallengeId());
+        }
+        List<Challenge> recommendChallenges = new ArrayList<>();
+        for (Challenge findChallenge : findChallenges) {
+            if (alreadyChallenges.contains(findChallenge.getChallengeId())) continue;
+            recommendChallenges.add(findChallenge);
+        }
 
 
-        ResponseDreamCardDetailByUser response = ResponseDreamCardDetailByUser.from(findCard, reviewStatus, challenges);
+
+
+        ResponseDreamCardDetailByUser response = ResponseDreamCardDetailByUser.from(findCard, reviewStatus, recommendChallenges);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
