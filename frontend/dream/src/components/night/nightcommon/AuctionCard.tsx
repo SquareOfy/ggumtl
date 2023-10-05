@@ -68,7 +68,7 @@ const AuctionCard = ({auctionCard} : AuctionCardProps) => {
     }}    
     >
       <div className="auction-end-time"> 
-      { !profilePath.current && diffHour() < 3 ? ( diffHour() > 0 ? `마감 ${diffHour()}시간 전` : "종료 임박") : "경매장 입장"}
+      { !profilePath.current ? (diffHour() < 3 ? ( diffHour() > 0 ? `마감 ${diffHour()}시간 전` : "종료 임박") : "경매장 입장") : null}
       </div>
       <div className="auction-card-image">
         <Image $nightImageBorder $auctionCard><img src={auctionCard?.dreamCardImageUrl}/></Image>
