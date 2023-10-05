@@ -96,6 +96,7 @@ const StyledBox = styled.div<BoxProps>`
       text-align: center;
       background-color: rgba(190, 169, 215, 0.5);
       color: black;
+      white-space: nowrap;
     `
   }
 
