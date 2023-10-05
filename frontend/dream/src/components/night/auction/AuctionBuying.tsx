@@ -75,8 +75,7 @@ const AuctionBuying = ({biddingMoney, askingMoney, updateValue} :AuctionBuyingPr
   const {auctionId} = useParams()
   const accessToken = sessionStorage.getItem('accessToken')
 
-  // const userId = useSelector((state:RootState) => state.auth.userdata.userId)
-  const userId = 33
+  const userId = useSelector((state:RootState) => state.auth.userdata.userId)
 
   const clientRef = useRef<Client|null>(null)
 
@@ -94,16 +93,15 @@ const AuctionBuying = ({biddingMoney, askingMoney, updateValue} :AuctionBuyingPr
 }
 
   useEffect(() => {
-    tokenHttp.get(`/auction/point/${33}`)
-    // tokenHttp.get(`/auction/point/${userdata.userId}`)
+    // tokenHttp.get(`/auction/point/${33}`)
+    tokenHttp.get(`/auction/point/${userdata.userId}`)
     .then(res => {
       // console.log(res.data.data.point, "머니머니")
       setPoint(res.data.data.point)
     })
     console.log("초기 렌더링 #########")
       // 웹소캣(2)
-  const socket = new SockJS("http://j9b301.p.ssafy.io:9090/ws-stomp")
-  // const socket = new WebSocket("ws://j9b301.p.ssafy.io:9090/ws-stomp")
+  const socket = new SockJS("https://j9b301.p.ssafy.io:9090/ws-stomp")
 
   // 함수화 필수
   clientRef.current = Stomp.over(() => {

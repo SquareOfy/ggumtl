@@ -189,7 +189,7 @@ const AuctionDetail = () => {
     {/* 경매 참여 페이지(2) */}
     {!isFirstAuctionPage && <AuctionBuying 
     biddingMoney={auctionItem?.biddingMoney || 0}
-    askingMoney={auctionItem?.askingMoney || 0}
+    askingMoney={auctionItem?.askingMoney || 100}
     updateValue = {updateValue}
     />}
 
