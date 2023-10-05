@@ -142,7 +142,7 @@ const StyledImage = styled.div<ImageProps>`
       border: none;
 
       & > img {
-        border: 0.5rem solid black;
+        border: 0.2rem solid rgb(255, 225, 119);
       }
     `}
 
