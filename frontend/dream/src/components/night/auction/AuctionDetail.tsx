@@ -157,8 +157,10 @@ const AuctionDetail = () => {
         if (res !== -1) {
           const data = {auctionId, newOwnerId: res}
           tokenHttp.put("/auction", data)
-          .then(res => console.log(res, "주인 바뀜"))
-          navigation(`/night/profile/${userdata.userId}`)
+          .then(res => {
+            console.log(res, "주인 바뀜?")
+            navigation(`/night/profile/${userdata.userId}`)
+          })
         }
       })
   }
