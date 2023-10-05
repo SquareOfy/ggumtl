@@ -21,7 +21,7 @@ const tokenHttp = axios.create({
 
 // 요청 인터셉터 설정 (요청 보내기 전에 수행되는 함수)
 tokenHttp.interceptors.request.use(async (req) => {
-  const accessToken = sessionStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem("accessToken");
   // const accessToken = token;
   if (!accessToken) {
     console.log("token 이 존재하지 않습니다.");
@@ -46,15 +46,15 @@ tokenHttp.interceptors.request.use(async (req) => {
       {},
       {
         headers: {
-          Authorization: sessionStorage.getItem("refreshToken"),
+          Authorization: localStorage.getItem("refreshToken"),
           // Authorization: token,
         },
       }
     )
     .then((response) => {
       if (response.data.message === "success") {
-        sessionStorage.setItem("accessToken", response.data["accessToken"]);
-        sessionStorage.setItem("refreshToken", response.data["refreshToken"]);
+        localStorage.setItem("accessToken", response.data["accessToken"]);
+        localStorage.setItem("refreshToken", response.data["refreshToken"]);
       } else {
         throw new Error("expire token");
       }
@@ -63,7 +63,7 @@ tokenHttp.interceptors.request.use(async (req) => {
       throw new Error("expire token");
     });
 
-  req.headers["Authorization"] = sessionStorage.getItem("accessToken");
+  req.headers["Authorization"] = localStorage.getItem("accessToken");
   // req.headers["Authorization"] = token;
   return req;
 });
