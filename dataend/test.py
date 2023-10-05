@@ -14,7 +14,7 @@ from pydantic import BaseModel
 # 내가 만든 함수
 from wordExtractService import getDreamKeywords
 from emotionAnalysisService import getEmotionScore
-from getKarlo import getKarloImgPath
+from getKarlo import getKarloImgPath, translateDreamKeywords
 
 # 꿈 데이터
 class DreamModel(BaseModel):
@@ -86,8 +86,39 @@ def dreamProcessing(data):
     print(response)
     return response
 
-dreamProcessing({
-    "dreamCardContent": "나는 간절히 바라본다. 이게 실행되기를 제발..!",
-    "dreamCardAuthor": 2,
-    "isShow": "F"
+# dreamProcessing({
+#     "dreamCardContent": "나는 간절히 바라본다. 이게 실행되기를 제발..!",
+#     "dreamCardAuthor": 2,
+#     "isShow": "F"
+# })
+
+# @app.post("/data/day/challenge/create")
+def challengeProcessing(data):
+    challengeContent = data['challengeContent']
+    # period = data.period
+    # challengeOwner = data.challengeOwner
+    wordKeywords = getDreamKeywords(challengeContent)
+    print(wordKeywords)
+    print(translateDreamKeywords(wordKeywords))
+    prompt = str(translateDreamKeywords(wordKeywords)).replace("[", "").replace("]", "") + ", by Roy Fox Lichtenstein"
+    img_path = getKarloImgPath(prompt)
+    # toJavaData = {
+    #     "challengeTitle": challengeTitle,
+    #     "challengeContent": challengeContent,
+    #     "keywordId": keywordId,
+    #     "period": period,
+    #     "challengeOwner": challengeOwner,
+    #     "badgeUrl": "아무거나"
+    # }
+    # response = requests.post('https://j9b301.p.ssafy.io/api/s3/challenge/new', json=toJavaData, headers=headers)
+    # data = response.json()
+    # challengeId = data["data"]["challengeId"]
+
+    with open(img_path, "rb") as file:
+        files = {"file": ("karloImage2.png", file.read())}
+        # requests.post(f"https://j9b301.p.ssafy.io/api/s3/challenge/image/{challengeId}", files=files)
+        # return f"{challengeId}"
+
+challengeProcessing({
+    "challengeContent": "일찍 일어나서 독서"
 })
