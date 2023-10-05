@@ -45,7 +45,7 @@ const NavBar = () => {
           />
           <ModeToggle />
         </div>
-        <div>
+        {/* <div>
           <Button
             $icon
             onClick={() => {
@@ -54,7 +54,7 @@ const NavBar = () => {
           >
             <FiBell />
           </Button>
-        </div>
+        </div> */}
       </Bar>
     </>
   )
