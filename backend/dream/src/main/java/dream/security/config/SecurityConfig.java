@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/api/ws-stomp/**", "/api/login/**",  "/oauth2/**", "/login/oauth2/code/kakao", "wss://j9b301.p.ssafy.io/**",
                 "/api/mongo/**", "/api/s3/**", "/css/**", "/images/**", "/js/**", "/h2-console/**")
                 .permitAll()
