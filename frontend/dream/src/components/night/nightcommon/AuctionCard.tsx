@@ -42,6 +42,8 @@ const AuctionCard = ({auctionCard} : AuctionCardProps) => {
 
     const todayDay = today.getDate()
     const endDay = today.getDate()
+    if (todayDay === endDay) { return 4 }
+
     if (endedHour === 0) {
       if (todayHour === 22) return 2
       else if (todayHour === 23) return 1
