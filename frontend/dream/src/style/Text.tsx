@@ -1,149 +1,138 @@
 import React from 'react'
 
 // 스타일
-import styled, {css} from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface TextProps {
-  children?: React.ReactNode;
-  onClick ?: () => void;
-  className ?: string;
+  children?: React.ReactNode
+  onClick?: () => void
+  className?: string
 
-  $nightKeword ?: boolean;
+  $nightKeword?: boolean
 
   // 강조
-  $isBold ?: boolean;
+  $isBold?: boolean
 
   // 마진
-  $MBHalf ?: boolean
-  $dayHomeText ?: boolean
-  $daySearchText ?: boolean
-  $textStartMargin ?: boolean
+  $MBHalf?: boolean
+  $dayHomeText?: boolean
+  $daySearchText?: boolean
+  $textStartMargin?: boolean
 
   // 수직정렬
-  $verticalAlign ?: boolean
+  $verticalAlign?: boolean
 
   // 색상
-  $nightWhite ?: boolean;
-  $nightBlue ?: boolean;
-  $black ?: boolean;
-  $danger ?: boolean;
-  $nightMoney ?: boolean;
-  $dayMoney ?: boolean;
-  $dayWhite ?: boolean;
+  $nightWhite?: boolean
+  $nightBlue?: boolean
+  $black?: boolean
+  $danger?: boolean
+  $nightMoney?: boolean
+  $dayMoney?: boolean
+  $dayWhite?: boolean
 
   //인풋 에러 메세지
-  $wrongMessage ?: boolean;
-  $successMessage ?: boolean;
+  $wrongMessage?: boolean
+  $successMessage?: boolean
 
   //챌린지 디테일 정보 박스 내부
-  $chalBoxInnerText ?: boolean;
+  $chalBoxInnerText?: boolean
 
-  $progressPercent ?: boolean;
+  $progressPercent?: boolean
 
-  $chalDetailTitle ?: boolean;
+  $chalDetailTitle?: boolean
+  $nightSearch?: boolean
+  $nightSearchModal?: boolean
+  $nightModalTitle?: boolean
 
-  $timeCapsuleText ?: boolean;
-  $recommendTitle ?: boolean;
-  $recommendCardTitle ?: boolean;
+  $timeCapsuleText?: boolean
+  $recommendTitle?: boolean
+  $recommendCardTitle?: boolean
+  $SunsetText?: boolean
 }
 const StyledText = styled.div<TextProps>`
-
   ${(props) =>
     props.$nightKeword &&
     css`
       font-size: 0.75rem;
-    `
-  }
+    `}
   ${(props) =>
     props.$isBold &&
     css`
       font-weight: 700;
-    `
-  }
+    `}
   ${(props) =>
     props.$MBHalf &&
     css`
       margin-bottom: 0.5rem;
-    `
-  }
+    `}
   ${(props) =>
     props.$dayHomeText &&
     css`
       margin-left: 1rem;
       margin-top: 1rem;
-    `
-  }
+    `}
   ${(props) =>
     props.$daySearchText &&
     css`
       margin-left: 1rem;
       margin-top: 2rem;
-    `
-  }
+    `}
 
   // 입력 오류 경고 메세지
-  ${(props) => 
+  ${(props) =>
     props.$wrongMessage &&
     css`
       font-size: 0.7rem;
       padding: 0.5rem;
       color: #dc3545;
-    `
-  }
-  ${(props) => 
+    `}
+  ${(props) =>
     props.$successMessage &&
     css`
       font-size: 0.7rem;
       padding: 0.5rem;
       color: #198754;
-    `
-  }
+    `}
   /* 수직정렬 */
-  ${(props) => 
+  ${(props) =>
     props.$verticalAlign &&
     css`
       display: flex;
       flex-direction: column;
       justify-content: center;
-    `
-  }
+    `}
   ${(props) =>
     props.$nightWhite &&
     css`
-      color: #F2F2F0;
-    `
-  }
+      color: #f2f2f0;
+    `}
 
   ${(props) =>
     props.$nightBlue &&
     css`
-      color: #1F4078;
-    `
-  }
+      color: #1f4078;
+    `}
   ${(props) =>
     props.$black &&
     css`
       color: black;
-    `
-  }
+    `}
   ${(props) =>
     props.$danger &&
     css`
-      color: #C70000;
-    `
-  }
+      color: #c70000;
+    `}
   ${(props) =>
     props.$nightMoney &&
     css`
       color: #a5a5a5;
-    `
-  }
+    `}
   ${(props) =>
     props.$dayMoney &&
     css`
       color: #424242;
-    `
-  }
+    `}
   ${(props) =>
     props.$dayWhite &&
     css`
@@ -151,70 +140,83 @@ const StyledText = styled.div<TextProps>`
       line-height: 1.5rem;
       font-size: 1rem;
       margin-top: 8rem;
-    `
-  }
+    `}
   ${(props) =>
     props.$textStartMargin &&
     css`
       line-height: 1.5rem;
       font-size: 1rem;
       margin-top: 8rem;
-    `
-  }
+    `}
 
-  ${(props) => 
-    props.$chalBoxInnerText && 
+  ${(props) =>
+    props.$chalBoxInnerText &&
     css`
       line-height: 3.5rem;
-    `
-  }
+    `}
   // progress bar 퍼센트
-  ${(props) => 
-    props.$progressPercent && 
+  ${(props) =>
+    props.$progressPercent &&
     css`
       height: 0;
       position: relative;
       font-size: 1rem;
-    `
-  }
-  
+    `}
+
   // 챌린지 디테일 제목
-  ${(props) => 
-    props.$chalDetailTitle && 
+  ${(props) =>
+    props.$chalDetailTitle &&
     css`
       margin-top: 0.7rem;
       margin-bottom: 1.5rem;
       font-size: 1.4rem;
-    `
-  }
+    `}
   // 응원 메세지 확인 텍스트
-  ${(props) => 
-    props.$timeCapsuleText && 
+  ${(props) =>
+    props.$timeCapsuleText &&
     css`
       margin-top: 2.5rem;
-    `
-  }
+    `}
   // 추천 제목
-  ${(props) => 
-    props.$recommendTitle && 
+  ${(props) =>
+    props.$recommendTitle &&
     css`
       margin-top: 2.5rem;
       font-size: 2rem;
       text-align: center;
-    `
-  }
-  ${(props) => 
-    props.$recommendCardTitle && 
+    `}
+  ${(props) =>
+    props.$recommendCardTitle &&
     css`
       margin: 0.7rem 0;
       font-size: 1.7rem;
       text-align: center;
-    `
-  }
-  
+    `}
+  ${(props) =>
+    props.$nightSearch &&
+    css`
+      margin: 0 1rem;
+    `}
+  ${(props) =>
+    props.$nightSearchModal &&
+    css`
+      margin: 1rem;
+    `}
+  ${(props) =>
+    props.$nightModalTitle &&
+    css`
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    `}
+  ${(props) =>
+    props.$SunsetText &&
+    css`
+      margin-bottom: 2rem;
+      font-size: 1.3rem;
+    `}
 `
 
-const Text = (props:TextProps) => {
+const Text = (props: TextProps) => {
   return <StyledText {...props}>{props.children}</StyledText>
 }
 

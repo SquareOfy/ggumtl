@@ -1,20 +1,18 @@
+import React, { useState } from 'react'
 
-
-import React, {useState} from "react";
-
-import { changeDate } from "utils/dateForm";
+import { changeDate } from 'utils/dateForm'
 
 // 컴포넌트
-import Text from "style/Text";
-import Heart from "components/common/Heart";
-import { FaRegCommentDots } from "react-icons/fa6";
+import Text from 'style/Text'
+import Heart from 'components/common/Heart'
+import { FaRegCommentDots } from 'react-icons/fa6'
 
 //타입
-import { CertArticleItemType } from "./ChalCertArticleList";
-import Image from "style/Image";
-import styled from "styled-components";
-import { Box } from "style/Box";
-import { useNavigate, useParams } from "react-router-dom";
+import { CertArticleItemType } from './ChalCertArticleList'
+import Image from 'style/Image'
+import styled from 'styled-components'
+import { Box } from 'style/Box'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const ProfileDateWrap = styled.div`
   display: flex;
@@ -29,22 +27,22 @@ const ProfileWrap = styled.div`
   justify-content: center;
   /* line-height: 100%; */
   & > div:nth-child(2) {
-    & > div{
+    & > div {
       text-align: center;
     }
   }
 `
 const ProfileImage = styled(Image)`
-    width: 2.5rem;
-    height: 2.5rem;
-    margin-right: 1rem;
-    & > img {
-      width: 100%;
-      object-fit: cover;
-      aspect-ratio: 1/1;
-      object-position: center;
-      border-radius: 50%;
-    }
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 1rem;
+  & > img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+    object-position: center;
+    border-radius: 50%;
+  }
 `
 
 const MarginBot = styled.div`
@@ -70,12 +68,11 @@ const HeartCommentContainer = styled.div`
   & > div {
     margin: 0;
   }
-
 `
 
 // progress 속성을 정의
 interface ProgressBarProps {
-  progress: number;
+  progress: number
 }
 
 const ProgressBar = styled.div<ProgressBarProps>`
@@ -83,12 +80,12 @@ const ProgressBar = styled.div<ProgressBarProps>`
   border-radius: 1rem;
   color: #997ad8;
   position: relative;
-  background-color: #F9F9F9;
-  
+  background-color: #f9f9f9;
+
   &::before {
-    content: "";
+    content: '';
     position: absolute;
-    inset: 0 calc(${props => 100 -props.progress}%) 0 0;
+    inset: 0 calc(${(props) => 100 - props.progress}%) 0 0;
     border-radius: inherit;
     background: currentColor;
     animation: p6 2s;
@@ -99,24 +96,23 @@ const ProgressBar = styled.div<ProgressBarProps>`
       width: 0;
     }
     100% {
-      width: ${props => props.progress}%; // 원하는 최대 너비
+      width: ${(props) => props.progress}%; // 원하는 최대 너비
     }
   }
 `
 
 interface CertArticleItemProps {
-  certData : CertArticleItemType
+  certData: CertArticleItemType
 }
 
 // 메인 리턴 부분
-const ChalCertArticleItem = ({certData}:CertArticleItemProps) => {
-  
+const ChalCertArticleItem = ({ certData }: CertArticleItemProps) => {
   const navigate = useNavigate()
   const params = useParams()
   const challengeId = params.challengeId // 현재 챌린지 id
   const challengeDetailId = certData.challengeDetailId // 챌린지 인증글 id
 
-  const [progress, setProgress] = useState<number>(70);
+  const [progress, setProgress] = useState<number>(70)
 
   // 유저 프로필로 이동
   const moveUserProfile = () => {
@@ -124,55 +120,50 @@ const ChalCertArticleItem = ({certData}:CertArticleItemProps) => {
   }
 
   return (
-    
     <>
       <ProfileDateWrap>
-      {/* 상단바 */ }
-      <ProfileWrap>
-      <ProfileImage
-      // 여기에 이동하는 곳
-      onClick={moveUserProfile}
-      >
-      <img src={certData?.photoUrl} alt="없음"/>
-      </ProfileImage>
-      <Text $verticalAlign $nightWhite
-      onClick={moveUserProfile}
-      >{certData?.nickname} </Text>
-      </ProfileWrap>
+        {/* 상단바 */}
+        <ProfileWrap>
+          <ProfileImage
+            // 여기에 이동하는 곳
+            onClick={moveUserProfile}
+          >
+            <img src={certData?.photoUrl} alt="없음" />
+          </ProfileImage>
+          <Text $verticalAlign $nightWhite onClick={moveUserProfile}>
+            {certData?.nickname}{' '}
+          </Text>
+        </ProfileWrap>
 
-      <Text $verticalAlign $nightWhite>{changeDate(certData?.createdAt)}</Text>
+        <Text $verticalAlign $nightWhite>
+          {changeDate(certData?.createdAt)}
+        </Text>
+      </ProfileDateWrap>
 
-      </ProfileDateWrap >
-      
-      {/* 인증 이미지 */ }
+      {/* 인증 이미지 */}
       <Image $mainImage $dayImageBorder>
-        <img src={certData?.photoUrl} alt="없음"/>
+        <img src={certData?.photoUrl} alt="없음" />
       </Image>
-      
-      
+
       {/* 인증 글 하단바 */}
       <BottomContainer>
-
-        {/* 왼쪽 파트 (좋아요 댓글) */ }
+        {/* 왼쪽 파트 (좋아요 댓글) */}
         {/* 좋아요 */}
         <HeartCommentContainer>
           <Heart
-          isLike={certData.like}
-          likedNumber={certData.likeCount}
-          /> 
+            challengeDetailId={challengeDetailId}
+            isLike={certData.like}
+            likedNumber={certData.likeCount}
+          />
         </HeartCommentContainer>
         {/* 댓글 */}
-        <HeartCommentContainer
-          onClick={moveUserProfile}
-        >
-          <FaRegCommentDots/>
+        <HeartCommentContainer onClick={moveUserProfile}>
+          <FaRegCommentDots />
           <Text>{certData?.commentCount}</Text>
         </HeartCommentContainer>
 
         {/* 오른쪽 파트 */}
-        <ProgressBar progress={progress}>
-          
-        </ProgressBar>
+        <ProgressBar progress={progress}></ProgressBar>
       </BottomContainer>
 
       {/* 게시글 내용 */}
@@ -180,7 +171,7 @@ const ChalCertArticleItem = ({certData}:CertArticleItemProps) => {
         {certData?.challengeDetailContent}
       </Box>
 
-      <MarginBot/>   
+      <MarginBot />
     </>
   )
 }

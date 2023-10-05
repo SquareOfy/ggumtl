@@ -12,11 +12,17 @@ import styled from 'styled-components'
 import Button from 'components/common/Button'
 import axios from 'axios'
 import basicHttp from 'api/basicHttp'
+import Image from 'style/Image'
+import Text from 'style/Text'
 
 const LoginContainer = styled.div`
   width: 80%;
   margin: auto;
-  margin-top: 45vh;
+  margin-top: 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 // 로그인 함수
@@ -31,6 +37,10 @@ const Login = () => {
   return (
     <>
       <LoginContainer>
+        <Image $SunsetLogo>
+          <img src={`${process.env.PUBLIC_URL}/logo512.png`}></img>
+        </Image>
+        <Text $SunsetText>함께 꿈을 꾸러갈까요?</Text>
         <Button
           $fullWidth
           $kakao
