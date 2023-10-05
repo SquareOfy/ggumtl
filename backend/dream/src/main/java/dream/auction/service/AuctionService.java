@@ -130,7 +130,7 @@ public class AuctionService {
         Bidding topBidding = findAuction.getBidding().get(0);
         if (request.getBiddingMoney() <= topBidding.getBiddingMoney()) throw new BiddingException(BiddingException.LOW_BIDDING_MONEY);
         if (request.getBiddingMoney() >= findAuction.getImmediatelyBuyMoney()) throw new BiddingException(BiddingException.HIGH_BIDDING_MONEY);
-        if (topBidding.getBiddingMoney() == findAuction.getImmediatelyBuyMoney()) throw new BiddingException(BiddingException.ALREADY_MONEY_END);
+//        if (topBidding.getBiddingMoney() == findAuction.getImmediatelyBuyMoney()) throw new BiddingException(BiddingException.ALREADY_MONEY_END);
 
         if (user.getPoint() < request.getBiddingMoney()) throw new BiddingException(BiddingException.NOT_ENOUGH_MONEY);
 
