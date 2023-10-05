@@ -79,7 +79,7 @@ const ProfileHeader = () => {
   const [isStarClicked, setIsStarClicked] = useState<boolean>(true);
   const [isMyProfile, setIsMyProfile] = useState<boolean>(false); // 내 프로필인지 유저 확인
   const [isFollowing, setIsFollowing] = useState<boolean>(false); // 팔로우 했는지 여부
-  const [progress, setProgress] = useState<number>(0);
+  const [progress, setProgress] = useState<number>(auth?.wrigglePoint);
 
   // 프로필 axios 통신 데이터들
   const [userData, setUserData] = useState<ProfileHeaderAxiosType>();
