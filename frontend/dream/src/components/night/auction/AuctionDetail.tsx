@@ -79,10 +79,8 @@ const AuctionDetail = () => {
   const userId = useSelector((state:RootState)=> state.auth.userdata.userId)
   useEffect(()=> {
     
-    tokenHttp.get(`/auction/point/${33}`)
-    // tokenHttp.get(`/auction/point/${userdata.userId}`)
+    tokenHttp.get(`/auction/point/${userId}`)
     .then(res => {
-      // console.log(res.data.data.point, "머니머니")
       setPoint(res.data.data.point)
     })
     
