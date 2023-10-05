@@ -64,6 +64,7 @@ export interface dreamCardDataType {
   likeCount :number,
   reviewStatus :string,
   ownerNickname :string,
+  auctionId: number,
 }
 
 interface DreamRecordContentsTabProps {
@@ -133,6 +134,7 @@ const DreamRecordContentsTab = ({setReverseCardData, setReviewStatus} :DreamReco
         dreamCardImageUrl: dreamCardData?.dreamCardImageUrl,
         isShow: dreamCardData?.isShow,
         keywords: dreamCardData?.keywords,
+        auctionId : dreamCardData?.auctionId,
       }
       setReverseCardData(data)
       // setReviewStatus 함수가 정의되어 있을 때만 호출

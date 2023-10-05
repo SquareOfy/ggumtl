@@ -45,6 +45,7 @@ const AlertList = () => {
     else {apiAddressRef.current = `/notification/list?lastItemId=${lastItemId}&size=${size}`}
     
     if (arriveEnd && hasNext) {  // 끝에 도달하고 다음이 있을 때 다음 데이터 호출
+      console.log(apiAddressRef.current, "현재")
       tokenHttp.get(apiAddressRef.current)
       .then((res)=>{
         const response = res.data.data
