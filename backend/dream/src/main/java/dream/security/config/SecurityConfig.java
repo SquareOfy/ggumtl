@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 // Cors 허용 패턴
                                 CorsConfiguration config = new CorsConfiguration();
                                 config.setAllowedOrigins(
-                                        List.of("*")
+                                        List.of("*", "https://j9b301.p.ssafy.io/", "http://j9b301.p.ssafy.io:9090/")
                                 );
                                 config.setAllowCredentials(true);
                                 config.setAllowedMethods(
