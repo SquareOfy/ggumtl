@@ -73,7 +73,7 @@ interface AuctionBuyingProps {
 const AuctionBuying = ({biddingMoney, askingMoney, updateValue} :AuctionBuyingProps) => {
   const userdata = useSelector((state: RootState) => state.auth.userdata);
   const {auctionId} = useParams()
-  const accessToken = sessionStorage.getItem('accessToken')
+  const accessToken = localStorage.getItem('accessToken')
 
   const userId = useSelector((state:RootState) => state.auth.userdata.userId)
 
