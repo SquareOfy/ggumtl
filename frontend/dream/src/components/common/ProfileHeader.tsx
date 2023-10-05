@@ -89,7 +89,7 @@ const ProfileHeader = () => {
   useEffect(() => {
     tokenHttp.get(`/profile/common/header/${params.userId}`)
     .then((res) => {
-      // console.log("프로필 헤더 : ", res);
+      console.log("프로필 헤더 : ", res);
       setUserData(res.data.data);
     })
     .catch((err) => console.log("ProfileHeader 오류 : ", err))
