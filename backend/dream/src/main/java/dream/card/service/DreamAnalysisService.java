@@ -94,19 +94,21 @@ public class DreamAnalysisService {
         Grade rareGrade = Grade.A;
         Grade totalGrade = Grade.A;
 
-        if(dreamTellingPositivePoint > 150) positiveGrade = Grade.SS;
-        else if(dreamTellingPositivePoint > 125) positiveGrade = Grade.S;
-        else if(dreamTellingPositivePoint > 100) positiveGrade = Grade.A;
-        else if(dreamTellingPositivePoint > 70) positiveGrade = Grade.B;
-        else if(dreamTellingPositivePoint > 50) positiveGrade = Grade.C;
+        if(dreamTellingPositivePoint > 90) positiveGrade = Grade.SS;
+        else if(dreamTellingPositivePoint > 80) positiveGrade = Grade.S;
+        else if(dreamTellingPositivePoint > 70) positiveGrade = Grade.A;
+        else if(dreamTellingPositivePoint > 40) positiveGrade = Grade.B;
+        else if(dreamTellingPositivePoint > 15) positiveGrade = Grade.C;
         else positiveGrade = Grade.F;
 
-        if(rarePoint > 95) rareGrade = Grade.SS;
-        else if(rarePoint > 90) rareGrade = Grade.S;
-        else if(rarePoint > 70) rareGrade = Grade.A;
-        else if(rarePoint > 40) rareGrade = Grade.B;
-        else if(rarePoint > 15) rareGrade = Grade.C;
+        if(rarePoint > 150) rareGrade = Grade.SS;
+        else if(rarePoint > 125) rareGrade = Grade.S;
+        else if(rarePoint > 100) rareGrade = Grade.A;
+        else if(rarePoint > 70) rareGrade = Grade.B;
+        else if(rarePoint > 50) rareGrade = Grade.C;
         else rareGrade = Grade.F;
+
+        rarePoint = rarePoint * 3 / 2;
 
         int totalSumDiv2 = (dreamTellingPositivePoint + rarePoint) / 2;
         if(totalSumDiv2 > 90) totalGrade = Grade.SS;

@@ -28,5 +28,12 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
             "order by c.hits desc ")
     List<Challenge> findRecommendChallengeByDreamCard(@Param("keywords") List<String> keywords);
 
+
+
+
+
     Optional<Challenge> findById(Long id);
+
+
+
 }

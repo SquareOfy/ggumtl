@@ -435,8 +435,8 @@ public class ChallengeService {
                 .filter(challengeDetail -> challengeDetail.getUser().getUserId().equals(user.getUserId()))
                 .count();
 
-        if(detailCount < challenge.getTimeCapsuleOpenAt())
-            throw new BadRequestException(BadRequestException.CANNOT_READ_TIMECAPSULE);
+//        if(detailCount < challenge.getTimeCapsuleOpenAt())
+//            throw new BadRequestException(BadRequestException.CANNOT_READ_TIMECAPSULE);
 
         List<ChallengeParticipation> list = challenge.getChallengeParticipations();
         if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_TIMECAPSULE);
@@ -485,8 +485,21 @@ public class ChallengeService {
         }
         if (userKeywords.isEmpty()) throw new NotFoundException(NotFoundException.KEYWORD_NOT_FOUND);
 
-        List<Challenge> recommendChallenges = challengeRepository.findRecommendChallengeByDreamCard(userKeywords)
-                .stream().limit(4).collect(Collectors.toList());
+
+        List<Challenge> findChallenges = challengeRepository.findRecommendChallengeByDreamCard(userKeywords);
+        List<ChallengeParticipation> findParts = challengeParticipationRepository.findPartUserByUser(userId);
+        List<Long> alreadyChallenges = new ArrayList<>();
+
+        for (ChallengeParticipation findPart : findParts) {
+            alreadyChallenges.add(findPart.getChallenge().getChallengeId());
+        }
+        List<Challenge> recommendChallenges = new ArrayList<>();
+        for (Challenge findChallenge : findChallenges) {
+            if (alreadyChallenges.contains(findChallenge.getChallengeId())) continue;
+            recommendChallenges.add(findChallenge);
+            if (recommendChallenges.size() == 4) break;
+        }
+
 
         List<ResponseChallenge> response = new ArrayList<>();
         for (Challenge recommendChallenge : recommendChallenges) {
