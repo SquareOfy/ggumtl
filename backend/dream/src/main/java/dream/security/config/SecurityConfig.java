@@ -48,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 config.setAllowedOrigins(
                                         List.of("*", "https://j9b301.p.ssafy.io/", "http://j9b301.p.ssafy.io:9090/")
                                 );
-                                config.setAllowCredentials(true);
                                 config.setAllowedMethods(
                                         List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                                 );
