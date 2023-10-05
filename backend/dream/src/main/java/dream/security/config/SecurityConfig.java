@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                         List.of("*", "https://j9b301.p.ssafy.io/", "wss://j9b301.p.ssafy.io/")
                                 );
                                 config.setAllowedMethods(
-                                        List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+                                        List.of("*")
                                 );
                                 config.setAllowedHeaders(
                                         List.of("*")
