@@ -108,6 +108,8 @@ public class DreamAnalysisService {
         else if(rarePoint > 50) rareGrade = Grade.C;
         else rareGrade = Grade.F;
 
+        rarePoint = rarePoint * 3 / 2;
+
         int totalSumDiv2 = (dreamTellingPositivePoint + rarePoint) / 2;
         if(totalSumDiv2 > 90) totalGrade = Grade.SS;
         else if(totalSumDiv2 > 80) totalGrade = Grade.S;
