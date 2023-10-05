@@ -1,43 +1,43 @@
 import React from 'react'
 
 // 스타일
-import styled, {css} from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface ContainerProps {
-  children?: React.ReactNode;
-  $baseContainer ?: boolean
-  $centerContainer ?: boolean
-  $spaceBetweenContainer ?: boolean
-  $columnCenterContainer ?: boolean
+  children?: React.ReactNode
+  $baseContainer?: boolean
+  $centerContainer?: boolean
+  $spaceBetweenContainer?: boolean
+  $columnCenterContainer?: boolean
 
   // 5개 넘어가면 한줄 띄어가는 keyword
-  $nightKeyword ?: boolean
+  $nightKeyword?: boolean
 
-  $dayCreate ?: boolean
-  $certCreate ?: boolean
-  $dayBaseContainer ?: boolean
+  $dayCreate?: boolean
+  $certCreate?: boolean
+  $dayBaseContainer?: boolean
   // 챌린지 디테일 내용 컨테이너
-  $chalDetail ?: boolean
-  $auctionDetailMargin ?: boolean
-  
+  $chalDetail?: boolean
+  $auctionDetailMargin?: boolean
+
   // 댓글 모달 컨테이너
-  $commentContainer ?: boolean
-  $commentListContainer ?: boolean
+  $commentContainer?: boolean
+  $commentListContainer?: boolean
+
+  $nightSearch?: boolean
+  $nightSearchModal?: boolean
 }
 const StyledContainer = styled.div<ContainerProps>`
-
   ${(props) =>
     props.$baseContainer &&
     css`
       margin: 0.5rem 0.5rem 0;
-    `
-  }
+    `}
   ${(props) =>
     props.$dayBaseContainer &&
     css`
       margin: 1rem 1rem 0;
-    `
-  }
+    `}
 
   // div 가운데 넣기
   ${(props) =>
@@ -47,19 +47,16 @@ const StyledContainer = styled.div<ContainerProps>`
       justify-content: center;
       align-content: center;
       margin: 1rem auto;
-    `
-  }
+    `}
   ${(props) =>
     props.$columnCenterContainer &&
     css`
-    
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-    `
-  }
-  
+    `}
+
   // div 가운데 spacebetween 버전
   ${(props) =>
     props.$spaceBetweenContainer &&
@@ -68,8 +65,7 @@ const StyledContainer = styled.div<ContainerProps>`
       justify-content: space-between;
       align-content: center;
       /* margin: 1rem auto; */
-    `
-  }
+    `}
 
   ${(props) =>
     props.$nightKeyword &&
@@ -85,16 +81,14 @@ const StyledContainer = styled.div<ContainerProps>`
         width: 3.5rem;
         border-radius: 0.5rem;
       }
-    `
-  }
+    `}
 
   // 챌린지 생성 컨테이너
   ${(props) =>
     props.$dayCreate &&
     css`
       margin-top: 5rem;
-    `
-  }
+    `}
   // 인증글 생성 컨테이너
   ${(props) =>
     props.$certCreate &&
@@ -104,21 +98,19 @@ const StyledContainer = styled.div<ContainerProps>`
       justify-content: center;
       align-items: center;
       margin-top: 2rem;
-    `
-  }
+    `}
 
   // 챌린지 디테일 컨테이너
   ${(props) =>
     props.$chalDetail &&
     css`
       margin: 1.5rem 0;
-      padding:1rem;
+      padding: 1rem;
       background-color: rgba(249, 249, 249, 0.3);
       border-radius: 1rem;
       display: flex;
       flex-direction: column;
-    `
-  }
+    `}
 
   // 댓글 모달창 컨테이너
   ${(props) =>
@@ -133,8 +125,7 @@ const StyledContainer = styled.div<ContainerProps>`
       width: 100vw;
       z-index: 100;
       // 트랜지션으로 올라오게하면 좋지 않을까..?
-    `
-  }
+    `}
   // 댓글 내용 리스트 컨테이너
   ${(props) =>
     props.$commentListContainer &&
@@ -142,19 +133,41 @@ const StyledContainer = styled.div<ContainerProps>`
       margin-top: 3rem;
       margin-bottom: 4rem;
       // 트랜지션으로 올라오게하면 좋지 않을까..?
-    `
-  }
+    `}
   // 경매 디테일 페이지 아래쪽 margin
   ${(props) =>
     props.$auctionDetailMargin &&
     css`
       margin-bottom: 1rem;
-    `
-  }
-
+    `}
+  // 밤 검색 외부 박스
+  ${(props) =>
+    props.$nightSearch &&
+    css`
+      height: 6rem;
+      padding: 1rem 0;
+      margin: 0.5rem 0;
+      border-radius: 1rem;
+      margin: 1rem;
+      border-radius: 1rem;
+      background-color: rgb(249, 249, 249, 30%);
+    `}
+  ${(props) =>
+    props.$nightSearchModal &&
+    css`
+      position: fixed;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgb(0, 0, 0, 80%);
+    `}
 `
 
-const Container = (props:ContainerProps) => {
+const Container = (props: ContainerProps) => {
   return <StyledContainer {...props}>{props.children}</StyledContainer>
 }
 

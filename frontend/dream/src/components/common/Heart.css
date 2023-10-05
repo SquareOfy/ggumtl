@@ -1,9 +1,16 @@
-.heart-container {
+.day-mode {
+  --heart-color: rgb(255, 49, 49);
+}
+.night-mode {
   --heart-color: rgb(222, 255, 91);
+}
+
+.heart-container {
+  /* --heart-color: rgb(222, 255, 91); */
   position: relative;
   width: 1rem;
   height: 1rem;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .heart-container .checkbox {
@@ -24,7 +31,7 @@
 }
 
 .heart-container .svg-outline,
-        .heart-container .svg-filled {
+.heart-container .svg-filled {
   fill: var(--heart-color);
   position: absolute;
 }
@@ -36,7 +43,7 @@
 
 .heart-container .svg-celebrate {
   position: absolute;
-  animation: keyframes-svg-celebrate .5s;
+  animation: keyframes-svg-celebrate 0.5s;
   animation-fill-mode: forwards;
   display: none;
   stroke: var(--heart-color);
@@ -44,12 +51,12 @@
   stroke-width: 2px;
 }
 
-.heart-container .checkbox:checked~.svg-container .svg-filled {
-  display: block
+.heart-container .checkbox:checked ~ .svg-container .svg-filled {
+  display: block;
 }
 
-.heart-container .checkbox:checked~.svg-container .svg-celebrate {
-  display: block
+.heart-container .checkbox:checked ~ .svg-container .svg-celebrate {
+  display: block;
 }
 
 @keyframes keyframes-svg-filled {

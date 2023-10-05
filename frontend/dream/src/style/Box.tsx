@@ -1,160 +1,170 @@
 // Box, BoxTitle, WrappingBox
 import React from 'react'
 
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components'
 
 interface BoxProps {
-  children ?: React.ReactNode;
-  onClick ?: (e:any) => void;
-  style ?:any;
+  children?: React.ReactNode
+  onClick?: (e: any) => void
+  style?: any
 
   // 사이즈 관련
-  $fullWidth ?: boolean
-  $doubleWidth ?: boolean
-  $tripleWidth ?: boolean
+  $fullWidth?: boolean
+  $doubleWidth?: boolean
+  $tripleWidth?: boolean
 
-  $wideTextBox ?: boolean;
-  $keywordBoxNight ?: boolean;
-  $keywordBoxDay ?: boolean;
-  $challengeContentBox ?: boolean;
-  $mainTitleBox ?: boolean;
-  $storyContentsBox ?: boolean;
-  $chalDetailBox ?: boolean;  // 챌린지 정보 박스
-  $chalManageBox ?: boolean;  
-  $timeCapsuleContentBox ?: boolean;
-  $tiemCapsuleChalTitleBox ?: boolean;
-  $recommendChalBox ?: boolean;
+  $wideTextBox?: boolean
+  $keywordBoxNight?: boolean
+  $keywordBoxDay?: boolean
+  $challengeContentBox?: boolean
+  $mainTitleBox?: boolean
+  $storyContentsBox?: boolean
+  $chalDetailBox?: boolean // 챌린지 정보 박스
+  $chalManageBox?: boolean
+  $timeCapsuleContentBox?: boolean
+  $tiemCapsuleChalTitleBox?: boolean
+  $recommendChalBox?: boolean
+  $nightSearchResultBox?: boolean
+  $nightSearchModal?: boolean
 
   // 모드 관련
-  $night ?: boolean;
-  $day ?: boolean;
+  $night?: boolean
+  $day?: boolean
 
   // 박스에 타이틀 관련
-  $boxTitle ?: boolean;
+  $boxTitle?: boolean
 
-  $progressBox ?: boolean;
+  $progressBox?: boolean
 }
 
 const StyledBox = styled.div<BoxProps>`
-
   /* 최대 너비 */
-  ${(props) => props.$fullWidth &&
+  ${(props) =>
+    props.$fullWidth &&
     css`
       width: 100%;
-    `
-  }
-  ${(props) => props.$doubleWidth &&
+    `}
+  ${(props) =>
+    props.$doubleWidth &&
     css`
       width: 48%;
-    `
-  }
+    `}
 
 
 
-  ${(props) => props.$tripleWidth &&
+  ${(props) =>
+    props.$tripleWidth &&
     css`
       width: 30%;
-    `
-  }
+    `}
 
 
   // 큰 텍스트 박스
-  ${(props) => props.$wideTextBox &&
+  ${(props) =>
+    props.$wideTextBox &&
     css`
-      padding : 1rem;
+      padding: 1rem;
       margin: 0.5rem 0;
       min-height: 10rem;
       border-radius: 1rem;
-    `
-  }
+    `}
 
   // 큰 텍스트 박스 밤 모드
-  ${(props) => props.$night && 
+  ${(props) =>
+    props.$night &&
     css`
       background-color: rgba(190, 169, 215, 0.5);
       color: white;
-  `}
+    `}
 
   // 큰 텍스트 박스 낮 모드
-  ${(props) => props.$day && 
+  ${(props) =>
+    props.$day &&
     css`
       background-color: rgba(249, 249, 249, 0.5);
       color: black;
-  `}
+    `}
 
   // 밤 키워드 박스
-  ${(props) => props.$keywordBoxNight &&
+  ${(props) =>
+    props.$keywordBoxNight &&
     css`
       width: 3rem;
       display: inline;
       font-size: 0.5rem;
-      padding : 1vw;
+      padding: 1vw;
+      padding-top: 1.3vw;
       /* margin : 1rem; */
       border-radius: 1rem;
       /* width: 5rem; */
       text-align: center;
       background-color: rgba(190, 169, 215, 0.5);
       color: black;
-    `
-  }
+      white-space: nowrap;
+    `}
 
   // 낮 키워드 박스
-  ${(props) => props.$keywordBoxDay &&
+  ${(props) =>
+    props.$keywordBoxDay &&
     css`
       font-size: 1rem;
-      padding : 0.5rem;
-      margin : 1rem;
+      padding: 0.5rem;
+      margin: 1rem;
       border-radius: 1rem;
       width: 5rem;
       text-align: center;
       background-color: white;
       color: black;
-    `
-  }
+    `}
 
   // 챌린지 컨텐츠 박스
-  ${(props) => props.$challengeContentBox &&
+  ${(props) =>
+    props.$challengeContentBox &&
     css`
       /* height: 3rem; */
       display: grid;
-      grid-template-columns: 30% 40% 30%;
-      justify-items: center;
+      grid-template-columns: 40% 60%;
       align-items: center;
       background-color: rgba(249, 249, 249, 0.5);
       margin: 1rem;
-      /* padding: 2.5rem; */
-      border-radius : 1.5rem;
-      
+      border-radius: 1.5rem;
+
       & > img {
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
+        margin: auto;
+        width: 5rem;
+        height: 5rem;
+        border-radius: 20%;
         // background-color: red;
         // object fit 적용 -> css 적용
         object-fit: cover;
       }
 
       & > div {
-        /* margin: 0 1rem; */
-        padding: 1rem;
+        padding: 1rem 0;
         /* justify-items: center; */
         display: inherit;
-        align-items: center;
       }
-      
+
       & > div > p {
         margin: 0.5rem 0;
-        justify-items: center;
       }
-       
-      & :nth-child(2) :first-child {
-        // 제목 두께 설정
+
+      & :nth-child(1) :nth-child(1) {
+        font-weight: bold;
+        font-size: 1.3rem;
+        margin: 0.5rem 0;
       }
-    `
-  }
+      & :nth-child(2) :nth-child(2) {
+        display: flex;
+        & > p {
+          margin-right: 1rem;
+        }
+      }
+    `}
 
   // 제목 박스 (내 챌린지)
-  ${(props) => props.$mainTitleBox &&
+  ${(props) =>
+    props.$mainTitleBox &&
     css`
       padding: 0.5rem 2rem;
       margin: 1rem 2rem;
@@ -162,68 +172,68 @@ const StyledBox = styled.div<BoxProps>`
       border-radius: 1rem;
       background-color: rgba(249, 249, 249, 0.5);
       color: black;
-      display:flex;
-      justify-content:center;
-      align-items:center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       & > img {
-        width:1.5rem;
-        height:1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
         border-radius: 50%;
         margin-right: 1rem;
         background-color: red;
         // object fit 적용 -> css 적용
         object-fit: cover;
       }
-    `
-  }
+    `}
 
   // 스토리 컨텐츠 박스
-  ${(props) => props.$storyContentsBox &&
+  ${(props) =>
+    props.$storyContentsBox &&
     css`
       padding: 1rem;
       margin-bottom: 3rem;
       border-radius: 1rem;
-      display:flex;
-      justify-content:start;
-      align-items:center;
-    `
-  }
+      display: flex;
+      justify-content: start;
+      align-items: center;
+    `}
 
   // 챌린지 디테일 박스
-  ${(props) => props.$chalDetailBox && 
-   css`
-    padding : 1rem;
-    margin: 0.7rem 0;
-    /* max-height: 5rem; */
-    border-radius: 1rem;
-    background-color: rgba(249, 249, 249, 0.7);
-    // 두번쨰 요소인 내용만 가운데 정렬
+  ${(props) =>
+    props.$chalDetailBox &&
+    css`
+      padding: 1rem;
+      margin: 0.7rem 0;
+      /* max-height: 5rem; */
+      border-radius: 1rem;
+      background-color: rgba(249, 249, 249, 0.7);
+      // 두번쨰 요소인 내용만 가운데 정렬
 
-    & :nth-child(2) {
-      margin: auto;
-      text-align: center;
-    }
-    `
-  }  
+      & :nth-child(2) {
+        margin: auto;
+        text-align: center;
+      }
+    `}
   // 챌린지 관리 박스
-  ${(props) => props.$chalManageBox && 
-   css`
-    padding : 1rem;
-    margin: 0.7rem 0;
-    max-height: 5rem;
-    border-radius: 2rem;
-    background-color: rgba(249, 249, 249, 0.5);
-    // 두번쨰 요소인 내용만 가운데 정렬
+  ${(props) =>
+    props.$chalManageBox &&
+    css`
+      padding: 1rem;
+      margin: 0.7rem 0;
+      max-height: 5rem;
+      border-radius: 2rem;
+      background-color: rgba(249, 249, 249, 0.5);
+      // 두번쨰 요소인 내용만 가운데 정렬
 
-    & :nth-child(2) {
-      margin: 0;
-      text-align: center;
-    }
-    `
-  }  
+      & :nth-child(2) {
+        margin: 0;
+        text-align: center;
+      }
+    `}
   // progress Bar
-  ${(props) => props.$progressBox && 
+  ${(props) =>
+    props.$progressBox &&
     css`
       margin: 0.7rem 0;
       & :nth-child(2) {
@@ -234,73 +244,88 @@ const StyledBox = styled.div<BoxProps>`
         position: relative;
         top: -1rem;
       }
-    `
-  }
-  
-  
+    `}
+
+
 // 타임캡슐 타이틀 박스
-${(props) => props.$tiemCapsuleChalTitleBox &&
-  css`
-    padding: 1rem;
-    margin: 1.5rem 0;
-    width: 70vw;
-    text-align: center;
-    border-radius: 2rem;
-    background-color: #FFE177;
-    font-weight: bold;
-    font-size: 1.3rem;
-  `
-}
+${(props) =>
+    props.$tiemCapsuleChalTitleBox &&
+    css`
+      padding: 1rem;
+      margin: 1.5rem 0;
+      width: 70vw;
+      text-align: center;
+      border-radius: 2rem;
+      background-color: #ffe177;
+      font-weight: bold;
+      font-size: 1.3rem;
+    `}
 
 // 타임캡슐 내용 박스
-${(props) => props.$timeCapsuleContentBox &&
-  css`
-    padding: 1rem;
-    margin: 0.5rem 0;
-    width: 100%;
-    text-align: center;
-    border-radius: 1rem;
-    background-color: rgb(249, 249, 249, 50%); 
-  `
-}
+${(props) =>
+    props.$timeCapsuleContentBox &&
+    css`
+      padding: 1rem;
+      margin: 0.5rem 0;
+      width: 100%;
+      text-align: center;
+      border-radius: 1rem;
+      background-color: rgb(249, 249, 249, 50%);
+    `}
 // 챌린지 추천 박스
-${(props) => props.$recommendChalBox &&
-  css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin: auto;
-    margin-top: 4rem;
-    width: 18rem;
-    height: 50vh;
-    border: 1px solid black;
-    border-radius: 1rem;
-    background-color: rgb(249, 249, 249, 50%); 
-  `
-}
+${(props) =>
+    props.$recommendChalBox &&
+    css`
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin: auto;
+      margin-top: 4rem;
+      width: 18rem;
+      height: 50vh;
+      border: 1px solid black;
+      border-radius: 1rem;
+      background-color: rgb(249, 249, 249, 50%);
+    `}
 
-
-
-`;
-
-
+// 밤 검색 결과 박스
+${(props) =>
+    props.$nightSearchResultBox &&
+    css`
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+    `}
+// 밤 검색 모달 박스
+${(props) =>
+    props.$nightSearchModal &&
+    css`
+      width: 90%;
+      min-height: 20rem;
+      border-radius: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(190, 169, 215, 0.9);
+    `}
+`
 
 // 텍스트 박스 제목 관련
 const StyledTitle = styled.div<BoxProps>`
-  
-  ${(props) => props.$boxTitle && 
+  ${(props) =>
+    props.$boxTitle &&
     css`
-      font-size : 0.9rem;
-      position : relative;
-      height:0; // relative가 그전 것에 영향을 안주기 위해 사용
+      font-size: 0.9rem;
+      position: relative;
+      height: 0; // relative가 그전 것에 영향을 안주기 위해 사용
       padding: 0;
       top: -1.5rem;
       font-weight: 800;
-    `
-  }
-`;
-
+    `}
+`
 
 // 래핑 시키는 박스
 const GradeWrapping = styled.div<BoxProps>`
@@ -310,29 +335,27 @@ const GradeWrapping = styled.div<BoxProps>`
   padding: 0 3rem;
 
   & > div > p {
-    display :flex;
-    justify-content : center;
-    align-items : center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &:first-child {
       margin: 0px;
-      font-size : 3rem;
+      font-size: 3rem;
     }
   }
 `
 
-
-const Box = (props:BoxProps) => {
+const Box = (props: BoxProps) => {
   return <StyledBox {...props}>{props.children}</StyledBox>
 }
 
-const BoxTitle = (props:BoxProps) => {
+const BoxTitle = (props: BoxProps) => {
   return <StyledTitle {...props}>{props.children}</StyledTitle>
 }
 
-const GradeWrappingBox = (props:BoxProps) => {
+const GradeWrappingBox = (props: BoxProps) => {
   return <GradeWrapping {...props}>{props.children}</GradeWrapping>
 }
 
-
-export {Box, BoxTitle, GradeWrappingBox};
+export { Box, BoxTitle, GradeWrappingBox }

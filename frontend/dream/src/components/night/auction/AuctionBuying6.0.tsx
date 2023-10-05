@@ -66,11 +66,10 @@ const BiddingWrap = styled.div`
 interface AuctionBuyingProps {
   biddingMoney: number;
   askingMoney: number;
-  updateValue: (data:any) => void
 }
 
 
-const AuctionBuying = ({biddingMoney, askingMoney, updateValue} :AuctionBuyingProps) => {
+const AuctionBuying = ({biddingMoney, askingMoney} :AuctionBuyingProps) => {
   const userdata = useSelector((state: RootState) => state.auth.userdata);
   const {auctionId} = useParams()
   const accessToken = sessionStorage.getItem('accessToken')
@@ -120,15 +119,9 @@ const AuctionBuying = ({biddingMoney, askingMoney, updateValue} :AuctionBuyingPr
     if (clientRef.current) {
       clientRef.current.subscribe(`/sub/auction/${Number(auctionId)}`, (msg)=> {
         console.log(msg, "너 왔니? 메세지")
-        const newBody = JSON.parse(msg.body)
-        const biddingMoney = newBody.biddingMoney
-        setMyBiddingMoney(biddingMoney)
-        const biddingCount = newBody.biddingCount
-        const tmpTime = new Date(newBody.createdAt)
-        
-        const biddingTime = tmpTime.setHours(tmpTime.getHours()+9)
-        const data = {biddingMoney, biddingCount, biddingTime}
-        updateValue(data)
+        const newPriceBody = JSON.parse(msg.body)
+        const newPrice = newPriceBody.biddingMoney
+        setMyBiddingMoney(newPrice)
         return () => {
           if (clientRef.current) {
             clientRef.current.unsubscribe(`/sub/auction/${Number(auctionId)}`)
@@ -227,4 +220,4 @@ const AuctionBuying = ({biddingMoney, askingMoney, updateValue} :AuctionBuyingPr
   )
 }
 
-export default AuctionBuying
+// export default AuctionBuying

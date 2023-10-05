@@ -65,17 +65,34 @@ const AuctionDetail = () => {
   const location = useLocation()
   const userdata = useSelector((state: RootState) => state.auth.userdata);
 
+  const [point, setPoint] = useState(userdata.point)
+
   const {auctionId} = useParams()
   const [auctionItem, setAuctionItem] = useState<AuctionDetailType>()
   const [isFirstAuctionPage, setIsFirstAuctionPage] = useState(true)
-
-  // const myMoney = useSelector((state:RootState) => state)
-
+  const [biddingCount, setBiddingCount] = useState(auctionItem?.biddingCount)
+  const [biddingMoney, setBiddingMoney] = useState(auctionItem?.biddingMoney)
+  const [biddingTime, setBiddingTime] = useState(auctionItem?.createdAt)
+  // 하드코딩
+  // const userId = useSelector((state:RootState)=> state.auth.userdata.userId)
+  const userId = 33
   useEffect(()=> {
-    tokenHttp.get(`/auction/detail/${auctionId}`)
+    
+    tokenHttp.get(`/auction/point/${33}`)
+    // tokenHttp.get(`/auction/point/${userdata.userId}`)
+    .then(res => {
+      // console.log(res.data.data.point, "머니머니")
+      setPoint(res.data.data.point)
+    })
+    
+    tokenHttp.get(`/auction/detail/${Number(auctionId)}`)
     .then(res => {
       setAuctionItem(res.data.data)
+      setBiddingCount(res.data.data.biddingCount)
+      setBiddingMoney(res.data.data.biddingMoney)
+      setBiddingTime(res.data.data.createdAt)
       console.log(res.data.data, "경매장 입장")
+
     })
 
   }, [])
@@ -117,9 +134,6 @@ const AuctionDetail = () => {
       userId: userdata.userId,
       biddingMoney: auctionItem?.immediatelyBuyMoney
     }
-
-    console.log("data : ", data)
-
     tokenHttp.put(`/auction/purchase`, data)
     .then(res => {
       console.log(res)
@@ -130,10 +144,24 @@ const AuctionDetail = () => {
         alert(response.data)
       } else if (response.status === 200) {
         alert("구매 성공")
-        navigation(`/night/profile/${userdata.userId}`)
+        return res.data.data.biddingUserId
       }
+      return -1
     })
+      .then(res => {
+        if (res !== -1) {
+          const data = {auctionId, newOwnerId: res}
+          tokenHttp.put("/auction", data)
+          .then(res => console.log(res, "주인 바뀜"))
+          navigation(`/night/profile/${userdata.userId}`)
+        }
+      })
+  }
 
+  const updateValue = (data:any) => {
+    setBiddingCount(data.biddingCount)
+    setBiddingMoney(data.biddingMoney)
+    setBiddingTime(data.biddingTime)
   }
 
   return (
@@ -162,6 +190,7 @@ const AuctionDetail = () => {
     {!isFirstAuctionPage && <AuctionBuying 
     biddingMoney={auctionItem?.biddingMoney || 0}
     askingMoney={auctionItem?.askingMoney || 0}
+    updateValue = {updateValue}
     />}
 
     {/* 입찰마감 & 현재최고가 */}
@@ -169,14 +198,14 @@ const AuctionDetail = () => {
       <AuctionBox $fullWidth > 
       <Wrap $spaceBetweenWrap>
         <Text $nightBlue $isBold>입찰 마감 {diffHour()}시간 전</Text> 
-        <Text $nightBlue>입찰 수: {auctionItem?.biddingCount}명</Text> 
+        <Text $nightBlue>입찰 수: {biddingCount}명</Text> 
       </Wrap>      
       </AuctionBox>
       <AuctionBox $fullWidth>
         <Text $isBold $MBHalf>현재 최고가</Text>
       <Wrap $spaceBetweenWrap>
-        <Text $isBold>$ {auctionItem?.biddingMoney}</Text> 
-        <Text>{changeDateHour(auctionItem?.createdAt)}</Text> 
+        <Text $isBold>$ {biddingMoney}</Text> 
+        <Text>{changeDateHour(biddingTime)}</Text> 
       </Wrap>
       </AuctionBox>
     </Container>
@@ -198,7 +227,7 @@ const AuctionDetail = () => {
         >참여하기</Button>
       </Wrap>
       {/* 꿈머니 구현 이후 */}
-      <Text $nightKeword>나의 꿈머니: {userdata.point}</Text>
+      <Text $nightKeword>나의 꿈머니: {point}</Text>
       </Container>
       </>
     }

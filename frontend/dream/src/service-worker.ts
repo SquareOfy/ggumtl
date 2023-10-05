@@ -70,6 +70,15 @@ registerRoute(
   })
 )
 
+registerRoute(
+  'https://j9b301.p.ssafy.io/oauth2/authorization/kakao', // 대상 URL
+  new NetworkOnly()
+)
+// wss
+registerRoute(
+  'wss://j9b301.p.ssafy.io/api/ws-stomp', // 대상 URL
+  new NetworkOnly()
+)
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
@@ -77,6 +86,9 @@ self.addEventListener('message', (event) => {
     self.skipWaiting()
   }
 })
+
+
+// Any other custom service worker logic can go here.
 
 // Any other custom service worker logic can go here.
 
