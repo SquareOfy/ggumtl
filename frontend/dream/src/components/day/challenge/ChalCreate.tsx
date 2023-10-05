@@ -26,6 +26,7 @@ import tokenHttp from "api/tokenHttp";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import dataHttp from "api/dataHttp";
+import Swal from "sweetalert2";
 
 interface categoryListType {
   "keywordId" : number;
@@ -59,7 +60,10 @@ const ChalCreate = () => {
     setChallengeTitle(inputData)
     // 공백만 들어있거나 특수문자 들어있음
     if (!checkWrongInput(inputData)){
-      alert('제목에 공백만 들어갔거나, 특수문자가 들어갔습니다.')
+      Swal.fire({
+        icon: 'warning',
+        text: '제목에 공백만 들어갔거나, 특수문자가 들어갔습니다.',
+      })
     }
   }
 
@@ -67,7 +71,10 @@ const ChalCreate = () => {
     setChallengeContent(inputData)
     // 공백만 들어있거나 특수문자 들어있음
     if (!checkWrongInput(inputData)){
-      alert('내용에 공백만 들어갔거나, 특수문자가 들어갔습니다.')
+      Swal.fire({
+        icon: 'warning',
+        text: '내용에 공백만 들어갔거나, 특수문자가 들어갔습니다.',
+      })
     }
   }
 

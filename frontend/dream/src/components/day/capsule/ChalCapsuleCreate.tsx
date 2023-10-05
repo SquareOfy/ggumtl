@@ -25,6 +25,7 @@ import TextArea from "style/TextArea";
 import { useLocation, useNavigate, useParams } from "react-router";
 import tokenHttp from "api/tokenHttp";
 import { checkCertInput } from "utils/alert/checkInput";
+import Swal from "sweetalert2";
 
 interface ChallengeIdParamType {
   challengeId: string;
@@ -65,7 +66,7 @@ const ChalCapsuleCreate = () => {
       // 후에 이동
       navigate(`/day/mychallenge/${currentChallengeId}`)
     } else {
-      alert('타임 캡슐에 내용을 적어보세요.')
+      Swal.fire('타임 캡슐에 내용을 적어보세요.')
     }
   }
 

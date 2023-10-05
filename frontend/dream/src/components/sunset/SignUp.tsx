@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import basicHttp from "api/basicHttp";
 import tokenHttp from "api/tokenHttp";
 import fileTokenHttp from "api/fileTokenHttp";
+import Swal from "sweetalert2";
 // import { BoxTitle } from "style/Box";
 
 
@@ -97,7 +98,10 @@ const SignUp = () => {
     if (consRegex.test(nicknameInput)){
       setWrongNicknameSign('bad')
       // [TODO]: 경고창 예쁜 걸로 수정
-      alert('닉네임을 올바르게 입력해주세요.')
+      Swal.fire({
+        icon: 'warning',
+        text: '닉네임을 올바르게 입력해주세요.',
+      })
     }
     else {
       const nicknameData = {
