@@ -40,28 +40,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
-                .csrf().disable()
-                .cors(c -> {
-                            CorsConfigurationSource source = request -> {
-                                // Cors 허용 패턴
-                                CorsConfiguration config = new CorsConfiguration();
-                                config.setAllowedOrigins(
-                                        List.of("*", "https://j9b301.p.ssafy.io/", "wss://j9b301.p.ssafy.io/")
-                                );
-                                config.setAllowedMethods(
-                                        List.of("*")
-                                );
-                                config.setAllowedHeaders(
-                                        List.of("*")
-                                );
-                                config.setExposedHeaders(
-                                        List.of("*")
-                                );
-                                return config;
-                            };
-                            c.configurationSource(source);
-                        }
+                .cors(
+//                        c -> {
+//                            CorsConfigurationSource source = request -> {
+//                                // Cors 허용 패턴
+//                                CorsConfiguration config = new CorsConfiguration();
+//                                config.setAllowedOrigins(
+//                                        List.of("*", "https://j9b301.p.ssafy.io/", "wss://j9b301.p.ssafy.io/")
+//                                );
+//                                config.setAllowedMethods(
+//                                        List.of("*")
+//                                );
+//                                config.setAllowedHeaders(
+//                                        List.of("*")
+//                                );
+//                                config.setExposedHeaders(
+//                                        List.of("*")
+//                                );
+//                                return config;
+//                            };
+//                            c.configurationSource(source);
+//                        }
                 )
+                .and()
+                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
