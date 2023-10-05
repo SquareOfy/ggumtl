@@ -94,14 +94,17 @@ const DreamRecordContentsTab = ({setReverseCardData, setReviewStatus} :DreamReco
     setIsInterpretTab(true)
   }
 
+  /* 챌린지 추천 */
+  const [recommendChal, setRecommendChal] = useState<number>()
+
   // 꿈 해몽 불러오기
   const params = useParams();
   const [dreamCardData, setDreamCardData] = useState<dreamCardDataType>();
-
+  const [chalList, setChalList] = useState<number[]>()
   useEffect(() => {
     tokenHttp.get(`/night/dream/${params.dreamCardId}/interpretation`)
     .then((res)=>{
-      console.log("꿈 카드 탭 : ", res)
+      console.log(res)
       const response = res.data
       const data = response.data
 
@@ -111,11 +114,13 @@ const DreamRecordContentsTab = ({setReverseCardData, setReviewStatus} :DreamReco
         navigate('/night/main')
       } else if (response.status === 200) {
         setDreamCardData(data)
+        setChalList(data.challengeList)
+        setRecommendChal(data.challengeList[Math.floor(Math.random() *  data.challengeList.length)])
         // setReviewStatus(data.reviewStatus)
       }
 
     })
-    .catch((err) => console.log("꿈 카드 탭 에러 : ", err))
+    .catch((err) => console.log(err, "꿈에러"))
   }, [])
 
 
@@ -150,17 +155,16 @@ const DreamRecordContentsTab = ({setReverseCardData, setReviewStatus} :DreamReco
 
   return (
     <>
-    <Button $fullWidth $nightPalePurple
-      onClick={()=> {
-        const chalList = dreamCardData?.challengeList
-        if (Array.isArray(chalList)){
-          const recommendChalId = chalList[Math.floor(Math.random() *  chalList.length)]
-          navigate(`/day/challenge/${recommendChalId}`)
-        }
-      }}
-    >추천 챌린지</Button>
     
     <DreamContentsTabWrap>
+      <Button $fullWidth $nightPalePurple $dreamDetail
+        onClick={()=> {
+          navigate(`/day/challenge/${recommendChal}`)
+          if (Array.isArray(chalList)){
+            setRecommendChal(chalList[Math.floor(Math.random() *  chalList.length)])
+          }
+        }}
+      >추천 챌린지</Button>
       <DreamTabWrap>
         <CustomText 
         onClick={show1RecordTab}

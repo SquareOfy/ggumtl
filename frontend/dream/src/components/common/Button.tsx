@@ -37,6 +37,7 @@ interface ButtonProps {
   $isSelected?: boolean
   $addCommentButton?: boolean
   $nightSearchModalXButton?: boolean
+  $dreamDetail?: boolean;
 
   // 색상 지정
   $nightPurple?: boolean
@@ -155,6 +156,15 @@ const StyledButton = styled.button<ButtonProps>`
     css`
       background-color: rgba(190, 169, 215, 0.8);
     `}
+    /* 꿈 주인만 조회 */
+    ${(props) =>
+    props.$dreamDetail &&
+    css`
+      margin: 0.25rem 0 1.5rem;
+    `}
+
+    
+
 
     // 색상 지정
     // 투명한 버튼(배경색과 동일하게)
