@@ -1,4 +1,4 @@
-package dream.security.jwt.repository;
+package dream.security.jwt.domain;
 
 import dream.security.jwt.dto.RefreshTokenDto;
 import org.springframework.beans.factory.annotation.Value;

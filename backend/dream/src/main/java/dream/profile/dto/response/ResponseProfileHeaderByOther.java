@@ -8,20 +8,21 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseDayProfileHeaderByOther {
+public class ResponseProfileHeaderByOther {
 
-    Long userId;
-    String nickname;
-    String profileImageUrl;
-    String profileImageName;
-    double wrigglePoint;
-    int finishChallengeCount;
-    int followerCount;
-    int followingCount;
+   private Long userId;
+    private String nickname;
+    private String profileImageUrl;
+    private String profileImageName;
+    private double wrigglePoint;
+    private int finishChallengeCount;
+    private int followerCount;
+    private int followingCount;
+    private int dreamCardCount;
 
 
-    public static ResponseDayProfileHeaderByOther from(User user, int finishChallengeCount, int followerCount, int followingCount){
-        ResponseDayProfileHeaderByOther response = new ResponseDayProfileHeaderByOther();
+    public static ResponseProfileHeaderByOther from(User user, int finishChallengeCount, int followerCount, int followingCount, int dreamCardCount){
+        ResponseProfileHeaderByOther response = new ResponseProfileHeaderByOther();
 
         response.userId = user.getUserId();
         response.nickname = user.getNickname();
@@ -31,7 +32,7 @@ public class ResponseDayProfileHeaderByOther {
         response.followingCount = followingCount;
         response.wrigglePoint = user.getWrigglePoint();
         response.finishChallengeCount = finishChallengeCount;
-
+        response.dreamCardCount = dreamCardCount;
 
         return response;
     }

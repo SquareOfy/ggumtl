@@ -35,8 +35,10 @@ import java.util.Optional;
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     private static final String NO_CHECK_URL1 = "/login/oauth2/code/kakao";
-    private static final String NO_CHECK_URL2 = "/login";
+    private static final String NO_CHECK_URL2 = "/api/login";
     private static final String NO_CHECK_URL3 = "/api/s3";
+    private static final String NO_CHECK_URL4 = "/ws-stomp";
+
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
@@ -48,7 +50,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     @Override // 이 주소로 오는 건 토큰 없어도 됨.
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        return path.startsWith("/api/login/oauth2/code/kakao") || path.startsWith("/login/") || path.startsWith("/api/oauth2/authorization/kakao");
+        return path.startsWith("/api/login/oauth2/code/kakao") ||
+                path.startsWith("/login/") ||
+                path.startsWith("/api/oauth2/authorization/kakao") ||
+                path.startsWith("/api/s3") ||
+                path.startsWith("/api/ws-stomp");
     }
 
     @Override
@@ -58,7 +64,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         log.info("Processing Request : {}", request.getRequestURI());
 
         //jwt를 검증할 필요가 없는 url은 다음 filter호출 후 메서드 종료하기
-        if(request.getRequestURI().equals(NO_CHECK_URL1)||request.getRequestURI().equals(NO_CHECK_URL2)||request.getRequestURI().equals(NO_CHECK_URL3)){
+        if(request.getRequestURI().equals(NO_CHECK_URL1)||request.getRequestURI().equals(NO_CHECK_URL2)
+                ||request.getRequestURI().equals(NO_CHECK_URL3)||request.getRequestURI().equals(NO_CHECK_URL4)){
             filterChain.doFilter(request, response);
             return;
         }

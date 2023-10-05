@@ -1,5 +1,7 @@
 package dream.profile.service;
 
+import dream.card.domain.DreamCardRepository;
+import dream.challenge.domain.ChallengeParticipationQueryRepository;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.BadRequestException;
 import dream.common.exception.NotFoundException;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,6 +25,8 @@ public class ProfileService {
     private final FollowQueryRepository followQueryRepository;
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
+    private final ChallengeParticipationQueryRepository challengeParticipationQueryRepository;
+    private final DreamCardRepository dreamCardRepository;
 
     public ResultTemplate getFollowingList(Long fromId, Long lastFollowId, int size) {
         User user = userRepository.findByUserId(fromId).orElseThrow(() -> {
@@ -71,6 +74,44 @@ public class ProfileService {
         ResponseFollowerList response = ResponseFollowerList.from(followerList, hasNext);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+
+    }
+
+
+    public ResultTemplate updatePoint(User user, int point){
+        if(user.getPoint()+point>=0) {
+            user.plusPoint(point);
+        }else{
+            user.minusPoint(user.getPoint());
+        }
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
+    }
+
+
+    public ResultTemplate getHeader(User user, Long profileUserId) {
+
+        User profileUser = userRepository.findByUserId(profileUserId).orElseThrow(()->{
+            throw new BadRequestException(BadRequestException.NOT_EXIST_USER_PROFILE);
+        });
+
+
+        int followingCount = followRepository.findByFromId(profileUser.getUserId()).size();
+        int followerCount = followRepository.findByToId(profileUser.getUserId()).size();
+        int finishedChallengeCount  = challengeParticipationQueryRepository.getFinishedChallengeListByUserId(profileUserId).size();
+        int dreamCardCount = dreamCardRepository.findByDreamCardOwnerId(profileUserId).size();
+        //내 프로필 헤더 조회
+        if(user.getUserId()==profileUserId){
+            ResponseProfileHeaderBySelf response = ResponseProfileHeaderBySelf.from(profileUser, finishedChallengeCount, followerCount, followingCount, dreamCardCount);
+
+            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+        }else{
+
+
+//                    challengeParticipationRepository.getChallengeParticipationListByUserAndStatus(profileUser.getUserId(), ChallengeStatus.S).size();
+            ResponseProfileHeaderByOther response = ResponseProfileHeaderByOther.from(profileUser, finishedChallengeCount, followerCount, followingCount, dreamCardCount);
+            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+        }
 
     }
 

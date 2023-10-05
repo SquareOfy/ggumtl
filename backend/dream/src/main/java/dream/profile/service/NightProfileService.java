@@ -35,28 +35,29 @@ public class NightProfileService {
 
     private final ProfileService profileService;
 
-    public ResultTemplate getNightHeader(User user, Long profileUserId) {
-
-        User profileUser = userRepository.findByUserId(profileUserId).orElseThrow(() -> {
-            throw new BadRequestException(BadRequestException.NOT_EXIST_USER_PROFILE);
-        });
-
-
-        int followingCount = followRepository.findByFromId(profileUser.getUserId()).size();
-        int followerCount = followRepository.findByToId(profileUser.getUserId()).size();
-        int dreamCardCount = dreamCardRepository.findByDreamCardOwnerId(profileUserId).size();
-        //내 프로필 헤더 조회
-        if (user.getUserId() == profileUserId) {
-            ResponseNightProfileHeaderBySelf response = ResponseNightProfileHeaderBySelf.from(profileUser, dreamCardCount, followerCount, followingCount);
-
-            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
-
-        } else {
-
-            ResponseNightProfileHeaderByOther response = ResponseNightProfileHeaderByOther.from(profileUser, dreamCardCount, followerCount, followingCount);
-            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
-        }
-    }
+    //통합됨
+//    public ResultTemplate getNightHeader(User user, Long profileUserId) {
+//
+//        User profileUser = userRepository.findByUserId(profileUserId).orElseThrow(() -> {
+//            throw new BadRequestException(BadRequestException.NOT_EXIST_USER_PROFILE);
+//        });
+//
+//
+//        int followingCount = followRepository.findByFromId(profileUser.getUserId()).size();
+//        int followerCount = followRepository.findByToId(profileUser.getUserId()).size();
+//        int dreamCardCount = dreamCardRepository.findByDreamCardOwnerId(profileUserId).size();
+//        //내 프로필 헤더 조회
+//        if (user.getUserId() == profileUserId) {
+//            ResponseNightProfileHeaderBySelf response = ResponseNightProfileHeaderBySelf.from(profileUser, dreamCardCount, followerCount, followingCount);
+//
+//            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+//
+//        } else {
+//
+//            ResponseNightProfileHeaderByOther response = ResponseNightProfileHeaderByOther.from(profileUser, dreamCardCount, followerCount, followingCount);
+//            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+//        }
+//    }
 
     public ResultTemplate getProfileCardTabList(User user, Long profileId, Long lastItemId, int size) {
 

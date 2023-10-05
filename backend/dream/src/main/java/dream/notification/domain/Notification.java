@@ -30,4 +30,8 @@ public class Notification extends BaseTimeEntity {
     private NotificationType type;
     private Long referenceId;
 
+    public void updateIsRead(){
+        this.isRead = BaseCheckType.T;
+    }
+
 }

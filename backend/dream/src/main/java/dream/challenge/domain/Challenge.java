@@ -74,4 +74,7 @@ public class Challenge extends BaseUpdateTimeEntity {
         return timeCapsuleOpenAt;
     }
 
+    public void updateImageName(String fileName) {
+        this.badgeUrl = fileName;
+    }
 }

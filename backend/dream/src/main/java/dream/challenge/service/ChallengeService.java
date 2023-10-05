@@ -1,8 +1,7 @@
 package dream.challenge.service;
 
 
-import dream.card.domain.DreamKeyword;
-import dream.card.domain.DreamKeywordRepository;
+import dream.card.domain.*;
 import dream.challenge.domain.*;
 import dream.challenge.dto.request.RequestChallenge;
 import dream.challenge.dto.request.RequestComment;
@@ -15,6 +14,7 @@ import dream.common.exception.NotFoundException;
 import dream.common.exception.DuplicateException;
 import dream.s3.dto.request.RequestChallengeDetail;
 import dream.s3.dto.response.ResponseBadgeImage;
+import dream.user.domain.Follow;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -35,6 +36,7 @@ public class ChallengeService {
     private final UserRepository userRepository;
     private final commentRepository commentRepository;
     private final ChallengeRepository challengeRepository;
+    private final DreamCardRepository dreamCardRepository;
     private final DreamKeywordRepository dreamKeywordRepository;
     private final commentQueryRepository commentQueryRepository;
     private final ChallengeQueryRepository challengeQueryRepository;
@@ -53,6 +55,7 @@ public class ChallengeService {
 
         int count = 0;
         for (Challenge challenge : challenges) {
+
             responseChallengeList.add(ResponseChallenge.from(challenge));
 
             if (++count == size) break;
@@ -75,17 +78,40 @@ public class ChallengeService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
+//    public ResultTemplate getFollowUsers(User user, Long lastItemId, int size) {
+//
+//        List<ChallengeDetail> list = challengeDetailQueryRepository.findChallengeListByPage(user.getUserId(), lastItemId, size);
+//        if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_FOLLOWING_USER_STORY);
+//
+//        List<ResponseChallengeDetailIdWithNameAndNickName> userList = new ArrayList<>();
+//        int count = 0;
+//        for (ChallengeDetail challengeDetail : list) {
+//            ResponseChallengeDetailIdWithNameAndNickName nickAndId = ResponseChallengeDetailIdWithNameAndNickName.from(challengeDetail);
+//            userList.add(nickAndId);
+//            if(++count == size) break;
+//        }
+//
+//        boolean hasNext = (list.size() > size);
+//        ResponseFollowingUsers response = ResponseFollowingUsers.from(true, userList, hasNext);
+//
+//        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+//    }
+
     public ResultTemplate getFollowUsers(User user, Long lastItemId, int size) {
 
-        List<ChallengeDetail> list = challengeDetailQueryRepository.findChallengeListByPage(user.getUserId(), lastItemId, size);
+        List<Follow> list = challengeDetailQueryRepository.findChallengeListByPage(user.getUserId(), lastItemId, size);
         if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_FOLLOWING_USER_STORY);
 
         List<ResponseChallengeDetailIdWithNameAndNickName> userList = new ArrayList<>();
         int count = 0;
-        for (ChallengeDetail challengeDetail : list) {
-            ResponseChallengeDetailIdWithNameAndNickName nickAndId = ResponseChallengeDetailIdWithNameAndNickName.from(challengeDetail);
-            userList.add(nickAndId);
-            if(++count == size) break;
+        for (Follow follow : list) {
+            // 만약 팔로우한 유저가 그날 올린 게시글이 있으면
+            List<ChallengeDetail> storyList = challengeDetailQueryRepository.findChallengeList(follow.getToUser().getUserId(), lastItemId, size);
+            if(!storyList.isEmpty()){
+                ResponseChallengeDetailIdWithNameAndNickName nickAndId = ResponseChallengeDetailIdWithNameAndNickName.from(follow);
+                userList.add(nickAndId);
+                if(++count == size) break;
+            }
         }
 
         boolean hasNext = (list.size() > size);
@@ -139,8 +165,23 @@ public class ChallengeService {
 
         List<User> getRank = challengeDetailQueryRepository.getRank(challengeId);
 
+        boolean isParticipate = false;
+
+        // 일단 예외 처리 안 했어,.
+        List<ChallengeParticipation> challengeParticipation = challengeParticipationRepository.findRecentCertainChallenge(user.getUserId(), challengeId);
+        if(challengeParticipation.isEmpty()){
+            isParticipate = false;
+        }
+        else{
+            ChallengeParticipation challengeParticipationTmp = challengeParticipation.get(0);
+            if(challengeParticipationTmp.getIsIn() == ChallengeStatus.P){
+                isParticipate = true;
+            }
+        }
+
+
         ResponseChallengeInfo response = ResponseChallengeInfo
-                .from(sizeOfUserParticipateInChallenge, challengeWithKeyword, challengeWithParticipates, getRank);
+                .from(sizeOfUserParticipateInChallenge, challengeWithKeyword, challengeWithParticipates, getRank, isParticipate);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
@@ -221,8 +262,14 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(requestChallengeDetail.getChallengeId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
 
+        user.updatePoint(100);
+        user.updateWrigglePoint(10);
+
         ChallengeDetail challengeDetail = ChallengeDetail.makeChallengeDetail(user, requestChallengeDetail, challenge, fileName);
         challengeDetailRepository.save(challengeDetail);
+
+
+
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
@@ -423,5 +470,38 @@ public class ChallengeService {
         ResponseTimeCapsuleResult response = ResponseTimeCapsuleResult.from(challenge, timeCapsules, hasNext);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getRecommendChallenge(Long userId) {
+
+        List<DreamCard> findDreamCards = dreamCardRepository.findKeywordByOwner(userId);
+        if (findDreamCards.isEmpty()) throw new NotFoundException(NotFoundException.CARD_LIST_NOT_FOUND);
+
+        List<String> userKeywords = new ArrayList<>();
+        for (DreamCard findDreamCard : findDreamCards) {
+            for (CardKeyword keyword : findDreamCard.getCardKeyword()) {
+                userKeywords.add(keyword.getKeyWordId().getKeyword());
+            }
+        }
+        if (userKeywords.isEmpty()) throw new NotFoundException(NotFoundException.KEYWORD_NOT_FOUND);
+
+        List<Challenge> recommendChallenges = challengeRepository.findRecommendChallengeByDreamCard(userKeywords)
+                .stream().limit(4).collect(Collectors.toList());
+
+        List<ResponseChallenge> response = new ArrayList<>();
+        for (Challenge recommendChallenge : recommendChallenges) {
+            response.add(ResponseChallenge.from(recommendChallenge));
+        }
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    @Transactional
+    public ResultTemplate postImageName(Long challengeId, String fileName) {
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CHALLENGE_NOT_FOUND));
+
+        challenge.updateImageName(fileName);
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
     }
 }

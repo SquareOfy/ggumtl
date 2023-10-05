@@ -15,6 +15,7 @@ public class ResponseProfileDreamCardTab {
     private String dreamCardImageUrl;
     private Long dreamCardAuthorId;
     private BaseCheckType isShow;
+    private boolean isPurchase;
 
     public static ResponseProfileDreamCardTab from(DreamCard dreamCard){
         ResponseProfileDreamCardTab response = new ResponseProfileDreamCardTab();
@@ -24,6 +25,8 @@ public class ResponseProfileDreamCardTab {
         response.dreamCardAuthorId = dreamCard.getDreamCardAuthor().getUserId();
         response.isShow = dreamCard.getIsShow();
 
+        if(dreamCard.getDreamCardAuthor().getUserId() == dreamCard.getDreamCardOwner().getUserId()) response.isPurchase = false;
+        else response.isPurchase = true;
         return response;
     }
 

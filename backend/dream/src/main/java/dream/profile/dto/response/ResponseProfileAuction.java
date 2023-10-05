@@ -22,6 +22,7 @@ public class ResponseProfileAuction {
     private List<String> keywords;
     private LocalDateTime endedAt;
     private BaseCheckType auctionStatus;
+    private Long auctionId;
 
 
     public static ResponseProfileAuction from(Auction auction){
@@ -33,6 +34,7 @@ public class ResponseProfileAuction {
         resposne.keywords= auction.getDreamCard().getCardKeyword().stream().map(cardKeyword -> {
             return ResponseKeyword.from(cardKeyword).getKeyword();
         }).collect(Collectors.toList());
+        resposne.auctionId = auction.getAuctionId();
 
         return resposne;
     }

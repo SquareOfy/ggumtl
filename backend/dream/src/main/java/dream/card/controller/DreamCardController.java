@@ -10,8 +10,10 @@ import dream.common.domain.ResultTemplate;
 import dream.security.jwt.domain.UserInfo;
 import dream.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/night")
 @RequiredArgsConstructor
@@ -80,7 +82,7 @@ public class DreamCardController {
         return dreamCardService.updateCardIsShow(request, user.getUserId());
     }
 
-    @GetMapping(value = "/dream/interpretation?keyword={keyword}")
+    @GetMapping(value = "/dream/interpretation")
     public ResultTemplate getInterpretationResult(@RequestParam("keyword") String keyword){
 
         return dreamCardService.getInterpretationResult(keyword);

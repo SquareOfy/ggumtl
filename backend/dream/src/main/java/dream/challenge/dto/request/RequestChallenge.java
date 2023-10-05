@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RequestChallenge {
     private String challengeTitle;
+    private Long challengeOwner;
     private String challengeContent;
     private String badgeUrl;
     private long keywordId;

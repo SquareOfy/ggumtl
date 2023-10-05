@@ -57,6 +57,8 @@ cloud:
     stack:
       auto: false
 
+
+
 logging:
   level:
     com:

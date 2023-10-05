@@ -2,6 +2,8 @@ package dream.challenge.dto.response;
 
 import dream.challenge.domain.Challenge;
 import dream.challenge.domain.ChallengeDetail;
+import dream.challenge.domain.ChallengeParticipation;
+import dream.challenge.domain.ChallengeStatus;
 import dream.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +22,11 @@ public class ResponseChallengeInfo {
     private ResponseChallengeInfoDetail detail;
 
     public static ResponseChallengeInfo from(List<ChallengeDetail> challengeDetails
-            , Challenge challengeWithKeyword, Challenge challengeWithParticipates, List<User> rankings){
+            , Challenge challengeWithKeyword, Challenge challengeWithParticipates, List<User> rankings, boolean isParticipate){
 
         // 사용자 참여 및 참여일수 정보 주입
-        boolean isParticipate = !challengeDetails.isEmpty();
+//        boolean isParticipate = !challengeDetails.isEmpty();
+
         int participateDay = challengeDetails.size();
 
         List<ResponseChallengeUserRanking> userRankings = new ArrayList<>();

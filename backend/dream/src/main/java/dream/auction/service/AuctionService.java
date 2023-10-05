@@ -68,9 +68,9 @@ public class AuctionService {
     }
 
     // 전체 경매등록 카드들 조회 함수
-    public ResultTemplate getAllAuctionList(Long lastItemId, int size) {
+    public ResultTemplate getAllAuctionList(Long lastItemId, int size, String keyword) {
 
-        List<Auction> findAuctions = auctionQueryRepository.findAuctionPaging(lastItemId, size);
+        List<Auction> findAuctions = auctionQueryRepository.findAuctionPaging(lastItemId, size, keyword);
         if (findAuctions.isEmpty()) throw new NotFoundException(NotFoundException.AUCTION_LIST_NOT_FOUND);
         List<CardKeyword> cardKeyword = findAuctions.get(0).getDreamCard().getCardKeyword();
 
@@ -116,13 +116,12 @@ public class AuctionService {
     // 입찰 등록 함수 - 유저 같이 매개변수로 받아와서 처리부탁드립니다.
     @Transactional
     public void postBidding(RequestBidding request) {
-
+        System.out.println(request.toString());
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         Auction findAuction = auctionRepository.findBiddingById(request.getAuctionId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.AUCTION_NOT_FOUND));
-
         if (findAuction.getDreamCard().getDreamCardOwner().equals(request.getUserId())) throw new BiddingException(BiddingException.USER_SAME_OWNER);
         if (BaseCheckType.F.equals(findAuction.getDreamCard().getAuctionStatus())) throw new BiddingException(BiddingException.ALREADY_AUCTION_END);
         if (findAuction.getBidding().isEmpty()) throw new NotFoundException(NotFoundException.BIDDING_NOT_FOUND);
@@ -143,7 +142,9 @@ public class AuctionService {
 
         Bidding findBidding = auctionQueryRepository.findTopBiddingById(request.getAuctionId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.BIDDING_NOT_FOUND));
-        ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding);
+        em.flush();
+        List<Bidding> findBiddings = auctionQueryRepository.findBiddingById(request.getAuctionId());
+        ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding, findBiddings.size());
 
         auctionListener.sendBidding(response);
 //        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
@@ -182,7 +183,9 @@ public class AuctionService {
 
         Bidding findBidding = auctionQueryRepository.findTopBiddingById(request.getAuctionId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.BIDDING_NOT_FOUND));
-        ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding);
+        em.flush();
+        List<Bidding> findBiddings = auctionQueryRepository.findBiddingById(request.getAuctionId());
+        ResponseBidding response = ResponseBidding.from(request.getAuctionId(), findBidding, findBiddings.size());
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }

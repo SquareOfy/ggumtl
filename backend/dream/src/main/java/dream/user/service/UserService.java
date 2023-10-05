@@ -1,16 +1,16 @@
 package dream.user.service;
 
-import antlr.Token;
 import dream.common.domain.ResultTemplate;
 import dream.common.exception.*;
-import dream.security.jwt.domain.UserInfo;
-import dream.security.jwt.repository.TokenRepository;
+import dream.security.jwt.domain.TokenRepository;
+
 import dream.security.jwt.service.JwtService;
 import dream.s3.dto.response.ResponseImageUrl;
 import dream.user.domain.Follow;
 import dream.user.domain.FollowRepository;
 import dream.user.domain.User;
 import dream.user.domain.UserRepository;
+import dream.user.dto.request.RequestFcmToken;
 import dream.user.dto.request.RequestNickname;
 import dream.user.dto.request.RequestToId;
 import dream.user.dto.response.ResponseUser;
@@ -33,9 +33,11 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final FollowRepository followRepository;
     // 예시 - 지워질 코드
-    public ResultTemplate getUser(User user) {
-        ResponseUser responseUser = ResponseUser.from(user);
 
+    @Transactional
+    public ResultTemplate getUser(User user) {
+
+        ResponseUser responseUser = ResponseUser.from(user);
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseUser).build();
     }
 
@@ -48,12 +50,17 @@ public class UserService {
 
 
     // 로그아웃
-    public ResultTemplate logout(User user, HttpServletRequest request){
+    public ResultTemplate logout(HttpServletRequest request, RequestFcmToken requestFcmToken){
 
+        //fcmToken 제거 로직 작성하기
+        
+        
         //헤더에서 access를 추출하여 refreshToken 삭제 후 blackList에 등록
         String accessToken = jwtService.extractAccessToken(request).get();
         if(jwtService.isAccessTokenValid(accessToken)){
-            String email = user.getEmail();
+            String email = jwtService.extractEmailFromRefreshToken(accessToken).orElseThrow(() -> {
+                throw new InvalidAccessTokenException(InvalidAccessTokenException.INVALID_ACCESS_TOKEN);
+            });
             Optional<String> refreshToken = tokenRepository.findByKey(email);
             if(!refreshToken.isEmpty()){
                 //redis에서 해당 email key 값 삭제
@@ -62,6 +69,8 @@ public class UserService {
                 //blacklist에 등록
                 tokenRepository.saveBlackList(accessToken,  jwtService.getExpiration(accessToken)  );
 
+            }else{
+                throw new InvalidAccessTokenException(InvalidAccessTokenException.INVALID_ACCESS_TOKEN);
             }
 
         }
@@ -71,6 +80,9 @@ public class UserService {
     @Transactional
     public ResultTemplate updateUserImage(User user, String fileName) {
 
+        //fcmToken 추가 로직 작성하기
+        
+        
         user.updateProfileUrl(fileName);
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();

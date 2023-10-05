@@ -14,6 +14,7 @@ public class ResponseComment {
     private Long userId;
     private String nickname;
     private String content;
+    private String profileImageUrl;
 
     public static ResponseComment from(comment comment) {
 
@@ -22,7 +23,7 @@ public class ResponseComment {
         response.nickname = comment.getUser().getNickname();
         response.userId = comment.getUser().getUserId();
         response.commentId = comment.getCommentId();
-
+        response.profileImageUrl = comment.getUser().getProfileUrl();
         return response;
     }
 }

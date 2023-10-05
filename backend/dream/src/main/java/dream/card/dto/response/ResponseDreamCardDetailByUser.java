@@ -3,6 +3,7 @@ package dream.card.dto.response;
 import dream.card.domain.CardKeyword;
 import dream.card.domain.DreamCard;
 import dream.card.domain.Grade;
+import dream.challenge.domain.Challenge;
 import dream.common.domain.BaseCheckType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,9 +17,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseDreamCardDetailByUser {
-    private long dreamCardId;
-    private long dreamCardAuthor;
-    private long dreamOwner;
+    private Long dreamCardId;
+    private Long dreamCardAuthor;
+    private Long dreamOwner;
     private String dreamCardContent;
     private String dreamTelling;
     private String dreamCardImageUrl;
@@ -31,8 +32,10 @@ public class ResponseDreamCardDetailByUser {
     private List<ResponseKeyword> keywords;
     private int likeCount;
     private BaseCheckType reviewStatus;
+    private String ownerNickname;
+    private List<Long> challengeList = new ArrayList<>();
 
-    public static ResponseDreamCardDetailByUser from(DreamCard dreamCard, BaseCheckType reviewStatus){
+    public static ResponseDreamCardDetailByUser from(DreamCard dreamCard, BaseCheckType reviewStatus, List<Challenge> challenges){
 
         ResponseDreamCardDetailByUser response = new ResponseDreamCardDetailByUser();
         response.dreamCardId = dreamCard.getDreamCardId();
@@ -56,6 +59,13 @@ public class ResponseDreamCardDetailByUser {
         response.keywords = keywords;
         response.likeCount = dreamCard.getDreamCardLikes().size();
         response.reviewStatus = reviewStatus;
+        response.ownerNickname = dreamCard.getDreamCardOwner().getNickname();
+
+        List<Long> recommends = new ArrayList<>();
+        for (Challenge challenge : challenges) {
+            recommends.add(challenge.getChallengeId());
+        }
+        response.challengeList = recommends;
 
         return response;
     }
