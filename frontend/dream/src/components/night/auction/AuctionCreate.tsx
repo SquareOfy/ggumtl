@@ -27,6 +27,7 @@ import Wrap from "style/Wrap";
 import { useNavigate, useParams } from "react-router";
 import tokenHttp from "api/tokenHttp";
 import { ReverseCardType } from "../home/NightHomeItem";
+import Swal from "sweetalert2";
 
 const AuctionInputWrap = styled.div`
   display: grid;
@@ -138,7 +139,10 @@ const AuctionCreate = () => {
 
       // 카드 소유자가 아닐 때
       if (response.status === 400) {
-        alert(response.data)
+        Swal.fire({
+          icon: 'warning',
+          text: response.data,
+        })
         navigate('/night/main')
       } else if (response.status === 200) {
         setReverseCardData(data)

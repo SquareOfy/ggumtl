@@ -18,6 +18,7 @@ import tokenHttp from "api/tokenHttp";
 import { useNavigate } from "react-router";
 import Wrap from "style/Wrap";
 import Text from "style/Text";
+import Swal from "sweetalert2";
 
 // 스타일
 
@@ -33,10 +34,16 @@ const DreamDetail = () => {
       tokenHttp.delete(`/night/dream/${reverseCardData?.dreamCardId}`)
       .then((res) => {
         if (res.data.status === 200) {
-          alert("삭제되었습니다!")
+          Swal.fire({
+            icon: 'success',
+            text: '삭제되었습니다.',
+          })
           navigate(`/night/main`)
         } else if (res.data.status === 204) {
-          alert("존재하지 않는 꿈 카드입니다!")
+          Swal.fire({
+            icon: 'warning',
+            text: '존재하지 않는 꿈 카드입니다!',
+          })
         }
       })
       .catch(err => console.log("꿈 카드 삭제 에러 : ", err))

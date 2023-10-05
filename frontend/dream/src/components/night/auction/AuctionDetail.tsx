@@ -141,9 +141,9 @@ const AuctionDetail = () => {
       console.log(res)
       const response = res.data
       if (response.status === 204) {
-        alert(response.data)
+        Swal.fire(response.data)
       } else if (response.status === 400) {
-        alert(response.data)
+        Swal.fire(response.data)
       } else if (response.status === 200) {
         Swal.fire({
           icon:'success',

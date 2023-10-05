@@ -30,6 +30,7 @@ import Image from "style/Image";
 import { RiImageAddLine } from "react-icons/ri";
 import basicHttp from "api/basicHttp";
 import fileTokenHttp from "api/fileTokenHttp";
+import Swal from "sweetalert2";
 
 // 스타일
 
@@ -112,7 +113,10 @@ const ChalCreateCert = () => {
     setChallengeContent(inputData)
     // 공백만 들어있거나 특수문자 들어있음
     if (inputData != '' && !checkCertInput(inputData)) {
-      alert('내용에 공백만 들어갔습니다.')
+      Swal.fire({
+        icon: 'warning',
+        text: '내용에 공백만 들어갔습니다.',
+      })
     }
   }
 
