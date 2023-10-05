@@ -3,6 +3,7 @@ package dream.card.dto.response;
 import dream.card.domain.CardKeyword;
 import dream.card.domain.DreamCard;
 import dream.card.domain.Grade;
+import dream.challenge.domain.Challenge;
 import dream.common.domain.BaseCheckType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,8 +33,9 @@ public class ResponseDreamCardDetailByUser {
     private int likeCount;
     private BaseCheckType reviewStatus;
     private String ownerNickname;
+    private List<Long> challengeList = new ArrayList<>();
 
-    public static ResponseDreamCardDetailByUser from(DreamCard dreamCard, BaseCheckType reviewStatus){
+    public static ResponseDreamCardDetailByUser from(DreamCard dreamCard, BaseCheckType reviewStatus, List<Challenge> challenges){
 
         ResponseDreamCardDetailByUser response = new ResponseDreamCardDetailByUser();
         response.dreamCardId = dreamCard.getDreamCardId();
@@ -58,6 +60,12 @@ public class ResponseDreamCardDetailByUser {
         response.likeCount = dreamCard.getDreamCardLikes().size();
         response.reviewStatus = reviewStatus;
         response.ownerNickname = dreamCard.getDreamCardOwner().getNickname();
+
+        List<Long> recommends = new ArrayList<>();
+        for (Challenge challenge : challenges) {
+            recommends.add(challenge.getChallengeId());
+        }
+        response.challengeList = recommends;
 
         return response;
     }
