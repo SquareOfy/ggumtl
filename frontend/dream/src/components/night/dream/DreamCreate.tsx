@@ -97,12 +97,15 @@ const DreamCreate = () => {
     const dreamCardContent = allText
     const data = {dreamCardAuthor, isShow, dreamCardContent}
     setIsLoading(true)
-
+    
     dataHttp.post("/night/dream/create", data)
     .then(res => {
       navigate(`/night/dream/${res.data}`)
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      setIsLoading(false)
+    })
   }
 
   // TextArea 높이 감지

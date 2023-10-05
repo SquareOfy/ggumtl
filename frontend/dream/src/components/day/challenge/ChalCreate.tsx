@@ -14,6 +14,7 @@ import styled from "styled-components";
 // 컴포넌트
 import Button from "components/common/Button";
 import Dropdown from "components/common/Dropdown";
+import Loading from "components/loading/Loading";
 
 import Input from "style/Input";
 import TextArea from "style/TextArea";
@@ -49,6 +50,11 @@ const ChalCreate = () => {
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)  
   const [showPeriodDropdown, setShowPeriodDropdown] = useState(false)  
 
+
+  // 로당
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+
   const checkTitle = (inputData:string):void => {
     setChallengeTitle(inputData)
     // 공백만 들어있거나 특수문자 들어있음
@@ -79,13 +85,17 @@ const ChalCreate = () => {
       "keywordId" : categoryList.indexOf(selectCategory)+1,
       "period" : selectPeriod
     }
+    setIsLoading(true)
     dataHttp.post('/day/challenge/create', challengeData)
       .then((response) => {
         const challengeId = response.data
         navigate(`/day/challenge/${challengeId}/timecapsule/create`)
         console.log('== 챌린지 생성 성공 ==', response)
       })
-      .catch((err)=>{console.log("== 챌린지 생성 실패 ==",err)})
+      .catch((err)=>{
+        console.log("== 챌린지 생성 실패 ==",err)
+        setIsLoading(false)
+      })
   }
 
   // 챌린지 카테고리 데이터 조회 
@@ -101,7 +111,9 @@ const ChalCreate = () => {
         console.log('카테고리 조회할래!',keywordList)
         setCategoryList(keywordList)
       })
-      .catch((err)=>{console.log(err)})
+      .catch((err)=>{
+        console.log(err)
+      })
   },[])
 
 
@@ -116,8 +128,11 @@ const ChalCreate = () => {
   },[showCategoryDropdown, showPeriodDropdown])
 
   return (
+    <>
+    {isLoading && <Loading/>}
     <Container $dayBaseContainer $dayCreate>
-
+    { !isLoading && 
+    <>
     {/* 챌린지 제목 */}
     <Input
       $chalCreateInput $dayColor 
@@ -154,8 +169,11 @@ const ChalCreate = () => {
     >
       {'등록하기'}
     </Button>
+    </>
+    }
 
     </Container>
+  </>
   )
 }
 
