@@ -101,7 +101,7 @@ const AuctionBuying = ({biddingMoney, askingMoney, updateValue} :AuctionBuyingPr
     })
     console.log("초기 렌더링 #########")
       // 웹소캣(2)
-  const socket = new SockJS("https://j9b301.p.ssafy.io/ws-stomp")
+  const socket = new SockJS("http://j9b301.p.ssafy.io:9090/ws-stomp")
 
   // 함수화 필수
   clientRef.current = Stomp.over(() => {

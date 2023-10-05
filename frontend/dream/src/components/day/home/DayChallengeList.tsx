@@ -36,6 +36,7 @@ const DayChallengeList = (props :CategoryToChalProps) => {
   const [hasNext, setHasNext] = useState<boolean>(true); 
   let size :number = 6;
 
+  
   // infinite scroll
   const [arriveEnd, setArriveEnd] = useState<boolean>(true); // 바닥에 다다름을 알려주는 변수
 
