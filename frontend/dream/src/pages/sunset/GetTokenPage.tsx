@@ -12,8 +12,8 @@ const GetTokenPage = () => {
   useEffect(()=>{
     // 세션에 accessToken, refreshToken 저장
     console.log('accessToken,refreshToken 저장')
-    sessionStorage.setItem('accessToken', accessToken ? accessToken : '');
-    sessionStorage.setItem('refreshToken', refreshToken ? refreshToken : '');
+    localStorage.setItem('accessToken', accessToken ? accessToken : '');
+    localStorage.setItem('refreshToken', refreshToken ? refreshToken : '');
 
     if (type === 'login') {
       console.log('로그인 완료')
