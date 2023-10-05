@@ -3,6 +3,7 @@ package dream.user.controller;
 import dream.common.domain.ResultTemplate;
 import dream.security.jwt.domain.UserInfo;
 import dream.user.domain.User;
+import dream.user.dto.request.RequestFcmToken;
 import dream.user.dto.request.RequestNickname;
 import dream.user.dto.request.RequestToId;
 import dream.user.dto.response.ResponseUser;
@@ -24,9 +25,9 @@ public class UserController {
     private final UserService userService;
 
 
-    // 예시 - 지워질 코드
     @GetMapping()
     public ResultTemplate getUser(@UserInfo User user) {
+
         return userService.getUser(user);
     }
 
@@ -39,11 +40,6 @@ public class UserController {
         return resultTemplate;
     }
 
-    @PostMapping("/refresh-token")
-    public ResultTemplate reissueRefreshToken() {
-
-        return ResultTemplate.builder().status(HttpStatus.OK.value()).data("success").build();
-    }
 
     @PutMapping("signup/extra-info")
     public ResultTemplate setExtraInfo(HttpServletResponse response, @UserInfo User user, @RequestBody RequestNickname request) {
@@ -52,9 +48,9 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResultTemplate logout(@UserInfo User user, HttpServletRequest request) {
+    public ResultTemplate logout(HttpServletRequest request, @RequestBody RequestFcmToken requestFcmToken) {
 
-        return userService.logout(user, request);
+        return userService.logout(request, requestFcmToken);
 
     }
 

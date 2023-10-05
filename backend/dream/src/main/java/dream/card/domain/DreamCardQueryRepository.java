@@ -52,7 +52,7 @@ public class DreamCardQueryRepository {
 
     public List<DreamCard> findDreamCardByOwnerIdAndIsShowPaging(Long ownerId, BaseCheckType isShow, Long lastItemId, int size) {
         return queryFactory.selectFrom(dreamCard)
-                .distinct().leftJoin(dreamCard.dreamCardAuthor).fetchJoin()
+                .distinct().leftJoin(dreamCard.dreamCardOwner).fetchJoin()
                 .where(lastItemIdLt(lastItemId),
                         dreamCard.isShow.eq(isShow),
                         dreamCard.dreamCardOwner.userId.eq(ownerId)
