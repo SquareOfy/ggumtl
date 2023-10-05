@@ -13,7 +13,7 @@ interface RecommendChalItemProps {
 const RecommendChalItem = ({chal}: RecommendChalItemProps) => {
   return (
     <Box $recommendChalBox>
-      <Image $badge $largeBadge>
+      <Image $badge $largeBadge $recommendBadge>
         <img src={chal.badgeUrl} alt="뱃지" />
       </Image>
       <Text $recommendCardTitle>{chal.title}</Text>
