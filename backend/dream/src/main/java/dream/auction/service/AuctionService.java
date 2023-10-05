@@ -116,7 +116,7 @@ public class AuctionService {
     // 입찰 등록 함수 - 유저 같이 매개변수로 받아와서 처리부탁드립니다.
     @Transactional
     public void postBidding(RequestBidding request) {
-
+        System.out.println(request.toString());
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
