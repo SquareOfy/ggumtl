@@ -101,10 +101,10 @@ public class DreamAnalysisService {
         else if(dreamTellingPositivePoint > 50) positiveGrade = Grade.C;
         else positiveGrade = Grade.F;
 
-        if(rarePoint > 85) rareGrade = Grade.SS;
-        else if(rarePoint > 70) rareGrade = Grade.S;
-        else if(rarePoint > 50) rareGrade = Grade.A;
-        else if(rarePoint > 30) rareGrade = Grade.B;
+        if(rarePoint > 90) rareGrade = Grade.SS;
+        else if(rarePoint > 80) rareGrade = Grade.S;
+        else if(rarePoint > 60) rareGrade = Grade.A;
+        else if(rarePoint > 40) rareGrade = Grade.B;
         else if(rarePoint > 15) rareGrade = Grade.C;
         else rareGrade = Grade.F;
 
