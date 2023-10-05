@@ -75,6 +75,7 @@ export interface ReverseCardType {
   dreamCardImageUrl: string;
   isShow: string;
   keywords: string[];
+  auctionId: number;
 }
 
 const NightHomeItem = ({cardData}:NightHomeItemProps) => {

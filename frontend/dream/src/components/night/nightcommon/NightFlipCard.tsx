@@ -83,7 +83,7 @@ const NightFlipCard = ({reverseCardData}: ReverseCardProps) => {
 
   // 경매장 입장
   const enterAuctionSpace = () => {
-    navigation(`/night/auction/detail/${reverseCardData?.dreamCardId}`)
+    navigation(`/night/auction/detail/${reverseCardData?.auctionId}`)
   }
 
   // 조회수 증가 (카드 클릭할 때마다 증가시킴)
