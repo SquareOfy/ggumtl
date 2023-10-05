@@ -22,6 +22,12 @@ public class GlobalExceptionHandler {
         return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
     }
 
+    @ExceptionHandler(DataException.class)
+    public Object handleDataException(Exception e) {
+
+        return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
+    }
+
 
     @ExceptionHandler( InvalidAccessTokenException.class )
     public ResultTemplate invalidAccessTokenException(Exception e){

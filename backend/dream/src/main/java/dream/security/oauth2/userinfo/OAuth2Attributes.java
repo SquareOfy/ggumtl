@@ -55,8 +55,8 @@ public class OAuth2Attributes {
                 .name(oAuth2UserInfo.getNickname())
                 .profileImageName("default.jpg")
                 .profileUrl(oAuth2UserInfo.getImageUrl())
-                .wrigglePoint(0.0)
-                .point(500)
+                .wrigglePoint(36.5)
+                .point(5000)
                 .role(Role.GUEST)
                 .build();
     }
