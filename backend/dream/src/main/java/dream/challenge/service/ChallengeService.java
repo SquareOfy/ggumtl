@@ -435,8 +435,8 @@ public class ChallengeService {
                 .filter(challengeDetail -> challengeDetail.getUser().getUserId().equals(user.getUserId()))
                 .count();
 
-        if(detailCount < challenge.getTimeCapsuleOpenAt())
-            throw new BadRequestException(BadRequestException.CANNOT_READ_TIMECAPSULE);
+//        if(detailCount < challenge.getTimeCapsuleOpenAt())
+//            throw new BadRequestException(BadRequestException.CANNOT_READ_TIMECAPSULE);
 
         List<ChallengeParticipation> list = challenge.getChallengeParticipations();
         if(list.isEmpty()) throw new NoSuchElementException(NoSuchElementException.NO_SUCH_TIMECAPSULE);
