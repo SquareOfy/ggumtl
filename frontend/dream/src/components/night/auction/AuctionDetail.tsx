@@ -9,12 +9,14 @@ import tokenHttp from "api/tokenHttp";
 import { changeDateHour } from "utils/dateForm";
 import { RootState } from "store";
 import { baseUrl } from "api/api";
+import Swal from "sweetalert2";
 
 // 컴포넌트
 import Button from "components/common/Button";
 import DreamCardGrade from "../nightcommon/DreamCardGrade";
 import DreamKeywordRegion from "../nightcommon/DreamKeywordRegion";
 import AuctionBuying from "./AuctionBuying";
+
 
 // 스타일
 import styled, {css} from "styled-components";
@@ -144,6 +146,10 @@ const AuctionDetail = () => {
         alert(response.data)
       } else if (response.status === 200) {
         alert("구매 성공")
+        Swal.fire({
+          icon:'success',
+          title :'구매 성공',
+        })
         return res.data.data.biddingUserId
       }
       return -1
