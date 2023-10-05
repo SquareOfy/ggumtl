@@ -146,8 +146,7 @@ const ChalManageDetail = () => {
 
   return (
     <Container $dayBaseContainer $dayCreate>
-      <Box $mainTitleBox>
-        {/* 뱃지 이미지 아직 안됨 */}
+      <Box $mainTitleBox onClick={()=>{navigate(`/day/challenge/${chalData.challengeId}`)}}>
         <img src={`${chalData?.badgeUrl}`}></img> 
         {chalData?.challengeTitle}
       </Box>
