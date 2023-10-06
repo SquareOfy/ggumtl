@@ -9,16 +9,18 @@
 //<DayChallengeList></DayChallengeList>
 
 // 리액트
-import React from "react";
+import React, { useState } from "react";
 
 // 컴포넌트
 import DayStoryList from "./DayStoryList";
-import DayCategoryList from "../daycommon/DayCategoryList";
+import DayCategoryList, { CategoryAxiosType } from "../daycommon/DayCategoryList";
 import DayChallengeList from "./DayChallengeList";
+import Text from "style/Text";
 
 // 스타일
 
 const DayHome = ()=> {
+  const [categoryProps, setCategoryProps] = useState<CategoryAxiosType>({keyword: '', keywordId: 0});
 
   return (
     <>
@@ -26,10 +28,12 @@ const DayHome = ()=> {
     <DayStoryList />
 
     {/* 카테고리 */}
-    <DayCategoryList />
+    <Text $isBold $dayHomeText>카테고리</Text>
+    <DayCategoryList setCategoryProps={setCategoryProps}/>
 
     {/* HotChalllenge Arr */}
-    <DayChallengeList />
+    <Text $isBold $dayHomeText>Hot Challenge</Text>
+    <DayChallengeList categoryProps={categoryProps}/>
     
     </>
   )

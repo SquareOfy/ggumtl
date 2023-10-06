@@ -11,7 +11,7 @@ const DreamDetailPage = () => {
 
   return (
     <>
-    <NavTitleBar />
+    <NavTitleBar>꿈 해몽</NavTitleBar>
     <DreamDetail />
     </>
   )

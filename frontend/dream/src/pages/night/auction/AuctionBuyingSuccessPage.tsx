@@ -10,7 +10,7 @@ const AuctionBuyingSuccessPage = () => {
 
   return (
     <>
-    <NavTitleBar />
+    <NavTitleBar>꿈 카드 리뷰</NavTitleBar>
     {/* <AuctionBuying /> */}
     <AuctionReview/>
     </>

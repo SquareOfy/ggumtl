@@ -7,11 +7,13 @@ interface TextAreaProps {
     children?: React.ReactNode;
     // styles?: string;
     onChange ?: (e :any) => void;
+    onBlur ?: (e :any) => void;
     disabled?: boolean;    
     type?: 'text';
     placeholder ?: string;
     id ?: string;
     value ?: string;
+    
 
     // 별개 스타일링
     // text area
@@ -38,9 +40,11 @@ const StyledTextArea = styled.textarea<TextAreaProps>`
       color: #F9FAFB;
       background-color: rgb(190, 169, 215, 50%);
       width: 100%;
-      height: 30rem;
+      min-height: 20rem;
       border-radius: 2rem;   
       margin: 1rem 0;
+      display: flex;
+      height: inherit;
     `
   }
 
@@ -60,11 +64,10 @@ const StyledTextArea = styled.textarea<TextAreaProps>`
     css`
       border: none;
       border-radius: 0.75rem;    
-      padding-left: 1rem;
-      padding-right: 1rem;
+      padding : 1.25rem 0.75rem;
       background-color: rgb(249, 249, 249, 50%); 
       width: 100%;
-      height: 10rem;
+      height: 8rem;
       margin-top: 0.5rem;
       margin-bottom: 0.5rem;
     `

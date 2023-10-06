@@ -13,7 +13,7 @@ import Button from "components/common/Button";
 import DreamCardGrade from "./DreamCardGrade";
 
 // 외부
-import basicHttp from "api/basicHttp";
+import tokenHttp from "api/tokenHttp";
 
 // 스타일
 import styled, {css} from "styled-components";
@@ -34,6 +34,9 @@ const CustomKeywordBox = styled.div`
   padding: 0.25rem;
   text-align: center;
   border-radius: 0.25rem;
+  &:active {
+    opacity: 0.8;
+  }
 `
 
 const NightFlipCardKeyBtnWrap = styled.div`
@@ -80,12 +83,12 @@ const NightFlipCard = ({reverseCardData}: ReverseCardProps) => {
 
   // 경매장 입장
   const enterAuctionSpace = () => {
-    navigation(`/night/auction/detail/${reverseCardData?.dreamCardId}`)
+    navigation(`/night/auction/detail/${reverseCardData?.auctionId}`)
   }
 
   // 조회수 증가 (카드 클릭할 때마다 증가시킴)
   const addHits = () :void => {
-    basicHttp.put(`/night/dream/detail/hit`, dreamCardId)
+    tokenHttp.put(`/night/dream/detail/hit`, dreamCardId)
     .then(res => console.log(res, "조회수 증가"))
   }
 
@@ -112,7 +115,7 @@ const NightFlipCard = ({reverseCardData}: ReverseCardProps) => {
                 (idx <= 2 && keyword !== null) ? (
                 <CustomKeywordBox className="blockClickEvent" key={idx}> 
                   <Text $nightKeword className="blockClickEvent"
-                    onClick={() => navigation(`/night/search?searchKeyword=${Object.values(keyword)}`)}
+                    onClick={() => navigation(`/day/main?pullKeyword=${Object.values(keyword)}`)}
                   >
                     {Object.values(keyword)}
                   </Text>

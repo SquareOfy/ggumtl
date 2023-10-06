@@ -35,15 +35,20 @@ import ChalManagePage from 'pages/day/challenge/ChalManagePage';
 import ChalManageDetailPage from 'pages/day/challenge/ChalManageDetailPage';
 import ChalCreateCertPage from 'pages/day/challenge/ChalCreateCertPage';
 import ChalCapsuleListPage from 'pages/day/capsule/ChalCapsuleListPage';
+import RecommendChalPage from 'pages/day/recommend/RecommendChalPage';
 import DayAlertPage from 'pages/alert/DayAlertPage';
 import BackgroundImage from 'style/backgroundImage';
-
+import DayProfilePage from 'pages/day/profile/DayProfilePage';
+import NotFoundPage from 'pages/sunset/NotFoundPage';
+import StartPage from 'pages/sunset/StartPage';
 
 function App() {
 
   const location = useLocation();
   const dispatch = useDispatch();
-  const hideComponent :boolean = location.pathname.startsWith("/sunset") || location.pathname.includes("comments");
+  const [hideComponent, setHideComponent] = useState<boolean>(true)
+
+  // const hideComponent :boolean = location.pathname.startsWith("/sunset") || location.pathname.includes("comments");
   
   // 라우터 이동 시에 url pathname 확인
   // const [theme,setTheme] = useState(sunsetTheme);
@@ -52,11 +57,19 @@ function App() {
   useEffect(()=>{
     if (location.pathname.includes('sunset')){
       dispatch(changeMode(sunsetTheme))
+      setHideComponent(true)
     } else if (location.pathname.includes('day')){
       dispatch(changeMode(dayTheme))
+      setHideComponent(false)
     } else if (location.pathname.includes('night')){
       dispatch(changeMode(nightTheme))
+      setHideComponent(false)
     }
+
+    if (location.pathname.includes("comments")) {
+      setHideComponent(true)
+    }
+
   })
 
   // 웹 알림
@@ -79,8 +92,9 @@ function App() {
     <GlobalStyle/>
       <Routes>
         {/* 초기 3개 화면 */}
+        <Route path="/a" element={<StartPage/>}/>
         <Route path="/sunset/main" element={<SunsetMainPage/>} />
-        <Route path="/sunset/login" element={<LoginPage/>}/>
+        <Route path="/" element={<LoginPage/>}/>
         <Route path="/sunset/signup" element={<SignUpPage/>}/>
         <Route path="/sunset/token" element={<GetTokenPage/>}/>
 
@@ -93,10 +107,10 @@ function App() {
         {/* 경매장 */}
         <Route path="/night/auction/list" element={<AuctionMainPage/>}/>
 
-        <Route path="/night/auction/detail/:dreamCardId" element={<AuctionDetailPage/>}/>
+        <Route path="/night/auction/detail/:auctionId" element={<AuctionDetailPage/>}/>
          {/* 라우터 경로만 */}
         <Route path="/night/auction/detail/:dreamCardId/create" element={<AuctionCreatePage/>}/> 
-        <Route path="/night/auction/bidding/:dreamCardId" element={<AuctionDetailPage/>}/> 
+        <Route path="/night/auction/bidding/:auctionId" element={<AuctionDetailPage/>}/> 
 
         <Route path="/night/auction/bidding/review" element={<AuctionBuyingSuccessPage/>}/> 
 
@@ -110,29 +124,32 @@ function App() {
 
         {/* 챌린지 관련 */}
         {/* 챌린지 상세조회 */}
-        <Route path="/day/challenge/:challangeId" element={<ChalDetailPage/>}/>
-        <Route path="/day/challenge/:challangeId/comments" element={<ChalCommentPage/>}/>
+        <Route path="/day/challenge/:challengeId" element={<ChalDetailPage/>}/>
+        <Route path="/day/challenge/:challengeId/comments/:challengeDetailId" element={<ChalCommentPage/>}/>
         <Route path="/day/challenge/create" element={<ChalCreatePage/>}/>
         {/* 타임캡슐 */}
         {/* 모달 */}
-        {/* <Route path="/day/challenge/:challangeId/timecapsule" element={<ChalCapsuleListPage/>}/> */}
-        <Route path="/day/challenge/:challangeId/timecapsule/create" element={<ChalCapsuleCreatePage/>}/>
+        <Route path="/day/challenge/:challengeId/timecapsule" element={<ChalCapsuleListPage/>}/>
+        <Route path="/day/challenge/:challengeId/timecapsule/create" element={<ChalCapsuleCreatePage/>}/>
         
         {/* 챌린지 매니지(내 챌린지) 관련 */}
         <Route path="/day/mychallenge/list" element={<ChalManagePage/>}/>
         <Route path="/day/mychallenge/:challengeId" element={<ChalManageDetailPage/>}/>
         {/* 인증글 올리기 */}
-        <Route path="/day/mychallenge/cert/create" element={<ChalCreateCertPage/>}/>        
+        <Route path="/day/mychallenge/:challengeId/cert/create" element={<ChalCreateCertPage/>}/>        
+
+        {/* 가장 잘 맞는 챌린지 추천 */}
+        <Route path="/day/challenge/recommend" element={<RecommendChalPage/>}/>
 
         {/* 낮 프로필 */}        
-        <Route path="/day/profile/:userId" element={<NightProfilePage/>}/>
+        <Route path="/day/profile/:userId" element={<DayProfilePage/>}/>
 
         {/* 알림 */}
         <Route path="/night/alert" element={<NightAlertPage/>}/>
         <Route path="/day/alert" element={<DayAlertPage/>}/>
 
         {/* 임시로 보낸 404 페이지 */}
-        <Route path="*" element={<SunsetMainPage/>}/>
+        {/* <Route path="/error404" element={<NotFoundPage/>}/> */}
       </Routes>
       {!hideComponent && <FooterBar/> }
     {/* </ThemeProvider> */}

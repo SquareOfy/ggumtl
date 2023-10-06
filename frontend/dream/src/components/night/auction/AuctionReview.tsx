@@ -17,7 +17,12 @@ const AlignCenter = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    // height: 100%;
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, 0);
+
 `
 
 const ReviewContainer = styled.div`

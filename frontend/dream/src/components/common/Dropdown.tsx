@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+
+import React, {useEffect, useState, SetStateAction, Dispatch} from 'react';
 
 // 컴포넌트
 import { CiSquareChevDown } from "react-icons/ci";
@@ -7,8 +8,10 @@ import { CiSquareChevDown } from "react-icons/ci";
 import styled from 'styled-components';
 
 interface DropdownProps {
-  children ?: string[]
   $show ?: boolean
+  $type : string
+  setSelectOption : Dispatch<SetStateAction<string>>
+  optionData : string[]
 }
 
 // 스타일
@@ -70,23 +73,19 @@ const SelectBox = styled.div`
 
 const Dropdown = (props:DropdownProps) => {
   
-  const [currentValue, setCurrentValue] = useState<string>(''); // 현재 선택되어있는 값
+  const [currentValue, setCurrentValue] = useState<string>(props.$type); // 현재 선택되어있는 값
   const [showOptions, setShowOptions] = useState<boolean>(false); // 드롭다운 되어있는지 확인
   const [optionArray, setOptionArray] = useState<string[]>([]) // 옵션 리스트
   
-  useEffect(()=>{
-    setCurrentValue(props.children ? props.children[0] : '')
-    setOptionArray(props.children ? props.children.slice(1) : [])
-    console.log(currentValue)
-    console.log(optionArray)
-  },[])
-
+  // 옵션 고를때 창 드롭다운 켜지는지
   useEffect(()=>{
     setShowOptions(props.$show ? true : false)
   },[props.$show])
 
+  // 옵션 선택했을 때 값 바뀌게 하는 함수
   const selectOption = (option:string)=>{
     setCurrentValue(option)
+    props.setSelectOption(option)
   }
 
   return (
@@ -95,11 +94,11 @@ const Dropdown = (props:DropdownProps) => {
         <Label>{currentValue}</Label>
         <DropdownIcon><CiSquareChevDown/></DropdownIcon>
         <SelectOptions $show={showOptions ? true : false}>
-          { optionArray.map((option)=>{
+          { props.optionData.map((option)=>{
             return (
             <Option 
-              key={optionArray.indexOf(option)} 
-              onClick={(e)=>{selectOption(option)}}
+              key={props.optionData.indexOf(option)} 
+              onClick={()=>{selectOption(option)}}
             >
               {option}
             </Option>)

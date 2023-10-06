@@ -9,75 +9,103 @@ import React, { useEffect, useState } from "react";
 import ChalContentListItem from "../daycommon/ChalContentListItem";
 import InfiniteScroll from "components/common/InfiniteScroll";
 import Text from "style/Text";
+import tokenHttp from "api/tokenHttp";
+import { CategoryAxiosType } from "../daycommon/DayCategoryList";
 
 // 스타일
 export interface DayChallengeObjType {
-  title :string,
+  title ?:string,
   period :string,
-  challengeId :number
+  challengeId :number,
+  challengeTitle ?:string,
+  challengeParticipateId ?:number,
+  participateCount ?:number,
+  dreamKeywordId ?:number, // 나중에 chal keywordId로 바꾸기
+  badgeUrl ?:string,
 }
 
 export interface DayChallengeListType extends Array<DayChallengeObjType> {}
 
+export interface CategoryToChalProps {
+  categoryProps :CategoryAxiosType
+}
 
-const DayChallengeList = () => {
-  // 처음에 받아온 리스트 (이후 여기에 새 항목을 추가하게 됨)
+const DayChallengeList = (props :CategoryToChalProps) => {
   const [allChalList, setAllChalList] = useState<DayChallengeListType>([]);
-  // 스크롤 내리면서 받아올 새 리스트 
-  const [newChalList, setNewChalList] = useState<DayChallengeListType>([]);
-  const [lastItemId, setLastItemId] = useState<number>(0); // 마지막 아이템 번호
-  // let size :number = 6; // 받아올 리스트 사이즈 - axios 연결 후 주석 해제하기
+  const [lastItemId, setLastItemId] = useState<number>(0);
+  const [hasNext, setHasNext] = useState<boolean>(true); 
+  let size :number = 6;
+
   
-  // .axios 연결 전 임의의 값을 allChalList에 넣어두기
-  let newObj :DayChallengeObjType = {
-    title : "무지출 챌린지",
-    period : "1일",
-    challengeId : 111,
-  }
-  let newObj2 :DayChallengeObjType = {
-    title : "1일 1커밋 남기기",
-    period : "365일",
-    challengeId : 222,
+  // infinite scroll
+  const [arriveEnd, setArriveEnd] = useState<boolean>(true); // 바닥에 다다름을 알려주는 변수
+
+
+  const getAxios = () => {
+    let apiAddress :string = "";
+
+    // 처음 요청 받을 때
+    if (lastItemId === 0) {apiAddress = `/day?size=${size}`}
+    // 두번째부터 요청 할 때
+    else {apiAddress = `/day?lastItemId=${lastItemId}&size=${size}`}
+    
+    if (arriveEnd && hasNext) {  // 끝에 도달하고 다음이 있을 때 다음 데이터 호출
+      tokenHttp.get(apiAddress)
+      .then((res)=>{
+        const response = res.data.data
+        const challengeList = response.challengeList
+        setAllChalList([...allChalList, ...challengeList]);
+        setLastItemId(challengeList[challengeList.length - 1].challengeId);
+        setHasNext(response.hasNext);
+        console.log("== 메인 챌린지 컴포넌트 ==", response); 
+      })
+      .catch((err) => console.log("== 메인 챌린지 컴포넌트 ==", err))
+    }
   }
 
-  // 처음 렌더링 시 Challenge List axios 요청
   useEffect(() => {
-    // axios로 받아오면 setAllChalList로 기존 배열에 새 배열 추가하기
-    setAllChalList([
-      newObj, newObj2, newObj2, newObj2, 
-      newObj2, newObj2, newObj2, newObj2,
-      newObj2, newObj2, newObj2, newObj2
-    ])
-  }, [])
+    getAxios();
+  }, []);
+
   
   //  DCL.tsx에서 초기 axios 요청 -> 데이터 불러옴 -> Infinite에서 스크롤 이벤트 감지
   //  -> 바닥에 다다르면 신호를 보냄 -> DCL.tsx에서 다음 axios 요청 
   
-  const [arriveEnd, setArriveEnd] = useState<boolean>(false); // 바닥에 다다름을 알려주는 변수
-
   useEffect(() => {
     // 바닥에 다다랐으면 axios 요청
     if (arriveEnd) {
-      // axios 요청하는 동작 추가
-      setAllChalList([...allChalList, newObj])
+      getAxios();
       setArriveEnd(false);
-      // setLastItemId(newChalList[-1]["challengeId"]); // 마지막 item id 변경
     }
   }, [arriveEnd])
 
+  // console.log("chal List 탭 : ", props.categoryProps)
 
   return (
     <>
-    <Text $isBold>Hot Challenge</Text>
-    <InfiniteScroll 
-    setArriveEnd={setArriveEnd} 
-    // lastItemId={lastItemId}
-    component={
-      allChalList?.map((chal :DayChallengeObjType) => (
-      <ChalContentListItem key={chal.challengeId} chal={chal} />))
+    {/* <div style={{margin: "0.5rem"}}>
+      <Text $isBold>Hot Challenge</Text>
+    </div> */}
+    {
+      allChalList &&
+      <InfiniteScroll 
+        setArriveEnd={setArriveEnd} 
+        // lastItemId={lastItemId}
+        component={
+          allChalList
+          // 카테고리
+          .filter((chal: DayChallengeObjType) => {
+            if (props.categoryProps.keywordId !== 0) {
+              return chal.dreamKeywordId === props.categoryProps.keywordId
+            } else {
+              return true
+            }
+          })
+          .map((chal :DayChallengeObjType) => (
+            <ChalContentListItem key={chal.challengeId} chal={chal} />))
+        }
+      ></InfiniteScroll>
     }
-    >
-    </InfiniteScroll>
     </>
   )
 }

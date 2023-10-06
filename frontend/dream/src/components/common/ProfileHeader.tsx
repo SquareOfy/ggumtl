@@ -22,10 +22,12 @@ import Text from "style/Text";
 import styled from "styled-components";
 import { FaStar } from "react-icons/fa6";
 import { LiaCoinsSolid } from "react-icons/lia";
+import tokenHttp from "api/tokenHttp";
+import { useParams } from "react-router-dom";
 
 // progress 속성을 정의
 interface ProgressBarProps {
-  progress: number;
+  progress :number;
 }
 
 const ProgressBar = styled.div<ProgressBarProps>`
@@ -55,15 +57,52 @@ const ProgressBar = styled.div<ProgressBarProps>`
   }
 `
 
+// profile 정보
+interface ProfileHeaderAxiosType {
+  dreamCardCount :number,
+  followerCount :number,
+  followingCount :number,
+  nickname :string,
+  profileImageName :string,
+  profileImageUrl :string,
+  userId :number,
+  wrigglePoint :number,
+  point ?:number,
+  finishChallengeCount :number,
+}
+
 const ProfileHeader = () => {
   const themeMode = useSelector((state: RootState) => state.themeMode.themeMode);
+  const auth = useSelector((state: RootState) => state.auth.userdata);
+
   const [isNight, setIsNight] = useState<boolean>(false);
   const [isStarClicked, setIsStarClicked] = useState<boolean>(true);
-  const [isMyProfile, setIsMyProfile] = useState<boolean>(true); // 내 프로필인지 유저 확인
+  const [isMyProfile, setIsMyProfile] = useState<boolean>(false); // 내 프로필인지 유저 확인
   const [isFollowing, setIsFollowing] = useState<boolean>(false); // 팔로우 했는지 여부
-  const [progress, setProgress] = useState<number>(70); // 꿈틀도 추후 변경하기
+  const [progress, setProgress] = useState<number>(auth?.wrigglePoint);
 
+  // 프로필 axios 통신 데이터들
+  const [userData, setUserData] = useState<ProfileHeaderAxiosType>();
+  const params = useParams();
+
+  // axios 요청
   useEffect(() => {
+    tokenHttp.get(`/profile/common/header/${params.userId}`)
+    .then((res) => {
+      console.log("프로필 헤더 : ", res);
+      setUserData(res.data.data);
+    })
+    .catch((err) => console.log("ProfileHeader 오류 : ", err))
+  }, [themeMode.mode])
+
+  // 꿈틀도 값 변경
+  useEffect(() => {
+    if (userData) {setProgress(userData?.wrigglePoint)}
+  }, [userData])
+
+  // 테마 확인
+  useEffect(() => {
+    console.log("테마 확인 : ", themeMode.mode)
     if (themeMode.mode === 'night') {
       setIsNight(true);
     } else {
@@ -71,8 +110,51 @@ const ProfileHeader = () => {
     }
   }, [themeMode.mode])
   
+  // 꿈틀도 별 클릭
   const handleStarClicked = () => {
     setIsStarClicked(!isStarClicked)
+  }
+
+  // 내 프로필인지 확인
+  useEffect(() => {
+    if (params && auth.userId === Number(params.userId)) {
+      setIsMyProfile(true)
+    }
+  }, [auth.userId, params])
+
+  // 팔로워 수 변경
+  const [nowFollower, setNowFollower] = useState(0)
+
+  useEffect(() => {
+    if (userData) {
+      setNowFollower(userData?.followerCount)
+    }
+  }, [userData?.followerCount])
+
+  // 팔로우 팔로잉
+  const handleFollow = () => {
+    if (isFollowing) { // 언팔로우 하기
+      tokenHttp.delete(`/user/unfollow/${params.userId}`)
+      .then((res) => {
+        console.log("언팔로우 : ", res)
+        if (res.data.status === 200) {
+          setIsFollowing(false)
+          setNowFollower(nowFollower-1)
+        }
+      })
+      .catch(err => console.log("언팔로우 에러", err))
+    }
+    else { // 팔로우 하기
+      tokenHttp.post(`/user/follow`, {toId: Number(params.userId)})
+      .then((res) => {
+        console.log("팔로우 : ", res)
+        if (res.data.status === 200) {
+          setIsFollowing(true)
+          setNowFollower(nowFollower+1)
+        }
+      })
+      .catch(err => console.log("팔로우 에러", err))
+    }
   }
 
   return (
@@ -82,40 +164,42 @@ const ProfileHeader = () => {
         <Image
         $smallProfileImage
         >
-          <img src="https://mblogthumb-phinf.pstatic.net/MjAyMjAxMjVfMjAy/MDAxNjQzMTAyOTk2NjE0.gw_H_jjBM64svaftcnheR6-mHHlmGOyrr6htAuxPETsg.8JJSQNEA5HX2WmrshjZ-VjmJWqhmgE40Qm5csIud9VUg.JPEG.minziminzi128/IMG_7374.JPG?type=w800"/>
+          <img src={userData?.profileImageUrl} alt={userData?.profileImageName}/>
         </Image>
         <Text
         $nightWhite={isNight}
         >
           <div>
-            <p>나는프론트엔드</p>
+            <p>{userData?.nickname}</p>
             {
-              !isMyProfile &&
-              <Button
-              $follow
-              $nightPalePurple
-              >{!isFollowing ? "팔로우" : "팔로잉"}</Button>
-            }
-            {
-              isMyProfile &&
+              isMyProfile
+              ? 
               <Text
               $nightMoney={isNight}
               $dayMoney={!isNight}
-              ><LiaCoinsSolid style={{width: "1.3rem", height: "1.3rem", marginRight: "0.4rem"}}></LiaCoinsSolid> 5.5k</Text>
+              ><LiaCoinsSolid style={{width: "1.3rem", height: "1.3rem", marginRight: "0.4rem"}}></LiaCoinsSolid> {userData?.point && (userData?.point/100).toFixed(1)}k</Text>
+              :
+              <Button
+              $follow
+              $nightPalePurple
+              onClick={() => handleFollow()}
+              >{!isFollowing ? "팔로우" : "팔로잉"}</Button>
             }
           </div>
           <div>
             <div>
-              <p>꿈 카드</p>
-              <p>5</p>
+              { isNight 
+                ? <><p>꿈 카드</p><p>{userData?.dreamCardCount}</p></> 
+                : <><p>완료 챌린지</p><p>{userData?.finishChallengeCount}</p></>}
+              
             </div>
             <div>
               <p>팔로워</p>
-              <p>1.3k</p>
+              <p>{nowFollower}</p>
             </div>
             <div>
               <p>팔로잉</p>
-              <p>70</p>
+              <p>{userData?.followingCount}</p>
             </div>
           </div>
         </Text>

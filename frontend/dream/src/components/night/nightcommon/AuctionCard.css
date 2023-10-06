@@ -3,6 +3,7 @@
   background: rgba(190, 169, 215, 0.5);
   display: inline-block;
   width: 45vw;
+  height: fit-content;
   margin-left: 3.5vw;
   border-radius: 1rem;
 
@@ -86,4 +87,3 @@
 	clear: both;
 	height: 0;
 }
-

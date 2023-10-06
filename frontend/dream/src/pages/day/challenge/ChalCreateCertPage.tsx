@@ -13,7 +13,7 @@ const ChalCreateCertPage = () => {
 
   return (
     <>
-    <NavTitleBar />
+    <NavTitleBar>인증하기</NavTitleBar>
     <ChalCreateCert/>
     </>
   )

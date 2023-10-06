@@ -1,7 +1,7 @@
 // 리액트
-import React from "react";
+import React, {useRef, useState} from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 // 컴포넌트
 
 // 타입 & 외부
@@ -28,12 +28,18 @@ export interface AuctionCardProps {
 const AuctionCard = ({auctionCard} : AuctionCardProps) => {
   const navigation = useNavigate()
 
+
   // 시간 계산
   const diffHour = () :number => {
     const today = new Date()
     const todayHour = today.getHours()
     const endedTime = new Date(auctionCard?.endedAt ? auctionCard?.endedAt : "")
     const endedHour = endedTime.getHours()
+
+    const todayDay = today.getDate()
+    const endDay = today.getDate()
+    if (todayDay === endDay) { return 4 }
+
     if (endedHour === 0) {
       if (todayHour === 22) return 2
       else if (todayHour === 23) return 1
@@ -51,10 +57,12 @@ const AuctionCard = ({auctionCard} : AuctionCardProps) => {
     <>
     {/* 옥션 카드에 존재하는 키워드박스 클릭할 때도 경매장 가는 거 막아야 함. */}
     <div className="auction-card"
-    onClick={() => navigation(`/night/auction/detail/${auctionCard?.dreamCardId}`)}    
+    onClick={() => {
+        navigation(`/night/auction/detail/${auctionCard?.auctionId}`)
+    }}    
     >
       <div className="auction-end-time"> 
-      {diffHour() < 3 ? ( diffHour() > 0 ? `마감 ${diffHour()}시간 전` : "종료 임박") : "경매장 입장"}
+      { diffHour() < 3 ? ( diffHour() > 0 ? `마감 ${diffHour()}시간 전` : "종료 임박") : "경매장 입장" }
       </div>
       <div className="auction-card-image">
         <Image $nightImageBorder $auctionCard><img src={auctionCard?.dreamCardImageUrl}/></Image>
@@ -67,15 +75,14 @@ const AuctionCard = ({auctionCard} : AuctionCardProps) => {
           >{Object.values(keyword)}</Box>  
         ))}
       </div>
-
       <div className="grade-region clearfix">
         <div className="one-second">
-          <div className="grade">{auctionCard?.positiveGrade}</div>
+          <div className="grade">{auctionCard?.positivePoint ? auctionCard?.positivePoint : auctionCard?.positiveGrade}</div>
           <div className="grade-value">길몽</div>
         </div>
 
         <div className="one-second">
-          <div className="grade">{auctionCard?.rareGrade}</div>
+          <div className="grade">{auctionCard?.rarePoint ? auctionCard?.rarePoint : auctionCard?.rareGrade}</div>
           <div className="grade-value">희귀</div>
         </div>
 

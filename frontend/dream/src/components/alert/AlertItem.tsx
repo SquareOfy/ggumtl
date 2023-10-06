@@ -7,15 +7,35 @@
 
 // 리액트
 import React from "react";
+import { AlertListAxiosType } from "./AlertList";
+import styled from "styled-components";
+import Text from "style/Text";
+import Image from "style/Image";
+import Wrap from "style/Wrap";
 
 // 컴포넌트
 
 // 스타일
+export interface AlertItemTypeProps {
+  data :AlertListAxiosType,
+  // key :number,
+}
 
-const AlertItem = () => {
+const AlertWrap = styled.div`
+
+`
+
+const AlertItem = ({data} :AlertItemTypeProps) => {
 
   return (
     <>
+    <Wrap $alertWrap>
+      <Image $tinyProfileImage><img></img></Image>
+      <div className="contentarea">
+        <Text $black>{data.title}</Text>
+        <Text $black>{data.content}</Text>
+      </div>
+    </Wrap>
     </>
   )
 }
